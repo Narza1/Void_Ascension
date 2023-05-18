@@ -14,11 +14,14 @@ public class AvatarController : MonoBehaviour
     public static bool set1 = true, isAttacking;
     private InventoryUIController inventory;
     private VisualElement m_Root;
-    private List<Character> characters= new List<Character>();
+    private List<Character> characters = new List<Character>();
     private int currentCharacter;
-   
+    private List<GameObject> characterAvatars;
+    private readonly string[] names = { "Warrior", "Mage", "Minion", "Archer" };
+
     void Start()
     {
+
         GameObject ui = GameObject.Find("UserInterface");
         m_Root = ui.GetComponent<UIDocument>().rootVisualElement.Q("Container");
         m_Root.style.display = DisplayStyle.None;
@@ -32,9 +35,25 @@ public class AvatarController : MonoBehaviour
 
         rb = GetComponent<Rigidbody2D>();
         startTime = Time.time;
+        CharacterParts();
         LoadCharacters();
+        
     }
 
+    private void CharacterParts()
+    {
+        GameObject[] childObjects = GetComponentsInChildren<GameObject>(true);
+
+        // Iterar sobre los objetos secundarios
+        foreach (GameObject childObject in childObjects)
+        {
+            // Hacer algo con cada objeto secundario
+            if (names.Contains(childObject.tag))
+            {
+                //characterAvatars
+            }
+        }
+    }
     private void LoadCharacters()
     {
         //esto deberia ir dentro del gamemanager supongo
@@ -44,15 +63,15 @@ public class AvatarController : MonoBehaviour
         characters.Add(new MageCharacter());
         characters.Add(new WarriorCharacter());
         characters.Add(new ArcherCharacter());
-        newCurrentCharacter = 0;//aqui en lugar de cero sera el valor que leamos del archvo
+        var newCurrentCharacter = 0;//aqui en lugar de cero sera el valor que leamos del archvo
         ChangeCharacter(newCurrentCharacter);
     }
     private void ChangeCharacter(int newCurrentCharacter)
     {
 
     }
-        // Update is called once per frame
-        void Update()
+    // Update is called once per frame
+    void Update()
     {
 
         if (m_Root.style.display == DisplayStyle.None || !isAttacking)
@@ -66,7 +85,7 @@ public class AvatarController : MonoBehaviour
 
     }
 
-    
+
 
     private void Inventory()
     {
@@ -85,7 +104,7 @@ public class AvatarController : MonoBehaviour
     }
     private void ChangeSetPattern()
     {
-        
+
         if ((Time.time - startTime >= 0.5f) && Input.mouseScrollDelta.y != 0)
         {
 
@@ -94,13 +113,13 @@ public class AvatarController : MonoBehaviour
             for (int i = 0; i < 6; i++)
             {
                 SetEquip(inventory.SetSlots[i]);
-                
-                
+
+
             }
             startTime = Time.time;
             set1 = !set1;
         }
-        
+
     }
     public void SetEquip(InventorySlot inventorySlot)
     {
@@ -120,10 +139,10 @@ public class AvatarController : MonoBehaviour
 
                     foreach (var item in equipmentList)
                     {
-                       
+
                         if (item.name == slotItem.Icon.name)
                         {
-                           
+
                             item.SetActive(!item.activeSelf);
                             if (item.activeSelf)
                             {
@@ -161,7 +180,7 @@ public class AvatarController : MonoBehaviour
 
                         foreach (var item in accesoryList)
                         {
-                            
+
                             if (item.name == slotItem.Icon.name)
                             {
 
@@ -267,6 +286,6 @@ public class AvatarController : MonoBehaviour
             animator.SetInteger("attack", 0);
         }
 
-        
+
     }
 }
