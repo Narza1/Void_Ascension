@@ -5,15 +5,35 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class Character : MonoBehaviour
+[Serializable]
+public class Character
 {
 
-    protected float hp = 10, stamina= 10, exp = 0, atk = 10, magAtk= 10,magDef= 10, def = 10, maxLevel=30, speed = 3;
-    protected int level = 1;
+    private float speed = 3;
+    private int level = 1;
+    protected bool isAlive;
+    private float hp;
+    private float stamina;
+    private float exp;
+    private float atk;
+    private float magAtk;
+    private float magDef;
+    private float def;
+    private float maxLevel;
+
+    public float Hp { get => hp; set => hp = value; }
+    public float Stamina { get => stamina; set => stamina = value; }
+    public float Exp { get => exp; set => exp = value; }
+    public float Atk { get => atk; set => atk = value; }
+    public float MagAtk { get => magAtk; set => magAtk = value; }
+    public float MagDef { get => magDef; set => magDef = value; }
+    public float Def { get => def; set => def = value; }
+    public float MaxLevel { get => maxLevel; set => maxLevel = value; }
+    public float Speed { get => speed; set => speed = value; }
+    public int Level { get => level; set => level = value; }
 
     public void LevelUP()
     {
-        
         exp=0;
         level++;
     }

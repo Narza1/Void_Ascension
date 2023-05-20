@@ -8,9 +8,11 @@ public class Arrow : MonoBehaviour
     [SerializeField]
     private float moveSpeed = 10.0f;
     private Rigidbody2D rb;
+    int damage;
     // Start is called before the first frame update
     void Start()
     {
+        damage= 10;
         Destroy(this.gameObject, 30);
         rb= GetComponent<Rigidbody2D>();
         // Get the rotation of the object around the z-axis
@@ -41,13 +43,13 @@ public class Arrow : MonoBehaviour
         {
             Invoke("StopArrow", 0.02f);
         }
-        else if(col.tag != "Arrow")
+        else if(col.tag.Equals("Monster"))
         {
-            Debug.Log(other.gameObject.name);
-           // Destroy(gameObject);
+            other.gameObject.GetComponent<EnemyStats>().TookDamae(damage, false);
+            Destroy(gameObject);
         }
-       
-        
+
+
     }
 
     private void StopArrow()

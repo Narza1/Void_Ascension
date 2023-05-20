@@ -16,8 +16,8 @@ public class AvatarController : MonoBehaviour
     private VisualElement m_Root;
     private List<Character> characters = new List<Character>();
     private int currentCharacter;
-    private List<GameObject> characterAvatars;
     private readonly string[] names = { "Warrior", "Mage", "Minion", "Archer" };
+    private float maxHP, currentHP;
 
     void Start()
     {
@@ -35,25 +35,11 @@ public class AvatarController : MonoBehaviour
 
         rb = GetComponent<Rigidbody2D>();
         startTime = Time.time;
-        CharacterParts();
         LoadCharacters();
         
     }
 
-    private void CharacterParts()
-    {
-        GameObject[] childObjects = GetComponentsInChildren<GameObject>(true);
-
-        // Iterar sobre los objetos secundarios
-        foreach (GameObject childObject in childObjects)
-        {
-            // Hacer algo con cada objeto secundario
-            if (names.Contains(childObject.tag))
-            {
-                //characterAvatars
-            }
-        }
-    }
+    
     private void LoadCharacters()
     {
         //esto deberia ir dentro del gamemanager supongo
@@ -63,12 +49,34 @@ public class AvatarController : MonoBehaviour
         characters.Add(new MageCharacter());
         characters.Add(new WarriorCharacter());
         characters.Add(new ArcherCharacter());
-        var newCurrentCharacter = 0;//aqui en lugar de cero sera el valor que leamos del archvo
-        ChangeCharacter(newCurrentCharacter);
+        currentCharacter = 3;//aqui en lugar de cero sera el valor que leamos del archvo
+        ChangeCharacter(currentCharacter);
+        ChangeStats(currentCharacter);
     }
-    private void ChangeCharacter(int newCurrentCharacter)
-    {
 
+    private void ChangeStats(int currentCharacter)
+    {
+        currentHP = maxHP = characters[currentCharacter].Hp* characters[currentCharacter].Level;
+    }
+
+    private void ChangeCharacter(int index)
+    {
+        List<GameObject> equipmentList = Resources.FindObjectsOfTypeAll<GameObject>().ToList();
+
+
+        // Iterar sobre los objetos secundarios
+        foreach (GameObject childObject in equipmentList)
+        {
+            // Hacer algo con cada objeto secundario
+            if (names[index].Equals(childObject.tag))
+            {
+                childObject.SetActive(true);
+            }
+            else if (names.Contains(childObject.tag))
+            {
+                childObject.SetActive(false);
+            }
+        }
     }
     // Update is called once per frame
     void Update()
@@ -287,5 +295,10 @@ public class AvatarController : MonoBehaviour
         }
 
 
+    }
+
+    public void TookDamage(float damage, bool magicAttack)
+    {
+        
     }
 }

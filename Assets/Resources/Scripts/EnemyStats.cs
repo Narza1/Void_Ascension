@@ -7,7 +7,7 @@ using UnityEngine;
 public class EnemyStats : MonoBehaviour
 {
     [SerializeField]
-    private float hp = 10, stamina = 10, atk = 10, magAtk = 10, magDef = 10, def = 10;
+    private float hp = 10,  atk = 10, magAtk = 10, magDef = 10, def = 10;
 
     [SerializeField]
     private string[] itemGui;
@@ -26,6 +26,10 @@ public class EnemyStats : MonoBehaviour
 
     private int level = 1;
     Animator animator;
+
+    public float Atk { get => atk; set => atk = value; }
+    public float MagAtk { get => magAtk; set => magAtk = value; }
+
     private void Start()
     {
         //level *= GameController.GetFloor();
@@ -39,7 +43,6 @@ public class EnemyStats : MonoBehaviour
     private void SetStats()
     {
         hp *= level;
-        stamina *= level;
         atk *= level;
         magAtk *= level;
         magDef *= level;

@@ -10,6 +10,10 @@ TagManager:
   - Bow
   - Dagger
   - Monster
+  - Warrior
+  - Mage
+  - Minion
+  - Archer
   layers:
   - Default
   - TransparentFX

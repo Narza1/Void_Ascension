@@ -2,24 +2,27 @@ using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
 {
-    private Transform player;
+    private GameObject player;
     [SerializeField]
     private float attackRange = 40f, movementSpeed = 1f;
+    [SerializeField]
+    private bool isAttacking;
 
     private Animator animator;
     private Rigidbody2D rb;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        animator= GetComponent<Animator>();
+        animator = GetComponent<Animator>();
     }
-        private void Awake()
-    {
-        player = (GameObject.FindGameObjectWithTag("Player")).transform;
+    private void Awake()
+    { 
+        player = (GameObject.FindGameObjectWithTag("Player"));
     }
     private void Update()
     {
-        
+
 
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
@@ -42,15 +45,16 @@ public class EnemyAI : MonoBehaviour
 
     private void AttackPlayer()
     {
+       
         rb.velocity = Vector2.zero; rb.angularVelocity = 0f;
         animator.SetTrigger("attack");
-        
+
     }
 
     private void MoveToPlayer()
     {
-        Vector3 playerDirection = player.position - transform.position;
-        playerDirection.z= 0f;
+        Vector3 playerDirection = player.transform.position - transform.position;
+        playerDirection.z = 0f;
         playerDirection.Normalize();
 
         // Calcular la velocidad de movimiento
@@ -60,6 +64,13 @@ public class EnemyAI : MonoBehaviour
         rb.velocity = desiredVelocity;
     }
 
-    
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player") && isAttacking)
+        {
+
+            player.GetComponent<AvatarController>().TookDamage(gameObject.GetComponent<EnemyStats>().Atk,false);
+        }
+    }
 
 }

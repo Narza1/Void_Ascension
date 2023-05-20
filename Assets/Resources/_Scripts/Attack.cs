@@ -6,7 +6,6 @@ public class Attack : MonoBehaviour
 {
     
     AvatarController player;
-    private bool isTakingDamage = false;
 
     // Update is called once per frame
     void Update()
