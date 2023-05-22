@@ -19,6 +19,8 @@ public class AvatarController : MonoBehaviour
     private readonly string[] names = { "Warrior", "Mage", "Minion", "Archer" };
     private float maxHP, currentHP;
 
+    private bool damaged = false,isAlive= true;
+
     void Start()
     {
 
@@ -36,6 +38,7 @@ public class AvatarController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         startTime = Time.time;
         LoadCharacters();
+        Debug.Log(currentHP);
         
     }
 
@@ -49,7 +52,7 @@ public class AvatarController : MonoBehaviour
         characters.Add(new MageCharacter());
         characters.Add(new WarriorCharacter());
         characters.Add(new ArcherCharacter());
-        currentCharacter = 3;//aqui en lugar de cero sera el valor que leamos del archvo
+        currentCharacter = 2;//aqui en lugar de cero sera el valor que leamos del archvo
         ChangeCharacter(currentCharacter);
         ChangeStats(currentCharacter);
     }
@@ -81,6 +84,8 @@ public class AvatarController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isAlive)
+        {
 
         if (m_Root.style.display == DisplayStyle.None || !isAttacking)
         {
@@ -90,6 +95,7 @@ public class AvatarController : MonoBehaviour
             ChangeSetPattern();
         }
         Inventory();
+        }
 
     }
 
@@ -264,7 +270,7 @@ public class AvatarController : MonoBehaviour
     {
         //if (m_Root.style.display == DisplayStyle.None)
         //{
-        if (!isDashing)
+        if (!isDashing && isAlive)
         {
             horizontal = Input.GetAxisRaw("Horizontal");
             vertical = Input.GetAxisRaw("Vertical");
@@ -297,8 +303,52 @@ public class AvatarController : MonoBehaviour
 
     }
 
-    public void TookDamage(float damage, bool magicAttack)
+    public void TookDamae(float damage, bool isMagic)
     {
+        if (!damaged && isAlive)
+        {
+            Debug.Log("fff");
+            StartCoroutine(TookDamage(damage, isMagic));
+        }
+    }
+    public IEnumerator TookDamage(float damage, bool isMagic)
+    {
+        damaged = true;
+        if (isMagic)
+        {
+            currentHP -= Math.Max(damage - characters[currentCharacter].MagDef, 1);
+
+        }
+        else
+        {
+            currentHP -= Math.Max(damage - characters[currentCharacter].Def, 1);
+
+        }
+        
+        if (currentHP <= 0)
+        {
+            StartCoroutine(Death());
+        }
+        else
+        {
+            
+            yield return new WaitForSeconds(0.5f);
+            
+
+
+        }
+        damaged = false;
+        yield return 0;
+
+    }
+
+    private IEnumerator Death()
+    {
+        
+        isAlive = false;
+        GameObject.Find("KayKit Animated Character").GetComponent<Rotation>().enabled= false;
+        animator.SetTrigger("Death");
+        yield return 1;
         
     }
 }

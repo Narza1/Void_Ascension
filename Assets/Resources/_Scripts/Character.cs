@@ -11,15 +11,8 @@ public class Character
 
     private float speed = 3;
     private int level = 1;
-    protected bool isAlive;
-    private float hp;
-    private float stamina;
-    private float exp;
-    private float atk;
-    private float magAtk;
-    private float magDef;
-    private float def;
-    private float maxLevel;
+    private bool isAlive;
+    private float hp,stamina,exp,atk,magAtk,magDef,def,maxLevel;
 
     public float Hp { get => hp; set => hp = value; }
     public float Stamina { get => stamina; set => stamina = value; }
@@ -52,8 +45,8 @@ public class MinionCharacter : Character
 {
     public MinionCharacter()
     {
-        hp = 13;
-        speed = 4;
+        Hp = 13;
+        Speed = 4;
     }
 }
 
@@ -62,10 +55,10 @@ public class MageCharacter : Character
 {
     public MageCharacter()
     {
-        hp = 9;
-        stamina = 9;
-        magAtk = 12;
-        magDef = 12;
+        Hp = 9;
+        Stamina = 9;
+        MagAtk = 12;
+        MagDef = 12;
     }
 }
 
@@ -73,9 +66,9 @@ public class WarriorCharacter : Character
 {
     public WarriorCharacter()
     {
-        hp = 12;
-        def = 12;
-        speed = 2;
+        Hp = 12;
+        Def = 12;
+        Speed = 2;
     }
 }
 
@@ -83,9 +76,9 @@ public class ArcherCharacter : Character
 {
     public ArcherCharacter()
     {
-        hp = 9;
-        atk= 12;
-        speed = 5;
+        Hp = 9;
+        Atk= 12;
+        Speed = 5;
     }
 
 }

@@ -6,9 +6,14 @@ public class EnemyRotation : MonoBehaviour
 {
     private Transform player;
     public float angleCorrection;
+    
+
+   
     // Start is called before the first frame update
     void Start()
     {
+        //col = GetComponentInChildren<Collider2D>();
+        //col = GetComponent<Collider2D>();
         player = (GameObject.FindGameObjectWithTag("Player")).transform;
     }
 
@@ -26,5 +31,7 @@ public class EnemyRotation : MonoBehaviour
         // Aplicar la rotación al objeto
         Vector3 newRotation = new Vector3(transform.localEulerAngles.x, -angle, transform.localEulerAngles.z);
         transform.localEulerAngles = newRotation;
+        
+        //col.gameObject.transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, -angle);
     }
 }
