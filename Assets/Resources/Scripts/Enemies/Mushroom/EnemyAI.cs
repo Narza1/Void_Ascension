@@ -8,9 +8,9 @@ public class EnemyAI : MonoBehaviour
     //
     ////hay que arreglar el maldito collider
     [SerializeField]
-    private float attackRange = 2f, movementSpeed = 3f, fuck2 = 0;
+    private float attackRange = 2f, movementSpeed = 3f, offset = 0;
     [SerializeField]
-    public AnimationColliderFix fuck;
+    public AnimationColliderFix animationColliderFix;
 
     private Animator animator;
     private Rigidbody2D rb;
@@ -18,7 +18,7 @@ public class EnemyAI : MonoBehaviour
 
     private void Start()
     {
-        fuck = GameObject.Find("MushroomMon").GetComponent<AnimationColliderFix>();
+        animationColliderFix = GameObject.Find("MushroomMon").GetComponent<AnimationColliderFix>();
         rb = GetComponent<Rigidbody2D>();
         cd = GetComponent<CircleCollider2D>();
         animator = GameObject.Find("MushroomMon").GetComponent<Animator>();
@@ -35,15 +35,8 @@ public class EnemyAI : MonoBehaviour
         Vector3 normalizedDirection = new Vector3(direction.x, direction.y, 0);
         normalizedDirection.Normalize();
 
-
-
-
-        normalizedDirection = new Vector3(normalizedDirection.x, normalizedDirection.y, 0);
-
-
-
         // Multiplicar el vector de dirección por el valor de offset deseado
-        Vector2 newOffset = normalizedDirection * fuck2;
+        Vector2 newOffset = normalizedDirection * offset;
 
         // Asignar el nuevo offset al CapsuleCollider
         cd.offset = newOffset;
@@ -53,14 +46,14 @@ public class EnemyAI : MonoBehaviour
 
         if (distanceToPlayer <= attackRange)
         {
-            fuck2 = fuck.offset;
+            offset = animationColliderFix.offset;
 
             animator.SetBool("isMoving", false);
             AttackPlayer();
         }
         else
         {
-            fuck2 = 0;
+            offset = 0;
             animator.SetBool("isMoving", true);
 
             MoveToPlayer();
@@ -93,7 +86,7 @@ public class EnemyAI : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player") && fuck.isAttacking)
+        if (collision.gameObject.CompareTag("Player") && animationColliderFix.isAttacking)
         {
             Debug.Log("Hit cabron");
             player.GetComponent<AvatarController>().TookDamae(gameObject.GetComponent<EnemyStats>().Atk, false);
