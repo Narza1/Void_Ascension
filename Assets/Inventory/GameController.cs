@@ -285,3 +285,86 @@ public class GameController : MonoBehaviour
     }
 
 }
+
+
+    //Name = "Broken Sword",
+    //GUID = "8B0EF21A-F2D9-4E6F-8B79-031CA9E202BA"
+   
+
+
+    //Name = "Normal Sword",
+    //GUID = "992D3386-B743-4CD3-9BB7-0234A057C265"
+ 
+
+
+    //Name = "Rare Sword",
+    //GUID = "1B9C6CAA-754E-412D-91BF-37F22C9A0E7B"
+    
+
+
+    //Name = "Common Bow",
+    //GUID = "BD51A9E6-F7D2-4C7A-9D78-23C95F806B91"
+    
+
+
+    //Name = "Rare Bow",
+    //GUID = "A431BCDF-8E20-4B9D-AC64-98E76A0F3C25"
+  
+
+    //Name = "Skeleton Bow",
+    //GUID = "82C5EDD7-654A-43F6-BD91-0A3B8E9C257F"
+   
+
+    //Name = "Common Staff",
+    //GUID = "4FEB6D8A-2C73-4B1F-A37D-E1595C732A48"
+
+    //Name = "Incomplete Skeleton Staff",
+    //GUID = "7D9EF82A-1035-4924-88E0-5C6BA157B42D"
+ 
+
+
+    //Name = "Skeleton Staff",
+    //GUID = "9A4BCE32-7D6A-4F6C-8E0D-51B9F83017C9"
+  
+
+
+    //Name = "Broken Shield",
+    //GUID = "F3C72E4B-B158-42CA-80F7-9AD8A6E90F26"
+  
+
+    //Name = "Common Shield",
+    //GUID = "563E91FA-A7E5-4D4C-8136-98E2B73F9A46"
+   
+
+
+    //Name = "Rare Shield",
+    //GUID = "9C5F237A-71E0-4D81-9B9D-FAFCD086B85A"
+  
+
+    //Name = "Common Arrow",
+    //GUID = "C84D72B3-5F06-49B4-B0AE-1B6936C2E1AA"
+   
+
+    //Name = "Rare Arrow",
+    //GUID = "2AEDC153-7C97-462E-A6F7-8B0DAF9F6DB4"
+   
+
+    //Name = "Small Potion",
+    //GUID = "80F6D95E-ABF2-4127-923C-58A6E4A917B3"
+  
+
+    //Name = "Medium Potion",
+    //GUID = "6B3D9A85-40A2-4D7E-B5A7-CEFAC4BC5F88"
+  
+
+    //Name = "Large Potion",
+    //GUID = "1F78B396-AE1D-4891-A6D4-70E6B2DF3E0C"
+
+    //Name = "Throwing Knife",
+    //GUID = "E6AD398F-9654-46A6-BCA7-25C809D046D8"
+ 
+
+
+    //Name = "Rare Throwing Knife",
+    //GUID = "5FC3A2D7-3B89-4E53-BCE1-9E7FD542D678"
+  

@@ -12,11 +12,11 @@ public class DatabaseTest : MonoBehaviour
     DatabaseReference dbReference;
     void Start()
     {
-        userID = SystemInfo.deviceUniqueIdentifier;
+       userID = SystemInfo.deviceUniqueIdentifier;
        dbReference = FirebaseDatabase.DefaultInstance.RootReference;
     }
 
-   private void CreateUser(string username)
+   public void CreateUser(string username)
     {
         User newUser = new User(Name.text);
         string json = JsonUtility.ToJson(newUser);
@@ -32,4 +32,6 @@ public class DatabaseTest : MonoBehaviour
             onCallBack.Invoke(snapshot.Value.ToString());
         }
     }
+
+    
 }
