@@ -19,7 +19,7 @@ public class AvatarController : MonoBehaviour
     private readonly string[] names = { "Warrior", "Mage", "Minion", "Archer" };
     private float maxHP, currentHP;
 
-    private bool damaged = false,isAlive= true;
+    private bool damaged = false, isAlive = true;
 
     void Start()
     {
@@ -39,10 +39,10 @@ public class AvatarController : MonoBehaviour
         startTime = Time.time;
         LoadCharacters();
         Debug.Log(currentHP);
-        
+
     }
 
-    
+
     private void LoadCharacters()
     {
         //esto deberia ir dentro del gamemanager supongo
@@ -59,7 +59,7 @@ public class AvatarController : MonoBehaviour
 
     private void ChangeStats(int currentCharacter)
     {
-        currentHP = maxHP = characters[currentCharacter].Hp* characters[currentCharacter].Level;
+        currentHP = maxHP = characters[currentCharacter].Hp * characters[currentCharacter].Level;
     }
 
     private void ChangeCharacter(int index)
@@ -70,14 +70,17 @@ public class AvatarController : MonoBehaviour
         // Iterar sobre los objetos secundarios
         foreach (GameObject childObject in equipmentList)
         {
-            // Hacer algo con cada objeto secundario
-            if (names[index].Equals(childObject.tag))
+            if (childObject.transform.IsChildOf(gameObject.transform))
             {
-                childObject.SetActive(true);
-            }
-            else if (names.Contains(childObject.tag))
-            {
-                childObject.SetActive(false);
+                // Hacer algo con cada objeto secundario
+                if (names[index].Equals(childObject.tag))
+                {
+                    childObject.SetActive(true);
+                }
+                else if (names.Contains(childObject.tag))
+                {
+                    childObject.SetActive(false);
+                }
             }
         }
     }
@@ -87,14 +90,14 @@ public class AvatarController : MonoBehaviour
         if (isAlive)
         {
 
-        if (m_Root.style.display == DisplayStyle.None || !isAttacking)
-        {
-            Attack();
-            Run();
-            DashPattern();
-            ChangeSetPattern();
-        }
-        Inventory();
+            if (m_Root.style.display == DisplayStyle.None || !isAttacking)
+            {
+                Attack();
+                Run();
+                DashPattern();
+                ChangeSetPattern();
+            }
+            Inventory();
         }
 
     }
@@ -154,7 +157,7 @@ public class AvatarController : MonoBehaviour
                     foreach (var item in equipmentList)
                     {
 
-                        if (item.name == slotItem.Icon.name)
+                        if (item.name == slotItem.Icon.name && item.transform.IsChildOf(gameObject.transform))
                         {
 
                             item.SetActive(!item.activeSelf);
@@ -177,6 +180,7 @@ public class AvatarController : MonoBehaviour
                                         break;
                                 }
                             }
+
                         }
                     }
 
@@ -195,7 +199,7 @@ public class AvatarController : MonoBehaviour
                         foreach (var item in accesoryList)
                         {
 
-                            if (item.name == slotItem.Icon.name)
+                            if (item.name == slotItem.Icon.name && item.transform.IsChildOf(gameObject.transform))
                             {
 
                                 item.SetActive(!item.activeSelf);
@@ -324,16 +328,16 @@ public class AvatarController : MonoBehaviour
             currentHP -= Math.Max(damage - characters[currentCharacter].Def, 1);
 
         }
-        
+
         if (currentHP <= 0)
         {
             StartCoroutine(Death());
         }
         else
         {
-            
+
             yield return new WaitForSeconds(0.5f);
-            
+
 
 
         }
@@ -344,11 +348,11 @@ public class AvatarController : MonoBehaviour
 
     private IEnumerator Death()
     {
-        
+
         isAlive = false;
-        GameObject.Find("KayKit Animated Character").GetComponent<Rotation>().enabled= false;
+        GameObject.Find("KayKit Animated Character").GetComponent<Rotation>().enabled = false;
         animator.SetTrigger("Death");
         yield return 1;
-        
+
     }
 }
