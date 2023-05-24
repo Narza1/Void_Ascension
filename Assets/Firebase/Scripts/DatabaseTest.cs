@@ -9,9 +9,9 @@ using UnityEngine.UI;
 
 public class DatabaseTest : MonoBehaviour
 {
-    public InputField Name;
     private string userID;
     DatabaseReference dbReference;
+    public static int floor = 12;
     void Start()
     {
         userID = SystemInfo.deviceUniqueIdentifier;
@@ -29,7 +29,7 @@ public class DatabaseTest : MonoBehaviour
     public CharacterData GetRandomCharacterInfo()
     {
         CharacterData characterData = null;
-        StartCoroutine(GetRandomCharacterByFloor(12, (CharacterData character) =>
+        StartCoroutine(GetRandomCharacterByFloor(floor, (CharacterData character) =>
         {
             
             if (character != null)
@@ -73,28 +73,6 @@ public class DatabaseTest : MonoBehaviour
 
     
 
-    //public void SaveCharacterData(int characterType, int level, int floor, int money, string weaponGUID, string accessoryGUID, string consumableGUID, DropItem drop)
-    //{
-    //    CharacterData characterData = new CharacterData();
-    //    characterData.CharacterType = characterType;
-    //    characterData.Lv = level;
-    //    characterData.Floor = floor;
-    //    characterData.Money = money;
-    //    characterData.WeaponGUID = weaponGUID;
-    //    characterData.AccessoryGUID = accessoryGUID;
-    //    characterData.ConsumableGUID = consumableGUID;
-    //    characterData.Drop = drop;
-
-    //    // Convertir el objeto DropItem a formato JSON
-    //    string dropJson = JsonUtility.ToJson(drop);
-
-    //    // Agregar el JSON del objeto DropItem a CharacterData
-    //    characterData.dropJson = dropJson;
-
-    //    string json = JsonUtility.ToJson(characterData);
-    //    dbReference.Child("characters").Child(userID).SetRawJsonValueAsync(json);
-    //}
-
     public IEnumerator GetRandomCharacterByFloor(int targetFloor, Action<CharacterData> onCallBack)
     {
         var charactersRef = dbReference.Child("characters");
@@ -131,25 +109,4 @@ public class DatabaseTest : MonoBehaviour
         Debug.Log("No character data found with the specified floor.");
     }
 
-
-
-    //public IEnumerator GetName(Action<string> onCallBack)
-    //{
-    //    var userNameData = dbReference.Child("users").Child(userID).Child("name").GetValueAsync();
-    //    yield return new WaitUntil(predicate: () => userNameData.IsCompleted);
-    //    if (userNameData != null)
-    //    {
-    //        DataSnapshot snapshot = userNameData.Result;
-    //        onCallBack.Invoke(snapshot.Value.ToString());
-    //    }
-    //}
-
-    //public void getUserInfo()
-    //{
-    //    StartCoroutine(GetName((string name) =>
-    //    {
-    //    NameText.text = name;
-            
-    //    }));
-    //}
 }
