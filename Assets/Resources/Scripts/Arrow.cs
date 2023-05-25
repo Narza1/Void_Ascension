@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Arrow : MonoBehaviour
@@ -13,14 +10,14 @@ public class Arrow : MonoBehaviour
     void Start()
     {
         damage= 10;
-        Destroy(this.gameObject, 30);
+        Destroy(gameObject, 30);
         rb= GetComponent<Rigidbody2D>();
         // Get the rotation of the object around the z-axis
         float rotationZ = transform.rotation.eulerAngles.z;
 
         // Create a vector that points in the direction of the object's rotation
         
-        if (this.gameObject.tag == "Dagger")
+        if (gameObject.tag == "Dagger")
         {
             rotationZ += 90;
             transform.position = new Vector3(transform.position.x, transform.position.y, 0.1f);

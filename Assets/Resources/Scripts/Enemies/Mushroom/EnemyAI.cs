@@ -29,17 +29,7 @@ public class EnemyAI : MonoBehaviour
     }
     private void Update()
     {
-        Vector3 direction = player.transform.position - transform.position;
-
-        // Normalizar la dirección para obtener un vector de dirección unitario
-        Vector3 normalizedDirection = new Vector3(direction.x, direction.y, 0);
-        normalizedDirection.Normalize();
-
-        // Multiplicar el vector de dirección por el valor de offset deseado
-        Vector2 newOffset = normalizedDirection * offset;
-
-        // Asignar el nuevo offset al CapsuleCollider
-        cd.offset = newOffset;
+       
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
 
         //Debug.Log(distanceToPlayer);
@@ -50,6 +40,17 @@ public class EnemyAI : MonoBehaviour
 
             animator.SetBool("isMoving", false);
             AttackPlayer();
+            Vector3 direction = player.transform.position - transform.position;
+
+            // Normalizar la dirección para obtener un vector de dirección unitario
+            Vector3 normalizedDirection = new Vector3(direction.x, direction.y, 0);
+            normalizedDirection.Normalize();
+
+            // Multiplicar el vector de dirección por el valor de offset deseado
+            Vector2 newOffset = normalizedDirection * offset;
+
+            // Asignar el nuevo offset al CapsuleCollider
+            cd.offset = newOffset;
         }
         else
         {

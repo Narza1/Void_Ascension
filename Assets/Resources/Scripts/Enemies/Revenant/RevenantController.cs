@@ -1,11 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data.SqlTypes;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
-using UnityEngine.UIElements;
+using Random = UnityEngine.Random;
 
 public class RevenantController : MonoBehaviour
 {
@@ -17,8 +15,9 @@ public class RevenantController : MonoBehaviour
     private Character character;
     public CharacterData revenantData;
     private readonly string[] names = { "Warrior", "Mage", "Minion", "Archer" };
-    private float maxHP, currentHP;
-    private bool damaged = false, isAlive = true, ready;
+    private float maxHP, currentHP,speed;
+    private bool damaged, isAlive = true, ready, inRange;
+    private GameObject player;
 
     public void StartChar(CharacterData revenantData)
     {
@@ -29,6 +28,8 @@ public class RevenantController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         startTime = Time.time;
         LoadCharacter();
+        player = GameObject.Find("Player");
+        ready = true;
         
 
     }
@@ -59,6 +60,7 @@ public class RevenantController : MonoBehaviour
         }
         ChangeCharacter(revenantData.characterType);
         currentHP = maxHP = character.Hp * revenantData.lv;
+        speed = character.Speed;
     }
 
     private void ChangeCharacter(int index)
@@ -83,15 +85,32 @@ public class RevenantController : MonoBehaviour
     {
         if (ready)
         {
+            float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
 
             if (!isAttacking)
             {
+                if(distanceToPlayer > 1) { 
                 Attack();
+                MoveToPlayer();
+                }
                 //Run();
                 DashPattern();
             }
         }
 
+    }
+
+    private void MoveToPlayer()
+    {
+        Vector3 playerDirection = player.transform.position - transform.position;
+        playerDirection.z = 0f;
+        playerDirection.Normalize();
+
+        // Calcular la velocidad de movimiento
+        Vector3 desiredVelocity = playerDirection * speed;
+
+        // Aplicar la velocidad usando un Rigidbody
+        rb.velocity = desiredVelocity;
     }
 
     public void SetEquip(string guid)
@@ -218,22 +237,33 @@ public class RevenantController : MonoBehaviour
 
     private void Attack()
     {
-        if (true)
+        int value = 0;
+        if (inRange)
+        {
+            value = Random.Range(0, 100);
+
+        }
+        else
+        {
+            value = Random.Range(70, 100);
+
+        }
+        if (value < 50)
         {
             animator.SetInteger("attack", 1);
         }
 
-        if (true)
+        if (value >= 50 && value <=90)
         {
             animator.SetInteger("attack", 2);
 
         }
 
-        if (true)
+        if (value > 90)
         {
             animator.SetInteger("attack", 0);
         }
-
+        
 
     }
 

@@ -60,6 +60,9 @@ public class AttackAnimation : StateMachineBehaviour
     {
         if (throwItem && stateInfo.normalizedTime > 0.5f) 
         {
+
+
+            ///Aqui esta el fucking problema
             throwItem = false;
             GameObject startingPoint = GameObject.Find("point");
             //GameObject prefab = Resources.Load<GameObject>("Prefabs/FireBall");
