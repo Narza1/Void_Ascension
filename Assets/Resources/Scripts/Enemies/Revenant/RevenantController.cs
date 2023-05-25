@@ -19,6 +19,7 @@ public class RevenantController : MonoBehaviour
     private bool damaged, isAlive = true, ready, inRange;
     private GameObject player;
 
+
     public void StartChar(CharacterData revenantData)
     {
         this.revenantData= revenantData;
@@ -89,7 +90,7 @@ public class RevenantController : MonoBehaviour
 
             if (!isAttacking)
             {
-                if(distanceToPlayer > 1) { 
+                if(distanceToPlayer > 2) { 
                 Attack();
                 MoveToPlayer();
                 }

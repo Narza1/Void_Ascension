@@ -12,7 +12,7 @@ public class AvatarController : MonoBehaviour
     private Rigidbody2D rb;
     public float speed = 3;
     public static bool set1 = true, isAttacking;
-    private InventoryUIController inventory;
+    public InventoryUIController inventory;
     private VisualElement m_Root;
     private List<Character> characters = new List<Character>();
     private int currentCharacter;

@@ -1,21 +1,53 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.RuleTile.TilingRuleOutput;
+using static Unity.Burst.Intrinsics.X86;
 
 public class AttackAnimation : StateMachineBehaviour
 {
     private bool throwItem = false;
+    private GameObject revenant,startingPoint;
+    private AvatarController avatar;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
+    public static Transform FindDeepChild(Transform parent, string name)
+    {
+        Transform result = parent.Find(name);
+        if (result != null)
+            return result;
+
+        foreach (Transform child in parent)
+        {
+            result = FindDeepChild(child, name);
+            if (result != null)
+                return result;
+        }
+
+        return null;
+    }
+
+
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         AvatarController.isAttacking= true;
-        
+
+
+       // startingPoint = revenant.transform.Find("point").gameObject;
+        Debug.Log("startingPoint");
         switch (animator.GetInteger("attack"))
         {
             case 0:
+                var aux = animator.gameObject.transform.parent.gameObject;
 
+
+                if (aux.name == "Player")
+                {
+                    avatar = aux.GetComponent<AvatarController>();
+                    Debug.Log("111111111111111111");
+                    AvatarController.isAttacking = true;
+
+                }
+
+                revenant = aux;
+                startingPoint = FindDeepChild(revenant.transform, "point")?.gameObject;
                 throwItem = true;
                 break;
 
@@ -58,17 +90,27 @@ public class AttackAnimation : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        GameObject prefab;
         if (throwItem && stateInfo.normalizedTime > 0.5f) 
         {
 
 
-            ///Aqui esta el fucking problema
-            throwItem = false;
-            GameObject startingPoint = GameObject.Find("point");
-            //GameObject prefab = Resources.Load<GameObject>("Prefabs/FireBall");
-            GameObject prefab = Resources.Load<GameObject>("Prefabs/dagger_common");
-            Shoot(startingPoint, prefab);
             
+            throwItem = false;
+            if (avatar != null){
+                var aux = AvatarController.set1 ? 2 : 5;
+                prefab = Resources.Load<GameObject>($"Prefabs/{avatar.inventory.SetSlots[aux].Icon.name}");
+            }
+            else
+            {
+                prefab = Resources.Load<GameObject>($"Prefabs/{GameController.GetItemByGuid(revenant.GetComponent<RevenantController>().revenantData.accessoryGUID).Icon.name}");
+
+            }
+            if(prefab!= null) { 
+            Shoot(startingPoint, prefab);
+            }
+            //GameObject prefab = Resources.Load<GameObject>("Prefabs/FireBall");
+
         }
 
     }
