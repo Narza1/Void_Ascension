@@ -38,7 +38,6 @@ public class AvatarController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         startTime = Time.time;
         LoadCharacters();
-        Debug.Log(currentHP);
 
     }
 

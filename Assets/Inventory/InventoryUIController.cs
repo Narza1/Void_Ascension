@@ -96,7 +96,6 @@ public class InventoryUIController : MonoBehaviour
                         if (newItem.Name.Contains("Arrow") || newItem.objectType == ObjectType.Consumable)
                         {
                             newItem.quantity++;
-                            Debug.Log(newItem.quantity+" ammo");
                         }
                         emptySlot.HoldItem(newItem);
 

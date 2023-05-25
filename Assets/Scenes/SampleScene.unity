@@ -2902,7 +2902,7 @@ GameObject:
   - component: {fileID: 1104896867}
   m_Layer: 0
   m_Name: Revenant
-  m_TagString: Monster
+  m_TagString: Revenant
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2952,7 +2952,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1104896862}
   m_LocalRotation: {x: -0.3995492, y: 0, z: 0, w: 0.91671175}
-  m_LocalPosition: {x: 39.07, y: 26.54, z: 0}
+  m_LocalPosition: {x: 39.07, y: 24.51, z: 0}
   m_LocalScale: {x: 0.73, y: 0.73, z: 0.73}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -25249,7 +25249,7 @@ GameObject:
   - component: {fileID: 3734365308359083182}
   m_Layer: 0
   m_Name: character_skeleton_minion_armRight_broken
-  m_TagString: Untagged
+  m_TagString: Minion
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -25512,7 +25512,7 @@ GameObject:
   - component: {fileID: 4260822424641726857}
   m_Layer: 0
   m_Name: character_skeleton_archer_head_broken
-  m_TagString: Untagged
+  m_TagString: Archer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -25642,7 +25642,7 @@ GameObject:
   - component: {fileID: 1331568635854963212}
   m_Layer: 0
   m_Name: character_skeleton_warrior_broken
-  m_TagString: Untagged
+  m_TagString: Warrior
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26947,7 +26947,7 @@ GameObject:
   - component: {fileID: 6181215086189117787}
   m_Layer: 0
   m_Name: character_skeleton_archer_armRight_broken
-  m_TagString: Untagged
+  m_TagString: Archer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27053,7 +27053,7 @@ GameObject:
   - component: {fileID: 276615515971243955}
   m_Layer: 0
   m_Name: character_skeleton_warrior_armRight_broken
-  m_TagString: Untagged
+  m_TagString: Warrior
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27461,7 +27461,7 @@ GameObject:
   - component: {fileID: 2985740190876228754}
   m_Layer: 0
   m_Name: character_skeleton_minion_broken
-  m_TagString: Untagged
+  m_TagString: Minion
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27688,7 +27688,7 @@ GameObject:
   - component: {fileID: 6413707666347581369}
   m_Layer: 0
   m_Name: character_skeleton_minion_armLeft_broken
-  m_TagString: Untagged
+  m_TagString: Minion
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28403,7 +28403,7 @@ GameObject:
   - component: {fileID: 5805191339541048290}
   m_Layer: 0
   m_Name: character_skeleton_mage_armLeft_broken
-  m_TagString: Untagged
+  m_TagString: Mage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28987,7 +28987,7 @@ GameObject:
   - component: {fileID: 1416930902333231789}
   m_Layer: 0
   m_Name: character_skeleton_minion_head_broken
-  m_TagString: Untagged
+  m_TagString: Minion
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29168,7 +29168,7 @@ GameObject:
   - component: {fileID: 5510484752911968936}
   m_Layer: 0
   m_Name: character_skeleton_mage_broken
-  m_TagString: Untagged
+  m_TagString: Mage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29320,7 +29320,7 @@ GameObject:
   - component: {fileID: 1690519842788239223}
   m_Layer: 0
   m_Name: character_skeleton_archer_armLeft_broken
-  m_TagString: Untagged
+  m_TagString: Archer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29752,7 +29752,7 @@ GameObject:
   - component: {fileID: 8962586017869910858}
   m_Layer: 0
   m_Name: character_skeleton_archer_broken
-  m_TagString: Untagged
+  m_TagString: Archer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29804,7 +29804,7 @@ GameObject:
   - component: {fileID: 8328134449501201047}
   m_Layer: 0
   m_Name: character_skeleton_mage_head_broken
-  m_TagString: Untagged
+  m_TagString: Mage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29874,7 +29874,7 @@ GameObject:
   - component: {fileID: 5215867850242457354}
   m_Layer: 0
   m_Name: character_skeleton_mage_armRight_broken
-  m_TagString: Untagged
+  m_TagString: Mage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30068,7 +30068,7 @@ GameObject:
   - component: {fileID: 2914309789219957907}
   m_Layer: 0
   m_Name: character_skeleton_warrior_armLeft_broken
-  m_TagString: Untagged
+  m_TagString: Warrior
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30415,7 +30415,7 @@ GameObject:
   - component: {fileID: 6075235855908394309}
   m_Layer: 0
   m_Name: character_skeleton_warrior_head_broken
-  m_TagString: Untagged
+  m_TagString: Warrior
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

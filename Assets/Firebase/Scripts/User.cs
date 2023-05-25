@@ -20,10 +20,16 @@ public class CharacterData
     public int characterType, lv, floor, money;
     public string weaponGUID, accessoryGUID, consumableGUID;
     public DropItem drop;
-    
+    private CharacterData character;
+
     public CharacterData()
     {
 
+    }
+
+    public CharacterData(CharacterData character)
+    {
+        this.character = character;
     }
 
     public CharacterData(int characterType, int lv, int floor, int money, string weaponGUID, string accessoryGUID, string consumableGUID, DropItem drop)

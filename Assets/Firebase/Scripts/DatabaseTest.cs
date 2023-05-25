@@ -16,6 +16,8 @@ public class DatabaseTest : MonoBehaviour
     {
         userID = SystemInfo.deviceUniqueIdentifier;
         dbReference = FirebaseDatabase.DefaultInstance.RootReference;
+        Fuck2();
+        
     }
 
 
@@ -25,6 +27,14 @@ public class DatabaseTest : MonoBehaviour
         SaveCharacterData(1, 48, 12, 4500, "wwww", "aaaa", "ccccc");
        
 
+    } public void Fuck2()
+    {
+
+        StartCoroutine(GetRandomCharacterByFloor(floor, (CharacterData character) =>
+        {
+            GameObject.Find("Revenant").GetComponent<RevenantController>().StartChar(new CharacterData(character.characterType, character.lv, character.floor, character.money, character.weaponGUID, character.accessoryGUID, character.consumableGUID, character.drop));
+
+        }));
     }
     public CharacterData GetRandomCharacterInfo()
     {
@@ -100,7 +110,6 @@ public class DatabaseTest : MonoBehaviour
                 int randomIndex = UnityEngine.Random.Range(0, matchingCharacters.Count);
                 string json = matchingCharacters[randomIndex].GetRawJsonValue();
                 CharacterData characterData = JsonUtility.FromJson<CharacterData>(json);
-                Debug.Log(characterData);
                 onCallBack.Invoke(characterData);
                 yield break;
             }

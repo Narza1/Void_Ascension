@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
@@ -17,22 +18,18 @@ public class RevenantController : MonoBehaviour
     public CharacterData revenantData;
     private readonly string[] names = { "Warrior", "Mage", "Minion", "Archer" };
     private float maxHP, currentHP;
+    private bool damaged = false, isAlive = true, ready;
 
-    private bool damaged = false, isAlive = true;
-
-    void Start()
+    public void StartChar(CharacterData revenantData)
     {
-
-        revenantData = GameObject.Find("GameManager").GetComponent<DatabaseTest>().GetRandomCharacterInfo();
-        // Obtiene una referencia al objeto secundario
+        this.revenantData= revenantData;
+        DatabaseTest databaseTest = GameObject.Find("GameManager").GetComponent<DatabaseTest>();
         GameObject childObject = transform.Find("KayKit Animated Character").gameObject;
-
-        // Obtiene una referencia al componente Animator del objeto secundario
         animator = childObject.GetComponentInChildren<Animator>();
-
         rb = GetComponent<Rigidbody2D>();
         startTime = Time.time;
         LoadCharacter();
+        
 
     }
 
@@ -68,7 +65,6 @@ public class RevenantController : MonoBehaviour
     {
         List<GameObject> equipmentList = Resources.FindObjectsOfTypeAll<GameObject>().ToList();
 
-
         // Iterar sobre los objetos secundarios
         foreach (GameObject childObject in equipmentList)
         {
@@ -85,24 +81,21 @@ public class RevenantController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isAlive)
+        if (ready)
         {
 
             if (!isAttacking)
             {
                 Attack();
-                Run();
+                //Run();
                 DashPattern();
             }
         }
 
     }
 
-
-    
-    public void SetEquip(InventorySlot inventorySlot)
+    public void SetEquip(string guid)
     {
-        string guid = inventorySlot.ItemGuid;
         if (!guid.Equals(""))
         {
             ItemDetails slotItem = GameController.GetItemByGuid(guid);
@@ -142,10 +135,6 @@ public class RevenantController : MonoBehaviour
                         }
                     }
 
-
-
-
-
                     break;
 
                 case ObjectType.Accesory:
@@ -167,9 +156,8 @@ public class RevenantController : MonoBehaviour
                     }
                     else
                     {
-                        int ammo = inventorySlot.quantity;
-                        Debug.Log(ammo);
-                        animator.SetInteger("ammo", ammo);
+                        
+                        animator.SetInteger("ammo", 99999999);
                     }
                     break;
 
@@ -213,20 +201,20 @@ public class RevenantController : MonoBehaviour
     }
 
 
-    private void Run()
-    {
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            //speed = 6;
-            animator.SetBool("running", true);
-        }
-        if (Input.GetKeyUp(KeyCode.LeftShift))
-        {
-            //speed = 3;
-            animator.SetBool("running", false);
+    //private void Run()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.LeftShift))
+    //    {
+    //        //speed = 6;
+    //        animator.SetBool("running", true);
+    //    }
+    //    if (Input.GetKeyUp(KeyCode.LeftShift))
+    //    {
+    //        //speed = 3;
+    //        animator.SetBool("running", false);
 
-        }
-    }
+    //    }
+    //}
 
     private void Attack()
     {
@@ -253,7 +241,7 @@ public class RevenantController : MonoBehaviour
     {
         if (!damaged && isAlive)
         {
-            Debug.Log("fff");
+            
             StartCoroutine(TookDamage(damage, isMagic));
         }
     }
