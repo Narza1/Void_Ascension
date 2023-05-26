@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8097806605281826079}
   - component: {fileID: 8097806605281826078}
   m_Layer: 0
-  m_Name: dagger_common
+  m_Name: throwing_knife
   m_TagString: Dagger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

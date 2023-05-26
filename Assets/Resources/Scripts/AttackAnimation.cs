@@ -99,7 +99,13 @@ public class AttackAnimation : StateMachineBehaviour
             throwItem = false;
             if (avatar != null){
                 var aux = AvatarController.set1 ? 2 : 5;
-                prefab = Resources.Load<GameObject>($"Prefabs/{avatar.inventory.SetSlots[aux].Icon.name}");
+
+                
+                
+                //Debug.Log(GameController.GetItemByGuid(GameObject.Find("UserInterface").GetComponent<InventoryUIController>().SetSlots[2].ItemGuid).Icon.name);
+                
+                //prefab = Resources.Load<GameObject>($"Prefabs/{avatar.inventory.SetSlots[aux].ItemGuid}");
+                prefab = Resources.Load<GameObject>($"Prefabs/{GameController.GetItemByGuid(GameObject.Find("UserInterface").GetComponent<InventoryUIController>().SetSlots[2].ItemGuid).Icon.name}");
             }
             else
             {
