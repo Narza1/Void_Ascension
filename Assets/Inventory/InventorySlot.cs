@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+[Serializable]
 public class InventorySlot : VisualElement
 {
     public Image Icon;
@@ -45,6 +47,19 @@ public class InventorySlot : VisualElement
 
         //Start the drag
         InventoryUIController.StartDrag(evt.position, this);
+    }
+
+    public void UseItem()
+    {
+        if (quantity != 0)
+        {
+            quantity--;
+            if (quantity == 0)
+            {
+                Icon.image = null;
+                ItemGuid = "";
+            }
+        }
     }
 }
 

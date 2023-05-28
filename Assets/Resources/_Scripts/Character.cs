@@ -11,7 +11,7 @@ public class Character
 
     private float speed = 3;
     private int level = 1;
-    private bool isAlive;
+    public bool isDead;
     private float hp,stamina,exp,atk,magAtk,magDef,def,maxLevel;
 
     public float Hp { get => hp; set => hp = value; }

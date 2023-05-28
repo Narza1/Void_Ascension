@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -30,6 +31,8 @@ public class RevenantController : MonoBehaviour
         startTime = Time.time;
         LoadCharacter();
         player = GameObject.Find("Player");
+        SetEquip(revenantData.weaponGUID);
+        SetEquip(revenantData.accessoryGUID);
         ready = true;
         
 
@@ -90,12 +93,16 @@ public class RevenantController : MonoBehaviour
 
             if (!isAttacking)
             {
-                if(distanceToPlayer > 2) { 
+                if(distanceToPlayer < 20) { 
                 Attack();
-                MoveToPlayer();
+                    if(distanceToPlayer > 2)
+                    {
+                        MoveToPlayer();
+
+                    }
                 }
                 //Run();
-                DashPattern();
+                //DashPattern();
             }
         }
 
@@ -138,8 +145,6 @@ public class RevenantController : MonoBehaviour
                                 {
                                     case EquipmentType.Sword:
                                         animator.SetInteger("weaponType", 1);
-
-
                                         break;
 
                                     case EquipmentType.Staff:
@@ -185,10 +190,11 @@ public class RevenantController : MonoBehaviour
 
                     if (slotItem.GetType() == typeof(Consumable))
                     {
-
+                        animator.SetBool("consumable", true);
                     }
                     else
                     {
+                        animator.SetBool("consumable", false);
 
                     }
                     break;

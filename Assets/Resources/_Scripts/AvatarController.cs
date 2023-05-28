@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class AvatarController : MonoBehaviour
@@ -14,8 +15,10 @@ public class AvatarController : MonoBehaviour
     public static bool set1 = true, isAttacking;
     public InventoryUIController inventory;
     private VisualElement m_Root;
+    private GameManager gameManager;
+    public PlayerData playerData;
     private List<Character> characters = new List<Character>();
-    private int currentCharacter;
+    private int currentCharacter=-1;
     private readonly string[] names = { "Warrior", "Mage", "Minion", "Archer" };
     private float maxHP, currentHP;
 
@@ -23,7 +26,8 @@ public class AvatarController : MonoBehaviour
 
     void Start()
     {
-
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        playerData = gameManager.playerData;
         GameObject ui = GameObject.Find("UserInterface");
         m_Root = ui.GetComponent<UIDocument>().rootVisualElement.Q("Container");
         m_Root.style.display = DisplayStyle.None;
@@ -37,28 +41,32 @@ public class AvatarController : MonoBehaviour
 
         rb = GetComponent<Rigidbody2D>();
         startTime = Time.time;
-        LoadCharacters();
+        if (gameManager.SaveFileExists())
+        {
+            inventory.SetSlots = playerData.SetItems;
+            inventory.SetSlots = playerData.InventoryItems;
+        }
+        characters = playerData.characters;
 
+        LoadCharacters();
     }
 
 
-    private void LoadCharacters()
+    public void LoadCharacters()
     {
-        //esto deberia ir dentro del gamemanager supongo
-        //aqui iria si existe un fichero que lo cargue y si no crearlo de zero
-        characters.Clear();
-        characters.Add(new MinionCharacter());
-        characters.Add(new MageCharacter());
-        characters.Add(new WarriorCharacter());
-        characters.Add(new ArcherCharacter());
-        currentCharacter = 2;//aqui en lugar de cero sera el valor que leamos del archvo
-        ChangeCharacter(currentCharacter);
-        ChangeStats(currentCharacter);
+
+        currentCharacter = playerData.currentCharacter;//aqui en lugar de cero sera el valor que leamos del archvo
+        if (currentCharacter != -1)
+        {
+            ChangeCharacter(currentCharacter);
+            //ChangeStats(currentCharacter);
+        }
     }
 
     private void ChangeStats(int currentCharacter)
     {
         currentHP = maxHP = characters[currentCharacter].Hp * characters[currentCharacter].Level;
+        speed = characters[currentCharacter].Speed;
     }
 
     private void ChangeCharacter(int index)
@@ -218,10 +226,11 @@ public class AvatarController : MonoBehaviour
 
                     if (slotItem.GetType() == typeof(Consumable))
                     {
-
+                        animator.SetBool("consumable", true);
                     }
                     else
                     {
+                        animator.SetBool("consumable", false);
 
                     }
                     break;
@@ -347,11 +356,17 @@ public class AvatarController : MonoBehaviour
 
     private IEnumerator Death()
     {
+        GameObject gameManager = GameObject.Find("GameManager");
+        var gameManagerScript = gameManager.GetComponent<GameManager>();
+
+        characters[currentCharacter].isDead = true;
+        gameManagerScript.Death();
 
         isAlive = false;
-        GameObject.Find("KayKit Animated Character").GetComponent<Rotation>().enabled = false;
+        transform.Find("KayKit Animated Character").GetComponent<Rotation>().enabled = false;
         animator.SetTrigger("Death");
-        yield return 1;
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene("NewGameScene");
 
     }
 }

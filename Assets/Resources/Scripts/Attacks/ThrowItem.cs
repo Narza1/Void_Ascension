@@ -1,11 +1,12 @@
-using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using static Unity.Burst.Intrinsics.X86;
 
-public class AttackAnimation : StateMachineBehaviour
+public class ThrowItem : StateMachineBehaviour
 {
+
     private bool throwItem = false;
-    private GameObject revenant,startingPoint;
+    private GameObject revenant, startingPoint;
     private AvatarController avatar;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     public static Transform FindDeepChild(Transform parent, string name)
@@ -24,47 +25,29 @@ public class AttackAnimation : StateMachineBehaviour
         return null;
     }
 
-
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        AvatarController.isAttacking= true;
+        AvatarController.isAttacking = true;
+        // Start is called before the first frame update
+        // startingPoint = revenant.transform.Find("point").gameObject;
+
+        var aux = animator.gameObject.transform.parent.gameObject;
 
 
-       // startingPoint = revenant.transform.Find("point").gameObject;
-        Debug.Log("startingPoint");
-        switch (animator.GetInteger("attack"))
+        if (aux.name == "Player")
         {
-            case 0:
-                var aux = animator.gameObject.transform.parent.gameObject;
+            avatar = aux.GetComponent<AvatarController>();
+            AvatarController.isAttacking = true;
 
+        }
 
-                if (aux.name == "Player")
-                {
-                    avatar = aux.GetComponent<AvatarController>();
-                    Debug.Log("111111111111111111");
-                    AvatarController.isAttacking = true;
+        revenant = aux;
+        startingPoint = FindDeepChild(revenant.transform, "point")?.gameObject;
+        throwItem = true;
+        animator.SetInteger("attack", -1);
 
-                }
-
-                revenant = aux;
-                startingPoint = FindDeepChild(revenant.transform, "point")?.gameObject;
-                throwItem = true;
-                break;
-
-            case 1:
-
-                break;
-
-            case 2:
-                break;
-
-            
-                
 
     }
-    animator.SetInteger("attack", -1);
-    }
-
     private GameObject Shoot(GameObject hand, GameObject prefab)
     {
         // Obtener la posición del ratón en la pantalla
@@ -87,56 +70,51 @@ public class AttackAnimation : StateMachineBehaviour
         return fle;
     }
 
-    // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        GameObject prefab;
-        if (throwItem && stateInfo.normalizedTime > 0.5f) 
+
+        if (throwItem && stateInfo.normalizedTime > 0.5f)
         {
 
 
-            
-            throwItem = false;
-            if (avatar != null){
-                var aux = AvatarController.set1 ? 2 : 5;
 
-                
-                
+            throwItem = false;
+            if (avatar != null)
+            {
+                var aux = AvatarController.set1 ? 2 : 5;
                 //Debug.Log(GameController.GetItemByGuid(GameObject.Find("UserInterface").GetComponent<InventoryUIController>().SetSlots[2].ItemGuid).Icon.name);
-                
+
                 //prefab = Resources.Load<GameObject>($"Prefabs/{avatar.inventory.SetSlots[aux].ItemGuid}");
-                prefab = Resources.Load<GameObject>($"Prefabs/{GameController.GetItemByGuid(GameObject.Find("UserInterface").GetComponent<InventoryUIController>().SetSlots[2].ItemGuid).Icon.name}");
+                var a = GameObject.Find("UserInterface").GetComponent<InventoryUIController>().SetSlots[2];
+                if (a.ItemGuid != "")
+                {
+                    Shoot(startingPoint, Resources.Load<GameObject>($"Prefabs/{GameController.GetItemByGuid(a.ItemGuid).Icon.name}"));
+                    a.UseItem();
+
+
+                }
             }
             else
             {
-                prefab = Resources.Load<GameObject>($"Prefabs/{GameController.GetItemByGuid(revenant.GetComponent<RevenantController>().revenantData.accessoryGUID).Icon.name}");
+                var b = revenant.GetComponent<RevenantController>().revenantData.consumableGUID;
+                Debug.Log(b);
+                if (b != "")
+                {
+                    Shoot(startingPoint, Resources.Load<GameObject>($"Prefabs/{GameController.GetItemByGuid(b).Icon.name}"));
+
+
+                }
 
             }
-            if(prefab!= null) { 
-            Shoot(startingPoint, prefab);
-            }
+
+
             //GameObject prefab = Resources.Load<GameObject>("Prefabs/FireBall");
 
         }
-
     }
 
-    //OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         AvatarController.isAttacking = false;
     }
-
-    // OnStateMove is called right after Animator.OnAnimatorMove()
-    //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    // Implement code that processes and affects root motion
-    //}
-
-    // OnStateIK is called right after Animator.OnAnimatorIK()
-    //override public void OnStateIK(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    // Implement code that sets up animation IK (inverse kinematics)
-    //}
-
 }
