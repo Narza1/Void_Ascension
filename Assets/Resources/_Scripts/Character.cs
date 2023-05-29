@@ -40,6 +40,7 @@ public class Character
 
    
 }
+[Serializable]
 
 public class MinionCharacter : Character
 {
@@ -50,6 +51,7 @@ public class MinionCharacter : Character
     }
 }
 
+[Serializable]
 
 public class MageCharacter : Character
 {
@@ -62,6 +64,7 @@ public class MageCharacter : Character
     }
 }
 
+[Serializable]
 public class WarriorCharacter : Character
 {
     public WarriorCharacter()
@@ -71,6 +74,7 @@ public class WarriorCharacter : Character
         Speed = 2;
     }
 }
+[Serializable]
 
 public class ArcherCharacter : Character
 {

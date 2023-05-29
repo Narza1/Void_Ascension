@@ -17,8 +17,8 @@ public class AvatarController : MonoBehaviour
     private VisualElement m_Root;
     private GameManager gameManager;
     public PlayerData playerData;
-    private List<Character> characters = new List<Character>();
-    private int currentCharacter=-1;
+    public List<Character> characters = new List<Character>();
+    public int currentCharacter=-1;
     private readonly string[] names = { "Warrior", "Mage", "Minion", "Archer" };
     private float maxHP, currentHP;
 
@@ -27,6 +27,7 @@ public class AvatarController : MonoBehaviour
     void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        gameManager.LoadFile();
         playerData = gameManager.playerData;
         GameObject ui = GameObject.Find("UserInterface");
         m_Root = ui.GetComponent<UIDocument>().rootVisualElement.Q("Container");
@@ -41,11 +42,11 @@ public class AvatarController : MonoBehaviour
 
         rb = GetComponent<Rigidbody2D>();
         startTime = Time.time;
-        if (gameManager.SaveFileExists())
-        {
-            inventory.SetSlots = playerData.SetItems;
-            inventory.SetSlots = playerData.InventoryItems;
-        }
+        //if (gameManager.SaveFileExists())
+        //{
+        //    inventory.SetSlots = playerData.SetItems;
+        //    inventory.SetSlots = playerData.InventoryItems;
+        //}
         characters = playerData.characters;
 
         LoadCharacters();
@@ -137,8 +138,6 @@ public class AvatarController : MonoBehaviour
             for (int i = 0; i < 6; i++)
             {
                 SetEquip(inventory.SetSlots[i]);
-
-
             }
             startTime = Time.time;
             set1 = !set1;

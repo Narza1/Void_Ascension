@@ -126,7 +126,7 @@ public class RevenantController : MonoBehaviour
         if (!guid.Equals(""))
         {
             ItemDetails slotItem = GameController.GetItemByGuid(guid);
-
+            if(slotItem == null) { return; }
             switch (slotItem.objectType)
             {
                 case ObjectType.Equipment:

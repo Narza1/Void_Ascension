@@ -36,7 +36,7 @@ public class InventoryUIController : MonoBehaviour
         setContainer2 = m_Root.Query<VisualElement>("Set2");
 
 
-
+        if(GameObject.Find("GameManager").GetComponent<GameManager>() != null )
 
         for (int i = 0; i < 25; i++)
         {
@@ -70,13 +70,13 @@ public class InventoryUIController : MonoBehaviour
         m_GhostIcon.RegisterCallback<PointerMoveEvent>(OnPointerMove);
         m_GhostIcon.RegisterCallback<PointerUpEvent>(OnPointerUp);
     }
-    private void GameController_OnInventoryChanged(string[] itemGuid, InventoryChangeType change)
+    private void GameController_OnInventoryChanged(string[] itemGuid,int[] quantity, InventoryChangeType change)
     {
 
         //Loop through each item and if it has been picked up, add it to the next empty slot
-        foreach (string item in itemGuid)
+        for (int i = 0; i < itemGuid.Length; i++)
         {
-            ItemDetails newItem = GameController.GetItemByGuid(item);
+            ItemDetails newItem = GameController.GetItemByGuid(itemGuid[i]);
             if (change == InventoryChangeType.Pickup)
             {
 
@@ -84,7 +84,7 @@ public class InventoryUIController : MonoBehaviour
                 if ((newItem.Name.Contains("Arrow") || newItem.objectType == ObjectType.Consumable) && stack != null)
                 {
 
-                    stack.quantity++;
+                    stack.quantity += quantity[i];
 
                 }
                 else
@@ -95,7 +95,7 @@ public class InventoryUIController : MonoBehaviour
                     {
                         if (newItem.Name.Contains("Arrow") || newItem.objectType == ObjectType.Consumable)
                         {
-                            newItem.quantity++;
+                            newItem.quantity+= quantity[i];
                         }
                         emptySlot.HoldItem(newItem);
 

@@ -16,6 +16,7 @@ public class ItemDetails
     public int quantity;
     
 }
+
 public class EquipmentDetails: ItemDetails
 {
     public EquipmentType equipmentType;
@@ -23,6 +24,8 @@ public class EquipmentDetails: ItemDetails
     public int baseAttack;
 
 }
+
+
 public enum ObjectType
 {
     Equipment,
@@ -30,17 +33,21 @@ public enum ObjectType
     Consumable
 }
 
+
 public enum EquipmentType
 {
     Sword,
     Bow,
     Staff
 }
+
+
 public class Consumable : ItemDetails
 {
     public int recoveryValue;
 
 }
+
 
 public class Throwing : ItemDetails
 {
@@ -48,12 +55,13 @@ public class Throwing : ItemDetails
 
 }
 
+
 public enum InventoryChangeType
 {
     Pickup,
     Drop
 }
-public delegate void OnInventoryChangedDelegate(string[] itemGuid, InventoryChangeType change);
+public delegate void OnInventoryChangedDelegate(string[] itemGuid,int[] quantity, InventoryChangeType change);
 
 /// <summary>
 /// Generates and controls access to the Item Database and Inventory Data
@@ -65,22 +73,39 @@ public class GameController : MonoBehaviour
     private static Dictionary<string, ItemDetails> m_ItemDatabase = new Dictionary<string, ItemDetails>();
     private List<ItemDetails> m_PlayerInventory = new List<ItemDetails>();
     public static event OnInventoryChangedDelegate OnInventoryChanged = delegate { };
+    
 
 
     private void Awake()
     {
+        
+        try { 
         PopulateDatabase();
-    }
+    }catch(ArgumentException ae)
+        {
 
+        }
+}
     private void Start()
     {
-        //Add the ItemDatabase to the players inventory and let the UI know that some items have been picked up
+        if (!GameManager.SaveFileExists()) { 
         m_PlayerInventory.AddRange(m_ItemDatabase.Values);
+        int[] f = new int[m_PlayerInventory.Count];
+        for (int i = 0; f.Length > i; i++)
+            f[i] = 1;
+        OnInventoryChanged.Invoke(m_PlayerInventory.Select(x => x.GUID).ToArray(),f, InventoryChangeType.Pickup);
+        }
+        //Add the ItemDatabase to the players inventory and let the UI know that some items have been picked up
 
-      
-        OnInventoryChanged.Invoke(m_PlayerInventory.Select(x => x.GUID).ToArray(), InventoryChangeType.Pickup);
     }
+    public void RecoverInventory(string[] guids, int[] quantity)
+    {
+        //m_PlayerInventory.AddRange(m_ItemDatabase.Values);
 
+
+        OnInventoryChanged.Invoke(guids, quantity, InventoryChangeType.Pickup);
+        //OnInventoryChanged.Invoke(m_PlayerInventory.Select(x => x.GUID).ToArray(), InventoryChangeType.Pickup);
+    }
     /// <summary>
     /// Populate the database
     /// </summary>

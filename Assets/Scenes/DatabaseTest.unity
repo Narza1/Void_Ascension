@@ -218,7 +218,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
+        m_CallState: 1
 --- !u!114 &127646261
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -954,6 +954,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffd2fabd3396ec342beaa6fe3b2be6ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerData:
+    currentFloor: 0
+    maxFloor: 0
+    currentMoney: 0
+    totalMoney: 0
+    deaths: 0
+    currentCharacter: 0
+    InventoryItems: []
+    SetItems: []
+    characters:
+    - isDead: 0
+    - isDead: 0
+    - isDead: 0
+    - isDead: 0
 --- !u!1 &1008323074
 GameObject:
   m_ObjectHideFlags: 0

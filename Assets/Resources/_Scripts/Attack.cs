@@ -21,8 +21,10 @@ public class Attack : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (AvatarController.isAttacking)
+        if (AvatarController.isAttacking )//añadir alguna condicion mas rollo que el tag no sea revenant
         {
+
+            //idea de hacer return
             if (collider.gameObject.CompareTag("Monster"))
             {
                 collider.gameObject.GetComponent<EnemyStats>().TookDamae(10, false);
