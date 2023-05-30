@@ -12,10 +12,7 @@ public class InventoryUIController : MonoBehaviour
     private static VisualElement m_GhostIcon;
     private static bool m_IsDragging;
     private static InventorySlot m_OriginalSlot;
-    AvatarController play;
-
-
-
+    private AvatarController play;
     private VisualElement m_Root;
     private VisualElement m_SlotContainer, setContainer, setContainer2;
     public List<InventorySlot> SetSlots = new List<InventorySlot>();
@@ -26,7 +23,6 @@ public class InventoryUIController : MonoBehaviour
 
     private void Awake()
     {
-
         player = GameObject.Find("Player");
         play = player.GetComponent<AvatarController>();
         m_Root = GetComponent<UIDocument>().rootVisualElement;
@@ -41,29 +37,22 @@ public class InventoryUIController : MonoBehaviour
         for (int i = 0; i < 25; i++)
         {
             InventorySlot item = new InventorySlot();
-
             InventoryItems.Add(item);
-
             m_SlotContainer.Add(item);
-
         }
 
         for (int i = 0; i < 3; i++)
         {
             InventorySlot item = new InventorySlot();
-
             setContainer.Add(item);
             SetSlots.Add(item);
-
         }
 
         for (int i = 0; i < 3; i++)
         {
             InventorySlot item = new InventorySlot();
-
             setContainer2.Add(item);
             SetSlots.Add(item);
-
         }
         GameController.OnInventoryChanged += GameController_OnInventoryChanged;
 
@@ -79,13 +68,10 @@ public class InventoryUIController : MonoBehaviour
             ItemDetails newItem = GameController.GetItemByGuid(itemGuid[i]);
             if (change == InventoryChangeType.Pickup)
             {
-
                 var stack = InventoryItems.FirstOrDefault(x => x.ItemGuid.Equals(newItem));
                 if ((newItem.Name.Contains("Arrow") || newItem.objectType == ObjectType.Consumable) && stack != null)
                 {
-
                     stack.quantity += quantity[i];
-
                 }
                 else
                 {
@@ -98,9 +84,6 @@ public class InventoryUIController : MonoBehaviour
                             newItem.quantity+= quantity[i];
                         }
                         emptySlot.HoldItem(newItem);
-
-
-
                     }
                 }
             }
@@ -176,10 +159,8 @@ public class InventoryUIController : MonoBehaviour
                     SetItem(slots);  
                 }
                 else
-                {
-                    
-                    SetItem2(slots);
-                    
+                {                    
+                    SetItem2(slots);                    
                 }
 
                 if ((index >= 3 && !AvatarController.set1) || (index < 3 && AvatarController.set1))
@@ -187,17 +168,11 @@ public class InventoryUIController : MonoBehaviour
                     
                     play.SetEquip(m_OriginalSlot);
                 }
-                //por aqui va la cosa, esto es si arrastramos desde la casilla de equipo al inventario
-                //hay que comprobar si la casilla de origen esta vacia o contiene un objeto que se pueda equipar en la misma casilla
             }
             else
             {
                 SetItem(slots);
             }
-
-
-
-
         }
         //Didn't find any (dragged off the window)
         else
@@ -227,9 +202,7 @@ public class InventoryUIController : MonoBehaviour
                     case 3:
                         if (obj.Equals(ObjectType.Equipment))
                         {
-
-                            control = true;
-                            
+                            control = true;                           
                         }
                         break;
                     case 1:
@@ -245,7 +218,6 @@ public class InventoryUIController : MonoBehaviour
                         if (obj.Equals(ObjectType.Consumable))
                         {
                             control = true;
-
                         }
                         break;
                     default:
@@ -257,20 +229,10 @@ public class InventoryUIController : MonoBehaviour
                 {
                     if ((indice >= 3 && !AvatarController.set1) || (indice < 3 && AvatarController.set1))
                     {
-
-
-
                         play.SetEquip(SetSlots[indice]);
                         play.SetEquip(m_OriginalSlot);
-
-
-
                     }
-
                     SetItem(sets);
-
-
-
                 }
                 else
                 {
@@ -280,12 +242,9 @@ public class InventoryUIController : MonoBehaviour
             }
             else
             {
-
                 m_OriginalSlot.Icon.image =
                       GameController.GetItemByGuid(m_OriginalSlot.ItemGuid).Icon.texture;
             }
-
-
         }
         //Clear dragging related visuals and data
         m_IsDragging = false;
@@ -309,8 +268,6 @@ public class InventoryUIController : MonoBehaviour
             closestSlot.HoldItem(GameController.GetItemByGuid(m_OriginalSlot.ItemGuid));
             m_OriginalSlot.HoldItem(GameController.GetItemByGuid(temporarySlot.ItemGuid));
             changeQuantity(m_OriginalSlot, closestSlot);
-
-
         }
         else
         {
@@ -320,11 +277,6 @@ public class InventoryUIController : MonoBehaviour
             //Clear the original slot
             m_OriginalSlot.DropItem();
         }
-
-
-        //Set the new inventory slot with the data
-
-
     }
 
     private void SetItem2(IEnumerable<InventorySlot> lista)
@@ -370,7 +322,4 @@ public class InventoryUIController : MonoBehaviour
         newSlot.quantity= original.quantity;
         original.quantity= aux;
     }
-    
-        
-    
 }

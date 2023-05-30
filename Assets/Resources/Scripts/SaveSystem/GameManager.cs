@@ -17,9 +17,12 @@ using Random = UnityEngine.Random;
 public class GameManager : MonoBehaviour
 {
 
-    public PlayerData playerData = new PlayerData();
+    public PlayerData playerData;
 
-
+    private void Awake()
+    {
+        playerData = new PlayerData();
+    }
 
 
     // Start is called before the first frame update
@@ -32,9 +35,23 @@ public class GameManager : MonoBehaviour
         if (SaveFileExists())
         {
             LoadFile();
-            Debug.Log(playerData.InventoryItems.Select(x => x.guid).ToArray());
-            Debug.Log(playerData.InventoryItems.Select(x => x.quantity).ToArray());
             GetComponent<GameController>().RecoverInventory(playerData.InventoryItems.Select(x => x.guid).ToArray(), playerData.InventoryItems.Select(x => x.quantity).ToArray());
+
+            
+            var player = GameObject.Find("Player").GetComponent<AvatarController>();
+            for (int i = 0; i < playerData.SetItems.Count; i++)
+            {
+                var aux = playerData.SetItems[i];
+                if (aux.guid !="")
+                {
+                    player.inventory.SetSlots[i].HoldItem(GameController.GetItemByGuid(aux.guid));
+                    player.inventory.SetSlots[i].quantity = aux.quantity;
+
+                }
+            }
+            player.LoadCharacters();
+            GetComponent<DatabaseTest>().LoadRandomCharacterInFloor(playerData.currentFloor);
+
         }
     }
     public void DeleteKeys()
@@ -77,7 +94,7 @@ public class GameManager : MonoBehaviour
             {
                 PlayerData decryptedObj = EncryptionUtility.DecryptFromFile<PlayerData>(filePath);
                 Debug.Log("Archivo cargado: " + filePath);
-                playerData = decryptedObj;
+                playerData = decryptedObj;     
             }
             catch (System.Exception ex)
             {
@@ -101,29 +118,34 @@ public class GameManager : MonoBehaviour
         playerData.currentCharacter = player.currentCharacter;
         playerData.characters = player.characters;
         var playerInventory = player.inventory;
+
+        Debug.Log("Voy a empezar a guardar datos");
         if (playerData.InventoryItems.Count != 0)
         {
             playerData.InventoryItems.Clear();
 
+
         }
         foreach (var item in player.inventory.InventoryItems)
         {
-            playerData.InventoryItems.Add(new InventoryItem(item.ItemGuid, item.quantity));
+            if (item.ItemGuid!="")
+            {
+                playerData.InventoryItems.Add(new InventoryItem(item.ItemGuid, item.quantity));
+
+            }
+
+
         }
+       
+
+
+        
         if (playerData.SetItems.Count != 0)
         {
             playerData.SetItems.Clear();
 
         }
-        //
-        //
-        //
-        //
-        //Me falta asignar los slots de equipo, molto importante
-        //
-        //
-        //
-        //
+        
         foreach (var item in player.inventory.SetSlots)
         {
             playerData.SetItems.Add(new InventoryItem(item.ItemGuid, item.quantity));
@@ -149,7 +171,7 @@ public class GameManager : MonoBehaviour
 
 
 
-        gameObject.GetComponent<DatabaseTest>().SaveCharacterData(playerData.deaths, currentCharacter, playerData.characters[currentCharacter].Level, playerData.currentFloor, playerData.currentMoney, currentSet[aux].guid, currentSet[aux + 1].guid, currentSet[aux + 2].guid, playerData.RandomDrop());
+        GetComponent<DatabaseTest>().SaveCharacterData(playerData.deaths, currentCharacter, playerData.characters[currentCharacter].Level, playerData.currentFloor, playerData.currentMoney, currentSet[aux].guid, currentSet[aux + 1].guid, currentSet[aux + 2].guid, playerData.RandomDrop());
     }
 }
 [Serializable]

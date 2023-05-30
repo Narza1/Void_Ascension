@@ -16,9 +16,8 @@ public class AvatarController : MonoBehaviour
     public InventoryUIController inventory;
     private VisualElement m_Root;
     private GameManager gameManager;
-    public PlayerData playerData;
     public List<Character> characters = new List<Character>();
-    public int currentCharacter=-1;
+    public int currentCharacter = -1;
     private readonly string[] names = { "Warrior", "Mage", "Minion", "Archer" };
     private float maxHP, currentHP;
 
@@ -26,9 +25,10 @@ public class AvatarController : MonoBehaviour
 
     void Start()
     {
+
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        gameManager.LoadFile();
-        playerData = gameManager.playerData;
+
+       
         GameObject ui = GameObject.Find("UserInterface");
         m_Root = ui.GetComponent<UIDocument>().rootVisualElement.Q("Container");
         m_Root.style.display = DisplayStyle.None;
@@ -42,30 +42,43 @@ public class AvatarController : MonoBehaviour
 
         rb = GetComponent<Rigidbody2D>();
         startTime = Time.time;
-        //if (gameManager.SaveFileExists())
-        //{
-        //    inventory.SetSlots = playerData.SetItems;
-        //    inventory.SetSlots = playerData.InventoryItems;
-        //}
-        characters = playerData.characters;
 
-        LoadCharacters();
-    }
+        //characters = playerData.characters;
+
+        //LoadCharacters();
+        if (!GameManager.SaveFileExists())
+        {
+            Debug.Log("ssssss");
+            characters = gameManager.playerData.characters;
+            foreach (var item in characters)
+            {
+                Debug.Log("yaaaaaaaaaaa");
+
+            }
+        }
+        }
 
 
     public void LoadCharacters()
     {
+        if (GameManager.SaveFileExists())
+        {
+            var playerData = gameManager.playerData;
+            characters = playerData.characters;
+            currentCharacter = playerData.currentCharacter;//aqui en lugar de cero sera el valor que leamos del archvo
+            Set1Ready();
+        }
 
-        currentCharacter = playerData.currentCharacter;//aqui en lugar de cero sera el valor que leamos del archvo
         if (currentCharacter != -1)
         {
             ChangeCharacter(currentCharacter);
-            //ChangeStats(currentCharacter);
+            ChangeStats(currentCharacter);
         }
     }
 
     private void ChangeStats(int currentCharacter)
     {
+        Debug.Log(currentCharacter);
         currentHP = maxHP = characters[currentCharacter].Hp * characters[currentCharacter].Level;
         speed = characters[currentCharacter].Speed;
     }
@@ -125,6 +138,15 @@ public class AvatarController : MonoBehaviour
                 m_Root.style.display = DisplayStyle.None;
             }
 
+        }
+    }
+
+    private void Set1Ready  () {
+        animator.SetInteger("ammo", 0);
+        animator.SetInteger("weaponType", 0);
+        for (int i = 0; i < 3; i++)
+        {
+            SetEquip(inventory.SetSlots[i]);
         }
     }
     private void ChangeSetPattern()

@@ -14,10 +14,10 @@ public class ItemDetails
     public bool CanDrop;
     public ObjectType objectType;
     public int quantity;
-    
+
 }
 
-public class EquipmentDetails: ItemDetails
+public class EquipmentDetails : ItemDetails
 {
     public EquipmentType equipmentType;
     public int upgradeLevel;
@@ -61,7 +61,7 @@ public enum InventoryChangeType
     Pickup,
     Drop
 }
-public delegate void OnInventoryChangedDelegate(string[] itemGuid,int[] quantity, InventoryChangeType change);
+public delegate void OnInventoryChangedDelegate(string[] itemGuid, int[] quantity, InventoryChangeType change);
 
 /// <summary>
 /// Generates and controls access to the Item Database and Inventory Data
@@ -73,27 +73,31 @@ public class GameController : MonoBehaviour
     private static Dictionary<string, ItemDetails> m_ItemDatabase = new Dictionary<string, ItemDetails>();
     private List<ItemDetails> m_PlayerInventory = new List<ItemDetails>();
     public static event OnInventoryChangedDelegate OnInventoryChanged = delegate { };
-    
+
 
 
     private void Awake()
     {
-        
-        try { 
-        PopulateDatabase();
-    }catch(ArgumentException ae)
+
+        try
+        {
+            PopulateDatabase();
+        }
+        catch (ArgumentException ae)
         {
 
         }
-}
+    }
     private void Start()
     {
-        if (!GameManager.SaveFileExists()) { 
-        m_PlayerInventory.AddRange(m_ItemDatabase.Values);
-        int[] f = new int[m_PlayerInventory.Count];
-        for (int i = 0; f.Length > i; i++)
-            f[i] = 1;
-        OnInventoryChanged.Invoke(m_PlayerInventory.Select(x => x.GUID).ToArray(),f, InventoryChangeType.Pickup);
+        if (!GameManager.SaveFileExists())
+        {
+            Debug.Log("fucking relleno inventario");
+            m_PlayerInventory.AddRange(m_ItemDatabase.Values);
+            int[] f = new int[m_PlayerInventory.Count];
+            for (int i = 0; f.Length > i; i++)
+                f[i] = 1;
+            OnInventoryChanged.Invoke(m_PlayerInventory.Select(x => x.GUID).ToArray(), f, InventoryChangeType.Pickup);
         }
         //Add the ItemDatabase to the players inventory and let the UI know that some items have been picked up
 
@@ -310,7 +314,6 @@ public class GameController : MonoBehaviour
     }
 
 }
-   
 
-   
-  
+
+

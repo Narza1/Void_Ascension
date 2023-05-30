@@ -7,9 +7,8 @@ using UnityEngine;
 public static class EncryptionUtility
 {
     
-    public static byte[] Key = { /* Coloca aquí tu clave de encriptación, debe tener 16, 24 o 32 bytes */
-};
-    public static byte[] IV = { /* Coloca aquí tu vector de inicialización (IV), debe tener 16 bytes */ };
+    public static byte[] Key;
+    public static byte[] IV;
 
     public static void EncryptToFile<T>(string filePath, T obj)
     {
@@ -75,16 +74,11 @@ public static class EncryptionUtility
 
         }
 
-        Debug.Log(Key);
-        Debug.Log(IV);
-        Debug.Log("Conversion");
+        
         string keyString = System.Convert.ToBase64String(Key);
         PlayerPrefs.SetString("K", keyString);
         string ivString = System.Convert.ToBase64String(IV);
         PlayerPrefs.SetString("I", ivString);
         PlayerPrefs.Save();
-        Debug.Log(keyString);
-        Debug.Log(ivString);
-
     }
 }

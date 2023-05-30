@@ -11,24 +11,12 @@ public class DatabaseTest : MonoBehaviour
 {
     private string userID;
     DatabaseReference dbReference;
-    public static int floor = 12;
     void Start()
     {
         userID = SystemInfo.deviceUniqueIdentifier;
         dbReference = FirebaseDatabase.DefaultInstance.RootReference;
-        Fuck2();
-
     }
-
-
-    public void Fuck()
-    {
-
-        //SaveCharacterData(1, 1, 12, 4500, "1B9C6CAA-754E-412D-91BF-37F22C9A0E7B", "", "");
-
-
-    }
-    public void Fuck2()
+    public void LoadRandomCharacterInFloor(int floor)
     {
 
         StartCoroutine(GetRandomCharacterByFloor(floor, (CharacterData character) =>
@@ -37,30 +25,6 @@ public class DatabaseTest : MonoBehaviour
 
         }));
     }
-    public CharacterData GetRandomCharacterInfo()
-    {
-        CharacterData characterData = null;
-        StartCoroutine(GetRandomCharacterByFloor(floor, (CharacterData character) =>
-        {
-
-            if (character != null)
-            {
-                characterData = character;
-                // Haz algo con el personaje aleatorio obtenido
-                Debug.Log("Personaje aleatorio encontrado: " + character.lv);
-
-
-            }
-            else
-            {
-                // No se encontró ningún personaje en el piso especificado
-                Debug.Log("No se encontraron personajes en el piso especificado");
-            }
-        }));
-        return characterData;
-
-    }
-
     public void SaveCharacterData(int deaths,int characterType, int level, int floor, int money, string weaponGUID, string accessoryGUID, string consumableGUID, DropItem drop)
     {
        
@@ -79,15 +43,9 @@ public class DatabaseTest : MonoBehaviour
         dbReference.Child("characters").Child(userID + deaths).SetRawJsonValueAsync(json);
         }catch(ArgumentException ae)
         {
-            Debug.Log(ae.Message);
+            Debug.LogError(ae.Message);
         }
-
-        //User newUser = new User(Name.text);
-        //string json3 = JsonUtility.ToJson(newUser);
-        //dbReference.Child("Users").Child(userID).SetRawJsonValueAsync(json3);
     }
-
-
 
     public IEnumerator GetRandomCharacterByFloor(int targetFloor, Action<CharacterData> onCallBack)
     {
