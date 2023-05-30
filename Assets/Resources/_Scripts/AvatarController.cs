@@ -25,12 +25,11 @@ public class AvatarController : MonoBehaviour
 
     void Start()
     {
-
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-
-       
         GameObject ui = GameObject.Find("UserInterface");
-        m_Root = ui.GetComponent<UIDocument>().rootVisualElement.Q("Container");
+        var doc = ui.GetComponent<UIDocument>().rootVisualElement;
+        m_Root = doc.Q("Container");
+     
         m_Root.style.display = DisplayStyle.None;
         inventory = ui.GetComponent<InventoryUIController>();
 
@@ -48,14 +47,11 @@ public class AvatarController : MonoBehaviour
         //LoadCharacters();
         if (!GameManager.SaveFileExists())
         {
-            Debug.Log("ssssss");
+            
             characters = gameManager.playerData.characters;
-            foreach (var item in characters)
-            {
-                Debug.Log("yaaaaaaaaaaa");
-
-            }
+        
         }
+
         }
 
 
@@ -81,6 +77,19 @@ public class AvatarController : MonoBehaviour
         Debug.Log(currentCharacter);
         currentHP = maxHP = characters[currentCharacter].Hp * characters[currentCharacter].Level;
         speed = characters[currentCharacter].Speed;
+        GameObject ui = GameObject.Find("UserInterface");
+
+        var doc = ui.GetComponent<UIDocument>().rootVisualElement;
+
+        var level = doc.Q("Level") as Label;
+        var expBar = doc.Q("NextLevel");
+        var hpBar = doc.Q("HP");
+        var staminaBar = doc.Q("Stamina");
+        var currentCharacter1 = characters[currentCharacter];
+        level.text = $"{currentCharacter1.Level}/50";
+        expBar.style.width = (currentCharacter1.Exp / currentCharacter1.Level * 150)*100;
+        hpBar.style.width
+
     }
 
     private void ChangeCharacter(int index)
