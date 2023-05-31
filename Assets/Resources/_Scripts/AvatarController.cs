@@ -14,14 +14,16 @@ public class AvatarController : MonoBehaviour
     public float speed = 3;
     public static bool set1 = true, isAttacking;
     public InventoryUIController inventory;
-    private VisualElement m_Root;
+    private VisualElement m_Root, expBar, staminaBar, hpBar;
+    private Label level;
     private GameManager gameManager;
     public List<Character> characters = new List<Character>();
     public int currentCharacter = -1;
     private readonly string[] names = { "Warrior", "Mage", "Minion", "Archer" };
-    private float maxHP, currentHP;
+    public float currentHP, currentStamina, maxStamina;
+   
 
-    private bool damaged = false, isAlive = true;
+    private bool damaged,isRunning, isAlive = true;
 
     void Start()
     {
@@ -29,10 +31,13 @@ public class AvatarController : MonoBehaviour
         GameObject ui = GameObject.Find("UserInterface");
         var doc = ui.GetComponent<UIDocument>().rootVisualElement;
         m_Root = doc.Q("Container");
-     
+
         m_Root.style.display = DisplayStyle.None;
         inventory = ui.GetComponent<InventoryUIController>();
-
+        staminaBar = doc.Q("Stamina");
+        hpBar = doc.Q("HP");
+        level = doc.Q("Level") as Label;
+        expBar = doc.Q("NextLevel");
         // Obtiene una referencia al objeto secundario
         GameObject childObject = transform.Find("KayKit Animated Character").gameObject;
 
@@ -47,13 +52,30 @@ public class AvatarController : MonoBehaviour
         //LoadCharacters();
         if (!GameManager.SaveFileExists())
         {
-            
+
             characters = gameManager.playerData.characters;
-        
-        }
 
         }
+       
 
+    }
+
+    private IEnumerator RecoverStamina()
+    {
+        while (true)
+        {
+            if(currentStamina< 0) { currentStamina = 0; }
+            if(isRunning) { currentStamina -= 0.5f; }
+            if (currentStamina < maxStamina && !isAttacking && !isRunning && !isDashing)
+            {
+                currentStamina++;
+                
+            }
+            staminaBar.style.width = Length.Percent(currentStamina / maxStamina * 100);
+            yield return new WaitForSeconds(0.1f);
+        }
+
+    }
 
     public void LoadCharacters()
     {
@@ -74,21 +96,25 @@ public class AvatarController : MonoBehaviour
 
     private void ChangeStats(int currentCharacter)
     {
-        Debug.Log(currentCharacter);
-        currentHP = maxHP = characters[currentCharacter].Hp * characters[currentCharacter].Level;
-        speed = characters[currentCharacter].Speed;
+        var currentCharacter1 = characters[currentCharacter];
+
+        maxStamina = currentCharacter1.Stamina * currentCharacter1.Level;
+        StartCoroutine(RecoverStamina());
+        currentHP = currentCharacter1.Hp * currentCharacter1.Level;
+        speed = currentCharacter1.Speed;
         GameObject ui = GameObject.Find("UserInterface");
 
         var doc = ui.GetComponent<UIDocument>().rootVisualElement;
 
-        var level = doc.Q("Level") as Label;
-        var expBar = doc.Q("NextLevel");
-        var hpBar = doc.Q("HP");
-        var staminaBar = doc.Q("Stamina");
-        var currentCharacter1 = characters[currentCharacter];
+
         level.text = $"{currentCharacter1.Level}/50";
-        expBar.style.width = (currentCharacter1.Exp / currentCharacter1.Level * 150)*100;
-        hpBar.style.width
+        expBar.style.width = Length.Percent(currentCharacter1.Exp / (currentCharacter1.Level * 150) * 100);
+        if (gameManager.playerData.currentFloor == 0)
+        {
+            currentHP = currentCharacter1.Hp * currentCharacter1.Level;
+        }
+        hpBar.style.width = Length.Percent(currentHP / (currentCharacter1.Hp * currentCharacter1.Level) * 100);
+
 
     }
 
@@ -122,9 +148,13 @@ public class AvatarController : MonoBehaviour
 
             if (m_Root.style.display == DisplayStyle.None || !isAttacking)
             {
-                Attack();
+                if (currentStamina != 0)
+                {
+                    Attack();
+                    DashPattern();
+
+                }
                 Run();
-                DashPattern();
                 ChangeSetPattern();
             }
             Inventory();
@@ -150,7 +180,8 @@ public class AvatarController : MonoBehaviour
         }
     }
 
-    private void Set1Ready  () {
+    private void Set1Ready()
+    {
         animator.SetInteger("ammo", 0);
         animator.SetInteger("weaponType", 0);
         for (int i = 0; i < 3; i++)
@@ -172,6 +203,7 @@ public class AvatarController : MonoBehaviour
             }
             startTime = Time.time;
             set1 = !set1;
+            ////////////////////////TODO
         }
 
     }
@@ -204,8 +236,6 @@ public class AvatarController : MonoBehaviour
                                 {
                                     case EquipmentType.Sword:
                                         animator.SetInteger("weaponType", 1);
-
-
                                         break;
 
                                     case EquipmentType.Staff:
@@ -217,14 +247,8 @@ public class AvatarController : MonoBehaviour
                                         break;
                                 }
                             }
-
                         }
                     }
-
-
-
-
-
                     break;
 
                 case ObjectType.Accesory:
@@ -284,6 +308,7 @@ public class AvatarController : MonoBehaviour
     private IEnumerator Dash()
     {
         isDashing = true;
+        currentStamina -= 5;
         Vector2 dashDirection = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         rb.velocity = dashDirection * dashSpeed;
         yield return new WaitForSeconds(dashDuration);
@@ -297,12 +322,14 @@ public class AvatarController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            speed = 6;
+            isRunning = true;
+            speed = characters[currentCharacter].Speed*2;
             animator.SetBool("running", true);
         }
-        if (Input.GetKeyUp(KeyCode.LeftShift))
+        if (Input.GetKeyUp(KeyCode.LeftShift) || currentStamina==0)
         {
-            speed = 3;
+            isRunning = false;
+            speed = characters[currentCharacter].Speed;
             animator.SetBool("running", false);
 
         }
@@ -326,6 +353,9 @@ public class AvatarController : MonoBehaviour
 
     private void Attack()
     {
+
+
+
         if (Input.GetMouseButtonDown(0))
         {
             animator.SetInteger("attack", 1);
@@ -390,6 +420,7 @@ public class AvatarController : MonoBehaviour
         var gameManagerScript = gameManager.GetComponent<GameManager>();
 
         characters[currentCharacter].isDead = true;
+       
         gameManagerScript.Death();
 
         isAlive = false;

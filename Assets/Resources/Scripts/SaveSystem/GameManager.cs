@@ -165,6 +165,7 @@ public class GameManager : MonoBehaviour
     public void Death()
     {
         playerData.Death();
+       
         var currentCharacter = playerData.currentCharacter;
         var currentSet = playerData.SetItems;
         var aux = AvatarController.set1 ? 2 : 5;
@@ -193,7 +194,6 @@ public class PlayerData
     {
         currentFloor = currentMoney = 0;
         deaths++;
-        characters[currentCharacter].isDead = true;
         currentCharacter = -1;
     }
 

@@ -10,15 +10,17 @@ public class AttackAnimation : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         AvatarController.isAttacking = true;
+        var player = GameObject.Find("Player").GetComponent<AvatarController>();
 
         switch (animator.GetInteger("attack"))
         {
 
             case 1:
-
+                player.currentStamina -= 10;
                 break;
 
             case 2:
+                player.currentStamina -= 15;
                 break;
 
 
