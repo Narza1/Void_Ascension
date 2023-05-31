@@ -64,12 +64,6 @@ public class AvatarController : MonoBehaviour
     {
         while (true)
         {
-            Debug.Log("funciono" + currentStamina);
-            Debug.Log("funcisdsdsdono" + maxStamina);
-            Debug.Log(isAttacking);
-            Debug.Log(isRunning);
-            Debug.Log(isDashing);
-
             if (currentStamina< 0) { currentStamina = 0; }
             if(isRunning) { currentStamina -= 0.5f; }
             if (currentStamina < maxStamina && !isAttacking && !isRunning && !isDashing)
@@ -385,7 +379,6 @@ public class AvatarController : MonoBehaviour
     {
         if (!damaged && isAlive)
         {
-            Debug.Log("fff");
             StartCoroutine(TookDamage(damage, isMagic));
         }
     }
@@ -426,6 +419,7 @@ public class AvatarController : MonoBehaviour
         var gameManagerScript = gameManager.GetComponent<GameManager>();
 
         characters[currentCharacter].isDead = true;
+        gameManagerScript.playerData.characters = characters;
        
         gameManagerScript.Death();
 

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Windows;
 using static PlayerData;
@@ -18,10 +19,12 @@ public class GameManager : MonoBehaviour
 {
 
     public PlayerData playerData;
+    AvatarController player;
 
     private void Awake()
     {
         playerData = new PlayerData();
+        player = GameObject.Find("Player").GetComponent<AvatarController>();
     }
 
 
@@ -38,7 +41,7 @@ public class GameManager : MonoBehaviour
             GetComponent<GameController>().RecoverInventory(playerData.InventoryItems.Select(x => x.guid).ToArray(), playerData.InventoryItems.Select(x => x.quantity).ToArray());
 
             
-            var player = GameObject.Find("Player").GetComponent<AvatarController>();
+            
             for (int i = 0; i < playerData.SetItems.Count; i++)
             {
                 var aux = playerData.SetItems[i];
@@ -109,7 +112,6 @@ public class GameManager : MonoBehaviour
 
     public void SaveFile()
     {
-        var player = GameObject.Find("Player").GetComponent<AvatarController>();
         string filePath = Path.Combine(saveFolderPath, saveFileName);
         playerData.currentCharacter = player.currentCharacter;
         playerData.characters = player.characters;
@@ -167,8 +169,14 @@ public class GameManager : MonoBehaviour
         var aux = AvatarController.set1 ? 2 : 5;
 
 
-
+        Debug.Log(currentCharacter); ;
         GetComponent<DatabaseTest>().SaveCharacterData(playerData.deaths, currentCharacter, playerData.characters[currentCharacter].Level, playerData.currentFloor, playerData.currentMoney, currentSet[aux].guid, currentSet[aux + 1].guid, currentSet[aux + 2].guid, playerData.RandomDrop());
+    }
+
+    public void ManageDrops(string[] dropGUIDS, int[] dropQuantities)
+    {
+        GameController.OnInventoryChanged(dropGUIDS, dropQuantities, InventoryChangeType.Pickup);
+
     }
 }
 [Serializable]
