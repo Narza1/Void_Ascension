@@ -63,12 +63,8 @@ public class GameManager : MonoBehaviour
     {
         if (PlayerPrefs.HasKey("K") && PlayerPrefs.HasKey("I"))
         {
-            Debug.Log("ENCONTRADAS KEYS");
-
             EncryptionUtility.Key = Convert.FromBase64String(PlayerPrefs.GetString("K"));
             EncryptionUtility.IV = Convert.FromBase64String(PlayerPrefs.GetString("I"));
-            Debug.Log(EncryptionUtility.Key);
-            Debug.Log(EncryptionUtility.IV);
         }
         else
         {

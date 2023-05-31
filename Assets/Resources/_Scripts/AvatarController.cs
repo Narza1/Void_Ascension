@@ -20,10 +20,10 @@ public class AvatarController : MonoBehaviour
     public List<Character> characters = new List<Character>();
     public int currentCharacter = -1;
     private readonly string[] names = { "Warrior", "Mage", "Minion", "Archer" };
-    public float currentHP, currentStamina, maxStamina;
+    public float currentHP, currentStamina=1, maxStamina=1;
    
 
-    private bool damaged,isRunning, isAlive = true;
+    private bool damaged,isRunning = false, isAlive = true;
 
     void Start()
     {
@@ -48,7 +48,7 @@ public class AvatarController : MonoBehaviour
         startTime = Time.time;
 
         //characters = playerData.characters;
-
+        AvatarController.isAttacking = false;
         //LoadCharacters();
         if (!GameManager.SaveFileExists())
         {
@@ -64,15 +64,21 @@ public class AvatarController : MonoBehaviour
     {
         while (true)
         {
-            if(currentStamina< 0) { currentStamina = 0; }
+            Debug.Log("funciono" + currentStamina);
+            Debug.Log("funcisdsdsdono" + maxStamina);
+            Debug.Log(isAttacking);
+            Debug.Log(isRunning);
+            Debug.Log(isDashing);
+
+            if (currentStamina< 0) { currentStamina = 0; }
             if(isRunning) { currentStamina -= 0.5f; }
             if (currentStamina < maxStamina && !isAttacking && !isRunning && !isDashing)
             {
-                currentStamina++;
+                currentStamina+=0.5f;
                 
             }
             staminaBar.style.width = Length.Percent(currentStamina / maxStamina * 100);
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.05f);
         }
 
     }
@@ -86,7 +92,7 @@ public class AvatarController : MonoBehaviour
             currentCharacter = playerData.currentCharacter;//aqui en lugar de cero sera el valor que leamos del archvo
             Set1Ready();
         }
-
+        
         if (currentCharacter != -1)
         {
             ChangeCharacter(currentCharacter);
@@ -303,7 +309,7 @@ public class AvatarController : MonoBehaviour
 
     private readonly float dashSpeed = 8f;
     private readonly float dashDuration = 0.25f;
-    private bool isDashing;
+    private bool isDashing = false;
 
     private IEnumerator Dash()
     {
