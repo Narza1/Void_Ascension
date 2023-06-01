@@ -102,6 +102,11 @@ public class GameController : MonoBehaviour
         //Add the ItemDatabase to the players inventory and let the UI know that some items have been picked up
 
     }
+
+    public static void Drop(string[] guids, int[] quantity)
+    {
+        OnInventoryChanged.Invoke(guids, quantity, InventoryChangeType.Pickup);
+    }
     public void RecoverInventory(string[] guids, int[] quantity)
     {
         //m_PlayerInventory.AddRange(m_ItemDatabase.Values);

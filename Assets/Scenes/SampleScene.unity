@@ -2163,6 +2163,7 @@ MonoBehaviour:
     currentFloor: 0
     maxFloor: 0
     currentMoney: 0
+    currentExperience: 0
     totalMoney: 0
     deaths: 0
     currentCharacter: 0
@@ -2467,7 +2468,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackRange: 4
-  movementSpeed: 1
+  movementSpeed: 3
   offset: 0
   animationColliderFix: {fileID: 0}
 --- !u!4 &1299373045
@@ -2535,7 +2536,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e385ab7851c19c245898f9638ea7d967, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 1
+  hp: 10
   atk: 10
   magAtk: 10
   magDef: 10

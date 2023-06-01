@@ -71,7 +71,7 @@ public class StartScene : MonoBehaviour
 
         gameManager.playerData.currentCharacter = value;
         player.currentCharacter = value;
-        player.LoadCharacters();
+        player.ChangeCharacter(value);
         selectCharacter.style.display = DisplayStyle.None;
 
 

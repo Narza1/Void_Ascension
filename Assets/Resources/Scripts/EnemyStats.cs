@@ -103,7 +103,7 @@ public class EnemyStats : MonoBehaviour
             dropQuantity[i] = quantities[index];
         }
 
-        gameManager.ManageDrops(dropGUID, dropQuantity);
+        GameController.Drop(dropGUID, dropQuantity);
         yield return new WaitForSeconds(2);
         Destroy(gameObject);
     }

@@ -118,7 +118,7 @@ public class AvatarController : MonoBehaviour
 
     }
 
-    private void ChangeCharacter(int index)
+    public void ChangeCharacter(int index)
     {
         List<GameObject> equipmentList = Resources.FindObjectsOfTypeAll<GameObject>().ToList();
 
@@ -187,6 +187,8 @@ public class AvatarController : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             SetEquip(inventory.SetSlots[i]);
+            Debug.Log("ago algo");
+            Debug.Log(inventory.SetSlots[i].ItemGuid);
         }
     }
     private void ChangeSetPattern()

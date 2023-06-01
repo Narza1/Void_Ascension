@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
 {
 
     public PlayerData playerData;
-    AvatarController player;
+    private AvatarController player;
 
     private void Awake()
     {
@@ -170,24 +170,23 @@ public class GameManager : MonoBehaviour
         var aux = AvatarController.set1 ? 2 : 5;
 
 
-        Debug.Log(currentCharacter); ;
+        Debug.Log(currentCharacter);
         GetComponent<DatabaseTest>().SaveCharacterData(playerData.deaths, currentCharacter, playerData.characters[currentCharacter].Level, playerData.currentFloor, playerData.currentMoney, currentSet[aux].guid, currentSet[aux + 1].guid, currentSet[aux + 2].guid, playerData.RandomDrop());
         playerData.Death();
         SaveFile();
     }
-    public static event OnInventoryChangedDelegate OnInventoryChanged = delegate { };
-    public void ManageDrops(string[] dropGUIDS, int[] dropQuantities) { 
 
-
-        OnInventoryChanged.Invoke(dropGUIDS, dropQuantities, InventoryChangeType.Pickup);
-
+    public void DropCoins(int dropCoins)
+    {
+        playerData.currentMoney += dropCoins;
 
     }
+
 }
 [Serializable]
 public class PlayerData
 {
-    public int currentFloor, maxFloor, currentMoney, totalMoney, deaths, currentCharacter;
+    public int currentFloor, maxFloor, currentMoney,currentExperience, totalMoney, deaths, currentCharacter;
     public List<InventoryItem> InventoryItems = new List<InventoryItem>(), SetItems = new List<InventoryItem>();
     public List<Character> characters;
 
