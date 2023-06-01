@@ -20,7 +20,7 @@ public class EnemyStats : MonoBehaviour
     private int coins, experience;
 
     private EnemyAI enemyAI;
-    Collider2D collide;
+    CircleCollider2D collide;
     Animator animator;
     GameManager gameManager;
 
@@ -32,9 +32,9 @@ public class EnemyStats : MonoBehaviour
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         //level *= GameController.GetFloor();
         SetStats();
-        animator = GetComponent<Animator>();
+        animator = GameObject.Find("Monster").GetComponent<Animator>();
         enemyAI = GetComponent<EnemyAI>();
-        collide = GetComponent<Collider2D>();
+        collide = GetComponent<CircleCollider2D>();
 
     }
 
@@ -50,6 +50,7 @@ public class EnemyStats : MonoBehaviour
     }
     public void TookDamae(float damage, bool isMagic)
     {
+        Debug.Log("monster hit");
         if (collide.enabled)
         {
             StartCoroutine(TookDamage(damage, isMagic));

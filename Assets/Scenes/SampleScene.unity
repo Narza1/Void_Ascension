@@ -211,7 +211,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100008, guid: 10a1e47d0d282414481a0b2a67c79333, type: 3}
       propertyPath: m_Name
-      value: MushroomMon
+      value: Monster
       objectReference: {fileID: 0}
     - target: {fileID: 100008, guid: 10a1e47d0d282414481a0b2a67c79333, type: 3}
       propertyPath: m_IsActive
@@ -219,7 +219,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100008, guid: 10a1e47d0d282414481a0b2a67c79333, type: 3}
       propertyPath: m_TagString
-      value: Monster
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 100010, guid: 10a1e47d0d282414481a0b2a67c79333, type: 3}
       propertyPath: m_IsActive
@@ -2449,7 +2449,7 @@ GameObject:
   - component: {fileID: 1299373048}
   m_Layer: 0
   m_Name: MushroomMonster
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -18,10 +18,10 @@ public class EnemyAI : MonoBehaviour
 
     private void Start()
     {
-        animationColliderFix = GameObject.Find("MushroomMon").GetComponent<AnimationColliderFix>();
+        animationColliderFix = GameObject.Find("Monster").GetComponent<AnimationColliderFix>();
         rb = GetComponent<Rigidbody2D>();
         cd = GetComponent<CircleCollider2D>();
-        animator = GameObject.Find("MushroomMon").GetComponent<Animator>();
+        animator = GameObject.Find("Monster").GetComponent<Animator>();
     }
     private void Awake()
     {

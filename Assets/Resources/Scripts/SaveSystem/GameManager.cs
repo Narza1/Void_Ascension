@@ -53,6 +53,8 @@ public class GameManager : MonoBehaviour
                 }
             }
             player.LoadCharacters();
+
+            if(playerData.currentFloor != 0)
             GetComponent<DatabaseTest>().LoadRandomCharacterInFloor(playerData.currentFloor);
 
         }
@@ -154,7 +156,7 @@ public class GameManager : MonoBehaviour
         {
             Directory.CreateDirectory(saveFolderPath);
         }
-
+        Debug.Log(playerData.currentCharacter);
         // Encripta y guarda el archivo
         EncryptionUtility.EncryptToFile(filePath, playerData);
 
