@@ -59,7 +59,7 @@ public class InventoryUIController : MonoBehaviour
         m_GhostIcon.RegisterCallback<PointerMoveEvent>(OnPointerMove);
         m_GhostIcon.RegisterCallback<PointerUpEvent>(OnPointerUp);
     }
-    private void GameController_OnInventoryChanged(string[] itemGuid,int[] quantity, InventoryChangeType change)
+    public void GameController_OnInventoryChanged(string[] itemGuid,int[] quantity, InventoryChangeType change)
     {
 
         //Loop through each item and if it has been picked up, add it to the next empty slot

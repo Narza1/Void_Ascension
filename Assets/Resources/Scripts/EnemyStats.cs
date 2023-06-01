@@ -40,7 +40,7 @@ public class EnemyStats : MonoBehaviour
 
     private void SetStats()
     {
-        var level = gameManager.playerData.currentFloor;
+        var level = 1;//gameManager.playerData.currentFloor;
         hp *= level;
         atk *= level;
         magAtk *= level;
@@ -57,6 +57,7 @@ public class EnemyStats : MonoBehaviour
     }
     public IEnumerator TookDamage(float damage, bool isMagic)
     {
+        Debug.Log("Got HIT" + hp);
         if (isMagic)
         {
             hp -= Math.Max(damage - magDef, 1);

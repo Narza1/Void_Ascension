@@ -2535,15 +2535,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e385ab7851c19c245898f9638ea7d967, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 10
+  hp: 1
   atk: 10
   magAtk: 10
   magDef: 10
   def: 10
-  itemGui: []
-  probability: []
-  quantity: 
+  itemGuid:
+  - 992D3386-B743-4CD3-9BB7-0234A057C265
+  - A431BCDF-8E20-4B9D-AC64-98E76A0F3C25
+  - E6AD398F-9654-46A6-BCA7-25C809D046D8
+  quantities: 010000000100000005000000
   coins: 200
+  experience: 0
 --- !u!1 &1355838806
 GameObject:
   m_ObjectHideFlags: 0

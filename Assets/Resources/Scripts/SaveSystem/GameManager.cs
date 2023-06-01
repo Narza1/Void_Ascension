@@ -162,7 +162,6 @@ public class GameManager : MonoBehaviour
     }
     public void Death()
     {
-        playerData.Death();
        
         var currentCharacter = playerData.currentCharacter;
         var currentSet = playerData.SetItems;
@@ -171,11 +170,15 @@ public class GameManager : MonoBehaviour
 
         Debug.Log(currentCharacter); ;
         GetComponent<DatabaseTest>().SaveCharacterData(playerData.deaths, currentCharacter, playerData.characters[currentCharacter].Level, playerData.currentFloor, playerData.currentMoney, currentSet[aux].guid, currentSet[aux + 1].guid, currentSet[aux + 2].guid, playerData.RandomDrop());
+        playerData.Death();
+        SaveFile();
     }
+    public static event OnInventoryChangedDelegate OnInventoryChanged = delegate { };
+    public void ManageDrops(string[] dropGUIDS, int[] dropQuantities) { 
 
-    public void ManageDrops(string[] dropGUIDS, int[] dropQuantities)
-    {
-        GameController.OnInventoryChanged(dropGUIDS, dropQuantities, InventoryChangeType.Pickup);
+
+        OnInventoryChanged.Invoke(dropGUIDS, dropQuantities, InventoryChangeType.Pickup);
+
 
     }
 }
