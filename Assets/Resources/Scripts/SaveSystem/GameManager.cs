@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 using UnityEngine.Windows;
 using static PlayerData;
 using static Unity.Burst.Intrinsics.X86;
@@ -20,9 +21,15 @@ public class GameManager : MonoBehaviour
 
     public PlayerData playerData;
     private AvatarController player;
+    private VisualElement exp;
+    private Label level;
 
     private void Awake()
     {
+        GameObject ui = GameObject.Find("UserInterface");
+        var doc = ui.GetComponent<UIDocument>().rootVisualElement;
+        level = doc.Q("Level") as Label;
+        exp = doc.Q("NextLevel");
         playerData = new PlayerData();
         player = GameObject.Find("Player").GetComponent<AvatarController>();
     }
@@ -40,12 +47,12 @@ public class GameManager : MonoBehaviour
             LoadFile();
             GetComponent<GameController>().RecoverInventory(playerData.InventoryItems.Select(x => x.guid).ToArray(), playerData.InventoryItems.Select(x => x.quantity).ToArray());
 
-            
-            
+
+
             for (int i = 0; i < playerData.SetItems.Count; i++)
             {
                 var aux = playerData.SetItems[i];
-                if (aux.guid !="")
+                if (aux.guid != "")
                 {
                     player.inventory.SetSlots[i].HoldItem(GameController.GetItemByGuid(aux.guid));
                     player.inventory.SetSlots[i].quantity = aux.quantity;
@@ -53,11 +60,18 @@ public class GameManager : MonoBehaviour
                 }
             }
             player.LoadCharacters();
-
-            if(playerData.currentFloor != 0)
-            GetComponent<DatabaseTest>().LoadRandomCharacterInFloor(playerData.currentFloor);
+            UpdateUI();
+            if (playerData.currentFloor != 0)
+                GetComponent<DatabaseTest>().LoadRandomCharacterInFloor(playerData.currentFloor);
 
         }
+    }
+
+    private void UpdateUI()
+    {
+        var character = playerData.characters[playerData.currentCharacter];
+        level.text = $"{character.Level}/50";
+        exp.style.width = Length.Percent(character.Exp / (character.Level * 150) * 100);
     }
     public void DeleteKeys()
     {
@@ -95,11 +109,11 @@ public class GameManager : MonoBehaviour
             {
                 PlayerData decryptedObj = EncryptionUtility.DecryptFromFile<PlayerData>(filePath);
                 Debug.Log("Archivo cargado: " + filePath);
-                playerData = decryptedObj;     
+                playerData = decryptedObj;
             }
             catch (System.Exception ex)
             {
-                
+
                 Debug.LogError("Error al cargar el archivo: " + ex.Message);
             }
         }
@@ -128,7 +142,7 @@ public class GameManager : MonoBehaviour
         }
         foreach (var item in player.inventory.InventoryItems)
         {
-            if (item.ItemGuid!="")
+            if (item.ItemGuid != "")
             {
                 playerData.InventoryItems.Add(new InventoryItem(item.ItemGuid, item.quantity));
 
@@ -136,26 +150,20 @@ public class GameManager : MonoBehaviour
 
 
         }
-       
-
-
-        
         if (playerData.SetItems.Count != 0)
-        {
             playerData.SetItems.Clear();
 
-        }
-        
+
+
         foreach (var item in player.inventory.SetSlots)
         {
             playerData.SetItems.Add(new InventoryItem(item.ItemGuid, item.quantity));
         }
-             
+
         // Crea la carpeta si no existe
         if (!Directory.Exists(saveFolderPath))
-        {
             Directory.CreateDirectory(saveFolderPath);
-        }
+
         Debug.Log(playerData.currentCharacter);
         // Encripta y guarda el archivo
         EncryptionUtility.EncryptToFile(filePath, playerData);
@@ -164,7 +172,7 @@ public class GameManager : MonoBehaviour
     }
     public void Death()
     {
-       
+
         var currentCharacter = playerData.currentCharacter;
         var currentSet = playerData.SetItems;
         var aux = AvatarController.set1 ? 2 : 5;
@@ -176,9 +184,13 @@ public class GameManager : MonoBehaviour
         SaveFile();
     }
 
-    public void DropCoins(int dropCoins)
+    public void DropCoinsExp(int dropCoins, int exp)
     {
         playerData.currentMoney += dropCoins;
+        playerData.characters[playerData.currentCharacter].LevelUP(exp);
+        UpdateUI();
+        Debug.Log(playerData.characters[playerData.currentCharacter].Exp);
+
 
     }
 
@@ -186,7 +198,7 @@ public class GameManager : MonoBehaviour
 [Serializable]
 public class PlayerData
 {
-    public int currentFloor, maxFloor, currentMoney,currentExperience, totalMoney, deaths, currentCharacter;
+    public int currentFloor, maxFloor, currentMoney, currentExperience, totalMoney, deaths, currentCharacter;
     public List<InventoryItem> InventoryItems = new List<InventoryItem>(), SetItems = new List<InventoryItem>();
     public List<Character> characters;
 
@@ -227,7 +239,8 @@ public class PlayerData
         DropItem drop = new DropItem(item.guid, item.quantity);
         foreach (var item2 in aux)
         {
-            if (item2.ItemGuid.Equals(drop.itemGUID)){
+            if (item2.ItemGuid.Equals(drop.itemGUID))
+            {
                 item2.DropItem();
                 break;
             }
@@ -247,5 +260,5 @@ public class PlayerData
             this.quantity = quantity;
         }
     }
-    }
+}
 

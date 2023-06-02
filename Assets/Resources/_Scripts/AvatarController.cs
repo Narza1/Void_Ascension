@@ -14,8 +14,7 @@ public class AvatarController : MonoBehaviour
     public float speed = 3;
     public static bool set1 = true, isAttacking;
     public InventoryUIController inventory;
-    private VisualElement m_Root, expBar, staminaBar, hpBar;
-    private Label level;
+    private VisualElement m_Root, staminaBar, hpBar;
     private GameManager gameManager;
     public List<Character> characters = new List<Character>();
     public int currentCharacter = -1;
@@ -36,8 +35,7 @@ public class AvatarController : MonoBehaviour
         inventory = ui.GetComponent<InventoryUIController>();
         staminaBar = doc.Q("Stamina");
         hpBar = doc.Q("HP");
-        level = doc.Q("Level") as Label;
-        expBar = doc.Q("NextLevel");
+        
         // Obtiene una referencia al objeto secundario
         GameObject childObject = transform.Find("KayKit Animated Character").gameObject;
 
@@ -52,12 +50,8 @@ public class AvatarController : MonoBehaviour
         //LoadCharacters();
         if (!GameManager.SaveFileExists())
         {
-
             characters = gameManager.playerData.characters;
-
         }
-       
-
     }
 
     private IEnumerator RecoverStamina()
@@ -107,8 +101,7 @@ public class AvatarController : MonoBehaviour
         var doc = ui.GetComponent<UIDocument>().rootVisualElement;
 
 
-        level.text = $"{currentCharacter1.Level}/50";
-        expBar.style.width = Length.Percent(currentCharacter1.Exp / (currentCharacter1.Level * 150) * 100);
+        
         if (gameManager.playerData.currentFloor == 0)
         {
             currentHP = currentCharacter1.Hp * currentCharacter1.Level;

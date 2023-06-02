@@ -25,18 +25,17 @@ public class Character
     public float Speed { get => speed; set => speed = value; }
     public int Level { get => level; set => level = value; }
 
-    public void LevelUP()
+    public void LevelUP(int exp)
     {
-        exp=0;
-        level++;
+        this.exp += exp;
+        while(this.exp >= level * 150)
+        {
+            this.exp -= level * 150;
+            level++;
+        }
     }
    
-    public void SetLV(int level, float exp)
-    {
-
-        this.level=level;
-        this.exp =exp;
-    }
+  
 
    
 }

@@ -76,11 +76,11 @@ public class EnemyStats : MonoBehaviour
         }
         else
         {
-            Debug.Log("hitINV");
+            
             collide.enabled = false;
             yield return new WaitForSeconds(0.5f);
             collide.enabled = true;
-            Debug.Log("CANhit");
+           
 
 
         }
@@ -104,6 +104,7 @@ public class EnemyStats : MonoBehaviour
         }
 
         GameController.Drop(dropGUID, dropQuantity);
+        gameManager.DropCoinsExp(coins, experience);
         yield return new WaitForSeconds(2);
         Destroy(gameObject);
     }

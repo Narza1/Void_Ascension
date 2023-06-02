@@ -2547,7 +2547,7 @@ MonoBehaviour:
   - E6AD398F-9654-46A6-BCA7-25C809D046D8
   quantities: 010000000100000005000000
   coins: 200
-  experience: 0
+  experience: 400
 --- !u!1 &1355838806
 GameObject:
   m_ObjectHideFlags: 0
