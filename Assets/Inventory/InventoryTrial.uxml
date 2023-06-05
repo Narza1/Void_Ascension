@@ -52,11 +52,11 @@
             <ui:VisualElement style="height: 14%; -unity-text-align: middle-left; justify-content: space-around; align-items: center; color: rgb(190, 190, 190); background-color: rgb(59, 59, 59); width: 100%; border-top-left-radius: 2px; border-bottom-left-radius: 11px; border-top-right-radius: 2px; border-bottom-right-radius: 11px; flex-direction: row; font-size: 37px;">
                 <ui:VisualElement style="flex-direction: row; font-size: 59px;">
                     <ui:Label display-tooltip-when-elided="true" text="Coins:" focusable="false" style="color: rgb(190, 190, 190);" />
-                    <ui:Label text="1180" display-tooltip-when-elided="true" />
+                    <ui:Label text="0" display-tooltip-when-elided="true" name="CurrentCoins" />
                 </ui:VisualElement>
                 <ui:VisualElement style="font-size: 59px; flex-direction: row;">
                     <ui:Label display-tooltip-when-elided="true" text="Total:" style="color: rgb(190, 190, 190);" />
-                    <ui:Label text="3500" display-tooltip-when-elided="true" />
+                    <ui:Label text="0" display-tooltip-when-elided="true" name="TotalCoins" />
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>

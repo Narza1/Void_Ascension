@@ -15,6 +15,7 @@ TagManager:
   - Minion
   - Archer
   - Revenant
+  - Stairs
   layers:
   - Default
   - TransparentFX

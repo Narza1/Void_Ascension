@@ -22,16 +22,24 @@ public class GameManager : MonoBehaviour
     public PlayerData playerData;
     private AvatarController player;
     private VisualElement exp;
-    private Label level;
+    private Label level, currentCoins, totalCoins;
 
     private void Awake()
     {
+
         GameObject ui = GameObject.Find("UserInterface");
         var doc = ui.GetComponent<UIDocument>().rootVisualElement;
         level = doc.Q("Level") as Label;
+        currentCoins = doc.Q("CurrentCoins") as Label;
+        totalCoins = doc.Q("TotalCoins") as Label;
         exp = doc.Q("NextLevel");
         playerData = new PlayerData();
         player = GameObject.Find("Player").GetComponent<AvatarController>();
+        player.characters = playerData.characters;
+        LoadKeys();
+        if (SaveFileExists())
+            LoadFile();
+
     }
 
 
@@ -40,11 +48,8 @@ public class GameManager : MonoBehaviour
     private static string saveFileName = "save.va";
     void Start()
     {
-
-        LoadKeys();
         if (SaveFileExists())
         {
-            LoadFile();
             GetComponent<GameController>().RecoverInventory(playerData.InventoryItems.Select(x => x.guid).ToArray(), playerData.InventoryItems.Select(x => x.quantity).ToArray());
 
 
@@ -100,6 +105,33 @@ public class GameManager : MonoBehaviour
         }
         return false;
     }
+
+    public static void DeleteSaveFile()
+    {
+        string filePath = Path.Combine(saveFolderPath, saveFileName);
+        if (GameManager.SaveFileExists())
+            File.Delete(filePath);
+
+
+    }
+    public static int GetSavedFloor()
+    {
+        string filePath = Path.Combine(saveFolderPath, saveFileName);
+        if (File.Exists(filePath))
+        {
+            try
+            {
+                PlayerData decryptedObj = EncryptionUtility.DecryptFromFile<PlayerData>(filePath);
+                return decryptedObj.currentFloor;
+            }
+            catch (System.Exception ex)
+            {
+
+                Debug.LogError("Error al cargar el archivo: " + ex.Message);
+            }
+        }
+        return -1;
+    }
     public void LoadFile()
     {
         string filePath = Path.Combine(saveFolderPath, saveFileName);
@@ -110,6 +142,8 @@ public class GameManager : MonoBehaviour
                 PlayerData decryptedObj = EncryptionUtility.DecryptFromFile<PlayerData>(filePath);
                 Debug.Log("Archivo cargado: " + filePath);
                 playerData = decryptedObj;
+                currentCoins.text = playerData.currentMoney.ToString();
+                totalCoins.text = (playerData.currentMoney + playerData.totalMoney).ToString();
             }
             catch (System.Exception ex)
             {
@@ -164,7 +198,6 @@ public class GameManager : MonoBehaviour
         if (!Directory.Exists(saveFolderPath))
             Directory.CreateDirectory(saveFolderPath);
 
-        Debug.Log(playerData.currentCharacter);
         // Encripta y guarda el archivo
         EncryptionUtility.EncryptToFile(filePath, playerData);
 
@@ -175,10 +208,18 @@ public class GameManager : MonoBehaviour
 
         var currentCharacter = playerData.currentCharacter;
         var currentSet = playerData.SetItems;
-        var aux = AvatarController.set1 ? 2 : 5;
+        var aux = AvatarController.set1 ? 0 : 2;
 
 
         Debug.Log(currentCharacter);
+        Debug.Log(playerData.deaths);
+        Debug.Log(playerData.characters[currentCharacter].Level);
+        Debug.Log(playerData.currentFloor);
+        Debug.Log(playerData.currentMoney);
+        Debug.Log(currentSet[aux].guid);
+        Debug.Log(currentSet[aux + 1].guid);
+        Debug.Log(currentSet[aux + 2].guid);
+        Debug.Log(playerData.RandomDrop());
         GetComponent<DatabaseTest>().SaveCharacterData(playerData.deaths, currentCharacter, playerData.characters[currentCharacter].Level, playerData.currentFloor, playerData.currentMoney, currentSet[aux].guid, currentSet[aux + 1].guid, currentSet[aux + 2].guid, playerData.RandomDrop());
         playerData.Death();
         SaveFile();
@@ -187,9 +228,12 @@ public class GameManager : MonoBehaviour
     public void DropCoinsExp(int dropCoins, int exp)
     {
         playerData.currentMoney += dropCoins;
-        playerData.characters[playerData.currentCharacter].LevelUP(exp);
+        currentCoins.text = playerData.currentMoney.ToString();
+        totalCoins.text = (playerData.currentMoney + playerData.totalMoney).ToString();
+        if (
+        playerData.characters[playerData.currentCharacter].LevelUP(exp))
+            GameObject.Find("Player").GetComponent<AvatarController>().ChangeStats(playerData.currentCharacter);
         UpdateUI();
-        Debug.Log(playerData.characters[playerData.currentCharacter].Exp);
 
 
     }
@@ -214,7 +258,6 @@ public class PlayerData
     {
         currentFloor = currentMoney = 0;
         deaths++;
-        currentCharacter = -1;
     }
 
     public DropItem RandomDrop()

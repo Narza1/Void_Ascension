@@ -1,7 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting.ReorderableList;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -17,12 +15,16 @@ public class EnemyStats : MonoBehaviour
     private int[] quantities;
 
     [SerializeField]
+    private bool isBoss;
+    [SerializeField]
     private int coins, experience;
 
     private EnemyAI enemyAI;
     CircleCollider2D collide;
     Animator animator;
     GameManager gameManager;
+
+    private GameObject[] stairs;
 
     public float Atk { get => atk; set => atk = value; }
     public float MagAtk { get => magAtk; set => magAtk = value; }
@@ -32,9 +34,18 @@ public class EnemyStats : MonoBehaviour
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         //level *= GameController.GetFloor();
         SetStats();
-        animator = GameObject.Find("Monster").GetComponent<Animator>();
+        animator = gameObject.transform.Find("MushroomMonsterRot/Monster").gameObject.GetComponent<Animator>();
         enemyAI = GetComponent<EnemyAI>();
         collide = GetComponent<CircleCollider2D>();
+        if (isBoss)
+        {
+            stairs = GameObject.FindGameObjectsWithTag("Stairs");
+            foreach (var item in stairs)
+            {
+                item.SetActive(false);
+            }
+        }
+
 
     }
 
@@ -107,6 +118,13 @@ public class EnemyStats : MonoBehaviour
         gameManager.DropCoinsExp(coins, experience);
         yield return new WaitForSeconds(2);
         Destroy(gameObject);
+        if (isBoss)
+        {
+            foreach (var item in stairs)
+            {
+                item.SetActive(true);
+            }
+        }
     }
 
     private int GenerateDrop()

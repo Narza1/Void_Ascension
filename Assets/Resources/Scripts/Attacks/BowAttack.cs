@@ -33,8 +33,15 @@ public class BowAttack : StateMachineBehaviour
     {
 
         GameObject startingPoint = GameObject.Find("handSlotLeft");
-        //GameObject prefab = Resources.Load<GameObject>("Prefabs/FireBall");
-        GameObject prefab = Resources.Load<GameObject>("Prefabs/arrow_green");
+
+        var player = GameObject.Find("Player").GetComponent<AvatarController>();
+        var aux = AvatarController.set1 ? 1 : 4;
+        var arrow = GameController.GetItemByGuid(player.inventory.SetSlots[aux].ItemGuid).Icon.name;
+        Debug.Log(arrow);
+        GameObject prefab = Resources.Load<GameObject>($"Prefabs/{arrow}");
+        player.inventory.SetSlots[aux].UseItem();
+        Debug.Log(player.inventory.SetSlots[aux].quantity);
+
 
         // Obtener la posición del ratón en la pantalla
         Vector3 mousePosition = Input.mousePosition;
@@ -67,24 +74,8 @@ public class BowAttack : StateMachineBehaviour
             // Calcular el ángulo en grados
             fle3.transform.localEulerAngles = new Vector3(0, 0, (Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 75));
         }
-        // Instanciar el objeto con la misma posición y rotación que el GameObject existente
+        
         
     }
-    // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
-    //override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    
-    //}
 
-    // OnStateMove is called right after Animator.OnAnimatorMove()
-    //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    // Implement code that processes and affects root motion
-    //}
-
-    // OnStateIK is called right after Animator.OnAnimatorIK()
-    //override public void OnStateIK(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    // Implement code that sets up animation IK (inverse kinematics)
-    //}
 }

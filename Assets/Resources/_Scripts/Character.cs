@@ -25,14 +25,18 @@ public class Character
     public float Speed { get => speed; set => speed = value; }
     public int Level { get => level; set => level = value; }
 
-    public void LevelUP(int exp)
+    public bool LevelUP(int exp)
     {
+        bool levelledUP = false;
         this.exp += exp;
         while(this.exp >= level * 150)
         {
             this.exp -= level * 150;
             level++;
+            levelledUP = true;
         }
+
+        return levelledUP;
     }
    
   
@@ -45,8 +49,11 @@ public class MinionCharacter : Character
 {
     public MinionCharacter()
     {
-        Hp = 13;
-        Speed = 4;
+        //Hp = 13;
+        Hp = 99;
+        //Speed = 4;
+        Speed = 10;
+        Atk = 99;
     }
 }
 

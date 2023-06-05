@@ -15,6 +15,9 @@ public class TilemapVisualizer : MonoBehaviour
     [SerializeField]
     private TileBase[] floorTiles;
 
+    public Tilemap FloorTilemap { get => floorTilemap; set => floorTilemap = value; }
+    public Tilemap WallTilemap { get => wallTilemap; set => wallTilemap = value; }
+
     public void PaintFloorTiles(IEnumerable<Vector2Int> floorPositions)
     {
         PaintTiles(floorPositions, floorTilemap, floorTiles);

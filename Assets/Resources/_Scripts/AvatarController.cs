@@ -12,18 +12,21 @@ public class AvatarController : MonoBehaviour
     private float horizontal, vertical, startTime;
     private Rigidbody2D rb;
     public float speed = 3;
-    public static bool set1 = true, isAttacking;
+    public static bool set1 = true, isAttacking, selectCharacter;
     public InventoryUIController inventory;
-    private VisualElement m_Root, staminaBar, hpBar;
+    private VisualElement m_Root, staminaBar,staminaBarScreen, hpBar, hpBarScreen;
     private GameManager gameManager;
-    public List<Character> characters = new List<Character>();
-    public int currentCharacter = -1;
+    public List<Character> characters;
+    public int currentCharacter = 0;
     private readonly string[] names = { "Warrior", "Mage", "Minion", "Archer" };
     public float currentHP, currentStamina=1, maxStamina=1;
    
 
-    private bool damaged,isRunning = false, isAlive = true;
-
+    private bool damaged,isRunning = false, isDead;
+    private void Awake()
+    {
+        selectCharacter= false;
+    }
     void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -35,7 +38,14 @@ public class AvatarController : MonoBehaviour
         inventory = ui.GetComponent<InventoryUIController>();
         staminaBar = doc.Q("Stamina");
         hpBar = doc.Q("HP");
-        
+
+
+        ui = GameObject.Find("StatusBars");
+        doc = ui.GetComponent<UIDocument>().rootVisualElement;
+        staminaBarScreen = doc.Q("Stamina");
+        hpBarScreen = doc.Q("HP");
+
+
         // Obtiene una referencia al objeto secundario
         GameObject childObject = transform.Find("KayKit Animated Character").gameObject;
 
@@ -44,14 +54,8 @@ public class AvatarController : MonoBehaviour
 
         rb = GetComponent<Rigidbody2D>();
         startTime = Time.time;
-
-        //characters = playerData.characters;
         AvatarController.isAttacking = false;
-        //LoadCharacters();
-        if (!GameManager.SaveFileExists())
-        {
-            characters = gameManager.playerData.characters;
-        }
+        
     }
 
     private IEnumerator RecoverStamina()
@@ -65,7 +69,8 @@ public class AvatarController : MonoBehaviour
                 currentStamina+=0.5f;
                 
             }
-            staminaBar.style.width = Length.Percent(currentStamina / maxStamina * 100);
+            
+            staminaBar.style.width = staminaBarScreen.style.width = Length.Percent(currentStamina / maxStamina * 100);
             yield return new WaitForSeconds(0.05f);
         }
 
@@ -73,24 +78,28 @@ public class AvatarController : MonoBehaviour
 
     public void LoadCharacters()
     {
-        if (GameManager.SaveFileExists())
+        if (GameManager.SaveFileExists() && !selectCharacter)
         {
+            gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
+            Debug.Log(gameManager);
+            Debug.Log(gameManager.playerData);
             var playerData = gameManager.playerData;
             characters = playerData.characters;
+            Debug.Log(playerData.characters.Count);
             currentCharacter = playerData.currentCharacter;//aqui en lugar de cero sera el valor que leamos del archvo
             Set1Ready();
-        }
-        
-        if (currentCharacter != -1)
-        {
             ChangeCharacter(currentCharacter);
             ChangeStats(currentCharacter);
+            isDead = characters[currentCharacter].isDead;
+
         }
     }
 
-    private void ChangeStats(int currentCharacter)
+    public void ChangeStats(int currentCharacter)
     {
         var currentCharacter1 = characters[currentCharacter];
+
 
         maxStamina = currentCharacter1.Stamina * currentCharacter1.Level;
         StartCoroutine(RecoverStamina());
@@ -106,7 +115,7 @@ public class AvatarController : MonoBehaviour
         {
             currentHP = currentCharacter1.Hp * currentCharacter1.Level;
         }
-        hpBar.style.width = Length.Percent(currentHP / (currentCharacter1.Hp * currentCharacter1.Level) * 100);
+        hpBar.style.width = hpBarScreen.style.width = Length.Percent(currentHP / (currentCharacter1.Hp * currentCharacter1.Level) * 100);
 
 
     }
@@ -122,7 +131,7 @@ public class AvatarController : MonoBehaviour
             if (childObject.transform.IsChildOf(gameObject.transform))
             {
                 // Hacer algo con cada objeto secundario
-                if (names[index].Equals(childObject.tag))
+                if(childObject.CompareTag(names[index]))
                 {
                     childObject.SetActive(true);
                 }
@@ -136,18 +145,18 @@ public class AvatarController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isAlive)
+        if (!isDead && !selectCharacter)
         {
 
-            if (m_Root.style.display == DisplayStyle.None || !isAttacking)
+            if (m_Root.style.display == DisplayStyle.None && !isAttacking)
             {
                 if (currentStamina != 0)
                 {
                     Attack();
                     DashPattern();
+                    Run();
 
                 }
-                Run();
                 ChangeSetPattern();
             }
             Inventory();
@@ -180,8 +189,6 @@ public class AvatarController : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             SetEquip(inventory.SetSlots[i]);
-            Debug.Log("ago algo");
-            Debug.Log(inventory.SetSlots[i].ItemGuid);
         }
     }
     private void ChangeSetPattern()
@@ -207,10 +214,6 @@ public class AvatarController : MonoBehaviour
         string guid = inventorySlot.ItemGuid;
         if (!guid.Equals(""))
         {
-
-
-
-
             ItemDetails slotItem = GameController.GetItemByGuid(guid);
 
             switch (slotItem.objectType)
@@ -304,7 +307,7 @@ public class AvatarController : MonoBehaviour
     {
         isDashing = true;
         currentStamina -= 5;
-        Vector2 dashDirection = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        Vector2 dashDirection = new(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         rb.velocity = dashDirection * dashSpeed;
         yield return new WaitForSeconds(dashDuration);
         rb.velocity = Vector2.zero;
@@ -324,6 +327,8 @@ public class AvatarController : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.LeftShift) || currentStamina==0)
         {
             isRunning = false;
+            Debug.Log(characters.Count());
+            Debug.Log(currentCharacter);
             speed = characters[currentCharacter].Speed;
             animator.SetBool("running", false);
 
@@ -334,7 +339,7 @@ public class AvatarController : MonoBehaviour
     {
         //if (m_Root.style.display == DisplayStyle.None)
         //{
-        if (!isDashing && isAlive)
+        if (!isDashing && !isDead && !selectCharacter)
         {
             horizontal = Input.GetAxisRaw("Horizontal");
             vertical = Input.GetAxisRaw("Vertical");
@@ -372,24 +377,26 @@ public class AvatarController : MonoBehaviour
 
     public void TookDamae(float damage, bool isMagic)
     {
-        if (!damaged && isAlive)
+        if (!damaged && !isDead)
         {
             StartCoroutine(TookDamage(damage, isMagic));
         }
     }
     public IEnumerator TookDamage(float damage, bool isMagic)
     {
+        var character = characters[currentCharacter];
         damaged = true;
         if (isMagic)
         {
-            currentHP -= Math.Max(damage - characters[currentCharacter].MagDef, 1);
+            currentHP -= Math.Max(damage - character.MagDef, 1);
 
         }
         else
         {
-            currentHP -= Math.Max(damage - characters[currentCharacter].Def, 1);
+            currentHP -= Math.Max(damage - character.Def, 1);
 
         }
+        hpBar.style.width = hpBarScreen.style.width = Length.Percent((currentHP / (character.Hp * character.Level)) * 100);
 
         if (currentHP <= 0)
         {
@@ -418,7 +425,7 @@ public class AvatarController : MonoBehaviour
        
         gameManagerScript.Death();
 
-        isAlive = false;
+        isDead = true;
         transform.Find("KayKit Animated Character").GetComponent<Rotation>().enabled = false;
         animator.SetTrigger("Death");
         yield return new WaitForSeconds(2f);

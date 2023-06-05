@@ -97,7 +97,6 @@ public class ThrowItem : StateMachineBehaviour
             else
             {
                 var b = revenant.GetComponent<RevenantController>().revenantData.consumableGUID;
-                Debug.Log(b);
                 if (b != "")
                 {
                     Shoot(startingPoint, Resources.Load<GameObject>($"Prefabs/{GameController.GetItemByGuid(b).Icon.name}"));

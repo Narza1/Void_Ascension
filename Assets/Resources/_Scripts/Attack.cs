@@ -27,11 +27,11 @@ public class Attack : MonoBehaviour
             //idea de hacer return
             if (collider.gameObject.CompareTag("Monster"))
             {
-                collider.gameObject.GetComponent<EnemyStats>().TookDamae(10, false);
+                collider.gameObject.GetComponent<EnemyStats>().TookDamae(player.characters[player.currentCharacter].Atk, false);
             }
             else if (collider.gameObject.CompareTag("Revenant"))
             {
-                collider.gameObject.GetComponent<RevenantController>().TookDamae(10, false);
+                collider.gameObject.GetComponent<RevenantController>().TookDamae(player.characters[player.currentCharacter].Atk, false);
             }
 
         }

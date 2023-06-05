@@ -17,11 +17,13 @@ public class EnemyAI : MonoBehaviour
     private CircleCollider2D cd;
 
     private void Start()
-    {
-        animationColliderFix = GameObject.Find("Monster").GetComponent<AnimationColliderFix>();
+    { var monster = gameObject.transform.Find("MushroomMonsterRot/Monster").gameObject;
+        animationColliderFix = monster.GetComponent<AnimationColliderFix>();
         rb = GetComponent<Rigidbody2D>();
         cd = GetComponent<CircleCollider2D>();
-        animator = GameObject.Find("Monster").GetComponent<Animator>();
+
+        animator = monster.GetComponent<Animator>();
+
     }
     private void Awake()
     {

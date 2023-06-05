@@ -68,7 +68,7 @@ public delegate void OnInventoryChangedDelegate(string[] itemGuid, int[] quantit
 /// </summary>
 public class GameController : MonoBehaviour
 {
-    [SerializeField]
+    
     public List<Sprite> IconSprites;
     private static Dictionary<string, ItemDetails> m_ItemDatabase = new Dictionary<string, ItemDetails>();
     private List<ItemDetails> m_PlayerInventory = new List<ItemDetails>();
@@ -83,7 +83,7 @@ public class GameController : MonoBehaviour
         {
             PopulateDatabase();
         }
-        catch (ArgumentException ae)
+        catch (ArgumentException)
         {
 
         }
@@ -92,7 +92,6 @@ public class GameController : MonoBehaviour
     {
         if (!GameManager.SaveFileExists())
         {
-            Debug.Log("fucking relleno inventario");
             m_PlayerInventory.AddRange(m_ItemDatabase.Values);
             int[] f = new int[m_PlayerInventory.Count];
             for (int i = 0; f.Length > i; i++)
