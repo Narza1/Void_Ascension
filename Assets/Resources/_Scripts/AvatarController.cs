@@ -14,18 +14,18 @@ public class AvatarController : MonoBehaviour
     public float speed = 3;
     public static bool set1 = true, isAttacking, selectCharacter;
     public InventoryUIController inventory;
-    private VisualElement m_Root, staminaBar,staminaBarScreen, hpBar, hpBarScreen;
+    private VisualElement m_Root, staminaBar, staminaBarScreen, hpBar, hpBarScreen;
     private GameManager gameManager;
     public List<Character> characters;
     public int currentCharacter = 0;
     private readonly string[] names = { "Warrior", "Mage", "Minion", "Archer" };
-    public float currentHP, currentStamina=1, maxStamina=1;
-   
+    public float currentHP, currentStamina = 1, maxStamina = 1;
 
-    private bool damaged,isRunning = false, isDead;
+
+    private bool damaged, isRunning = false, isDead;
     private void Awake()
     {
-        selectCharacter= false;
+        selectCharacter = false;
     }
     void Start()
     {
@@ -55,22 +55,24 @@ public class AvatarController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         startTime = Time.time;
         AvatarController.isAttacking = false;
-        
+
     }
 
     private IEnumerator RecoverStamina()
     {
         while (true)
         {
-            if (currentStamina < 0) {
-                currentStamina = 0; }
-            if(isRunning) { currentStamina -= 0.5f; }
+            if (currentStamina < 0)
+            {
+                currentStamina = 0;
+            }
+            if (isRunning) { currentStamina -= 0.5f; }
             if (currentStamina < maxStamina && !isAttacking && !isRunning && !isDashing)
             {
-                currentStamina+=0.5f;
-                
+                currentStamina += 0.5f;
+
             }
-            
+
             staminaBar.style.width = staminaBarScreen.style.width = Length.Percent(currentStamina / maxStamina * 100);
             yield return new WaitForSeconds(0.05f);
         }
@@ -103,7 +105,7 @@ public class AvatarController : MonoBehaviour
         StartCoroutine(RecoverStamina());
         currentHP = currentCharacter1.Hp * currentCharacter1.Level;
         speed = currentCharacter1.Speed;
-        GameObject ui = GameObject.Find("UserInterface");   
+        GameObject ui = GameObject.Find("UserInterface");
         if (gameManager.playerData.currentFloor == 0)
         {
             currentHP = currentCharacter1.Hp * currentCharacter1.Level;
@@ -122,7 +124,7 @@ public class AvatarController : MonoBehaviour
             if (childObject.transform.IsChildOf(gameObject.transform))
             {
                 // Hacer algo con cada objeto secundario
-                if(childObject.CompareTag(names[index]))
+                if (childObject.CompareTag(names[index]))
                 {
                     childObject.SetActive(true);
                 }
@@ -203,7 +205,11 @@ public class AvatarController : MonoBehaviour
 
     public void SetConsumbleState(bool consumible)
     {
-        animator.SetBool("consumible",consumible);
+        var index = set1 ? 2 : 5;
+        animator.SetBool("consumible", GameController.GetItemByGuid(inventory.SetSlots[index].ItemGuid).GetType().Equals(typeof(Consumable)));
+
+
+
     }
     public void SetEquip(InventorySlot inventorySlot)
     {
@@ -271,16 +277,11 @@ public class AvatarController : MonoBehaviour
 
                 case ObjectType.Consumable:
 
-                    ////////////aqui es donde tengo que mirar si el set esta activo
-
-                    if (slotItem.GetType() == typeof(Consumable))
+                    var index = set1 ? 2 : 5;
+                    if (inventory.SetSlots[index].Equals(inventorySlot))
                     {
-                        animator.SetBool("consumable", true);
-                    }
-                    else
-                    {
-                        animator.SetBool("consumable", false);
-
+                        Debug.Log("yupi");
+                        animator.SetBool("consumable", GameController.GetItemByGuid(inventory.SetSlots[index].ItemGuid).GetType().Equals(typeof(Consumable)));
                     }
                     break;
 
@@ -318,10 +319,10 @@ public class AvatarController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftShift) && currentStamina > 0)
         {
             isRunning = true;
-            speed = characters[currentCharacter].Speed*2;
+            speed = characters[currentCharacter].Speed * 2;
             animator.SetBool("running", true);
         }
-        if (Input.GetKeyUp(KeyCode.LeftShift) || currentStamina<=0)
+        if (Input.GetKeyUp(KeyCode.LeftShift) || currentStamina <= 0)
         {
             isRunning = false;
             speed = characters[currentCharacter].Speed;
@@ -365,11 +366,20 @@ public class AvatarController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E))
         {
             animator.SetInteger("attack", 0);
+
         }
 
 
     }
+    public void RecoverHealth()
 
+    {
+        var currentCharacter1 = characters[currentCharacter];
+        var index = set1 ? 2 : 5;
+        currentHP = Math.Min(currentHP + ((Consumable)GameController.GetItemByGuid(inventory.SetSlots[index].ItemGuid)).recoveryValue, currentCharacter1.Hp * currentCharacter1.Level);
+        hpBar.style.width = hpBarScreen.style.width = Length.Percent(currentHP / (currentCharacter1.Hp * currentCharacter1.Level) * 100);
+
+    }
     public void TookDamae(float damage, bool isMagic)
     {
         if (!damaged && !isDead)
@@ -417,7 +427,7 @@ public class AvatarController : MonoBehaviour
 
         characters[currentCharacter].isDead = true;
         gameManagerScript.playerData.characters = characters;
-       
+
         gameManagerScript.Death();
 
         isDead = true;
