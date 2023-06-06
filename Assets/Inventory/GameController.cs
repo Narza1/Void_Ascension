@@ -260,7 +260,8 @@ public class GameController : MonoBehaviour
             GUID = "80F6D95E-ABF2-4127-923C-58A6E4A917B3",
             Icon = IconSprites.FirstOrDefault(x => x.name.Equals("potion_small")),
             CanDrop = true,
-            objectType = ObjectType.Consumable
+            objectType = ObjectType.Consumable,
+            recoveryValue = 50
         });
 
         m_ItemDatabase.Add("6B3D9A85-40A2-4D7E-B5A7-CEFAC4BC5F88", new Consumable()
@@ -269,7 +270,8 @@ public class GameController : MonoBehaviour
             GUID = "6B3D9A85-40A2-4D7E-B5A7-CEFAC4BC5F88",
             Icon = IconSprites.FirstOrDefault(x => x.name.Equals("potion_medium")),
             CanDrop = true,
-            objectType = ObjectType.Consumable
+            objectType = ObjectType.Consumable,
+            recoveryValue = 150
         });
 
         m_ItemDatabase.Add("1F78B396-AE1D-4891-A6D4-70E6B2DF3E0C", new Consumable()
@@ -278,7 +280,8 @@ public class GameController : MonoBehaviour
             GUID = "1F78B396-AE1D-4891-A6D4-70E6B2DF3E0C",
             Icon = IconSprites.FirstOrDefault(x => x.name.Equals("potion_large")),
             CanDrop = true,
-            objectType = ObjectType.Consumable
+            objectType = ObjectType.Consumable,
+            recoveryValue = 250
         });
 
         m_ItemDatabase.Add("E6AD398F-9654-46A6-BCA7-25C809D046D8", new Throwing()

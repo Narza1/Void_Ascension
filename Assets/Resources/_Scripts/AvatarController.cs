@@ -200,6 +200,11 @@ public class AvatarController : MonoBehaviour
         }
 
     }
+
+    public void SetConsumbleState(bool consumible)
+    {
+        animator.SetBool("consumible",consumible);
+    }
     public void SetEquip(InventorySlot inventorySlot)
     {
         string guid = inventorySlot.ItemGuid;
@@ -265,6 +270,8 @@ public class AvatarController : MonoBehaviour
                     break;
 
                 case ObjectType.Consumable:
+
+                    ////////////aqui es donde tengo que mirar si el set esta activo
 
                     if (slotItem.GetType() == typeof(Consumable))
                     {
