@@ -31,14 +31,14 @@ public class InventoryUIController : MonoBehaviour
         setContainer2 = m_Root.Query<VisualElement>("Set2");
 
 
-        if(GameObject.Find("GameManager").GetComponent<GameManager>() != null )
+        if (GameObject.Find("GameManager").GetComponent<GameManager>() != null)
 
-        for (int i = 0; i < 25; i++)
-        {
-            InventorySlot item = new InventorySlot();
-            InventoryItems.Add(item);
-            m_SlotContainer.Add(item);
-        }
+            for (int i = 0; i < 25; i++)
+            {
+                InventorySlot item = new InventorySlot();
+                InventoryItems.Add(item);
+                m_SlotContainer.Add(item);
+            }
 
         for (int i = 0; i < 3; i++)
         {
@@ -58,7 +58,7 @@ public class InventoryUIController : MonoBehaviour
         m_GhostIcon.RegisterCallback<PointerMoveEvent>(OnPointerMove);
         m_GhostIcon.RegisterCallback<PointerUpEvent>(OnPointerUp);
     }
-    public void GameController_OnInventoryChanged(string[] itemGuid,int[] quantity, InventoryChangeType change)
+    public void GameController_OnInventoryChanged(string[] itemGuid, int[] quantity, InventoryChangeType change)
     {
 
         //Loop through each item and if it has been picked up, add it to the next empty slot
@@ -80,7 +80,7 @@ public class InventoryUIController : MonoBehaviour
                     {
                         if (newItem.Name.Contains("Arrow") || newItem.objectType == ObjectType.Consumable)
                         {
-                            newItem.quantity+= quantity[i];
+                            newItem.quantity += quantity[i];
                         }
                         emptySlot.HoldItem(newItem);
                     }
@@ -138,35 +138,24 @@ public class InventoryUIController : MonoBehaviour
             if (SetSlots.Contains(m_OriginalSlot))
             {
 
-                Debug.Log("found");
                 InventorySlot closestSlot = slots.OrderBy(x => Vector2.Distance
                   (x.worldBound.position, m_GhostIcon.worldBound.position)).First();
                 int index = 0;
                 for (int i = 0; i < SetSlots.Count; i++)
                 {
-                    if (SetSlots[i].Equals(closestSlot))
+                    if (SetSlots[i].Equals(m_OriginalSlot))
                     {
                         index = i; break;
                     }
                 }
-                if ((index >= 3 && !AvatarController.set1) || (index < 3 && AvatarController.set1))
-                {
-                    play.SetEquip(m_OriginalSlot);
-                }
-                if (closestSlot.ItemGuid == "")
-                {  
-                    SetItem(slots);  
-                }
-                else
-                {                    
-                    SetItem2(slots);                    
-                }
 
                 if ((index >= 3 && !AvatarController.set1) || (index < 3 && AvatarController.set1))
-                {
-                    
                     play.SetEquip(m_OriginalSlot);
-                }
+
+                if (closestSlot.ItemGuid == "")
+                    SetItem(slots);
+                else
+                    SetItem2(slots);
             }
             else
             {
@@ -201,7 +190,7 @@ public class InventoryUIController : MonoBehaviour
                     case 3:
                         if (obj.Equals(ObjectType.Equipment))
                         {
-                            control = true;                           
+                            control = true;
                         }
                         break;
                     case 1:
@@ -318,7 +307,7 @@ public class InventoryUIController : MonoBehaviour
     private void changeQuantity(InventorySlot original, InventorySlot newSlot)
     {
         var aux = newSlot.quantity;
-        newSlot.quantity= original.quantity;
-        original.quantity= aux;
+        newSlot.quantity = original.quantity;
+        original.quantity = aux;
     }
 }

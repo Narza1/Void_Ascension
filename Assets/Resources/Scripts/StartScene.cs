@@ -32,7 +32,7 @@ public class StartScene : MonoBehaviour
         gameManager = GetComponent<GameManager>();
         ReadyUI();
         player = GameObject.Find("Player").GetComponent<AvatarController>();
-        if (player.currentCharacter >= 0)
+        if (player.currentCharacter >= 0 && GameManager.SaveFileExists())
             if (!player.characters[player.currentCharacter].isDead)
             {
                 ost.Play();
@@ -51,11 +51,12 @@ public class StartScene : MonoBehaviour
         selectCharacterButtons[2].RegisterCallback<ClickEvent>(LoadStats);
         selectCharacterButtons[3].RegisterCallback<ClickEvent>(LoadStats3);
         gameManager = GetComponent<GameManager>();
-
+        int deadCount = 0;
         foreach (var character in gameManager.playerData.characters)
         {
             if (character.isDead)
             {
+                deadCount++;
                 if (character.GetType() == typeof(WarriorCharacter))
                 {
                     ChangeDisplay("Warrior");
@@ -77,7 +78,13 @@ public class StartScene : MonoBehaviour
                     selectCharacterButtons[3].clickable = null;
                 }
             }
-        }     
+        }  
+        
+        if(deadCount==4)
+        {
+            GameManager.DeleteSaveFile();
+            Application.Quit();
+        }
 
         List<Button> messageButtons = confirmationMessage.Query<Button>().ToList();
         messageButtons[0].RegisterCallback<ClickEvent>(EnterTower);

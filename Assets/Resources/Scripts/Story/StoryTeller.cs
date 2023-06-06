@@ -23,26 +23,22 @@ public class StoryTeller : MonoBehaviour
 
     private IEnumerator BeginStoryTelling()
     {
-
-        
         Color color;
         color = actualText.color;
-        //yield return new WaitForSeconds(1);
-        //foreach (var text in dialogs1)
-        //{
-        //    actualText.text = text;
-            
-           
-        //    for (int i = 0; i < 100; i++)
-        //    {
-        //        color.a = i/100f;
-        //        actualText.color = color;
-        //        yield return new WaitForSeconds(0.02f);
+        yield return new WaitForSeconds(1);
+        foreach (var text in dialogs1)
+        {
+            actualText.text = text;
+            for (int i = 0; i < 100; i++)
+            {
+                color.a = i / 100f;
+                actualText.color = color;
+                yield return new WaitForSeconds(0.02f);
 
-        //    }
-        //    yield return new WaitForSeconds(2f);
+            }
+            yield return new WaitForSeconds(2f);
 
-        //}
+        }
         SpriteRenderer image;
         for (int i = 0; i < dialogs2.Length; i++)   
         {

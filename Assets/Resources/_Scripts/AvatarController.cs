@@ -62,7 +62,8 @@ public class AvatarController : MonoBehaviour
     {
         while (true)
         {
-            if (currentStamina< 0) { currentStamina = 0; }
+            if (currentStamina < 0) {
+                currentStamina = 0; }
             if(isRunning) { currentStamina -= 0.5f; }
             if (currentStamina < maxStamina && !isAttacking && !isRunning && !isDashing)
             {
@@ -82,11 +83,8 @@ public class AvatarController : MonoBehaviour
         {
             gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
-            Debug.Log(gameManager);
-            Debug.Log(gameManager.playerData);
             var playerData = gameManager.playerData;
             characters = playerData.characters;
-            Debug.Log(playerData.characters.Count);
             currentCharacter = playerData.currentCharacter;//aqui en lugar de cero sera el valor que leamos del archvo
             Set1Ready();
             ChangeCharacter(currentCharacter);
@@ -105,19 +103,12 @@ public class AvatarController : MonoBehaviour
         StartCoroutine(RecoverStamina());
         currentHP = currentCharacter1.Hp * currentCharacter1.Level;
         speed = currentCharacter1.Speed;
-        GameObject ui = GameObject.Find("UserInterface");
-
-        var doc = ui.GetComponent<UIDocument>().rootVisualElement;
-
-
-        
+        GameObject ui = GameObject.Find("UserInterface");   
         if (gameManager.playerData.currentFloor == 0)
         {
             currentHP = currentCharacter1.Hp * currentCharacter1.Level;
         }
         hpBar.style.width = hpBarScreen.style.width = Length.Percent(currentHP / (currentCharacter1.Hp * currentCharacter1.Level) * 100);
-
-
     }
 
     public void ChangeCharacter(int index)
@@ -269,7 +260,6 @@ public class AvatarController : MonoBehaviour
                     else
                     {
                         int ammo = inventorySlot.quantity;
-                        Debug.Log(ammo);
                         animator.SetInteger("ammo", ammo);
                     }
                     break;
@@ -318,17 +308,15 @@ public class AvatarController : MonoBehaviour
 
     private void Run()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.LeftShift) && currentStamina > 0)
         {
             isRunning = true;
             speed = characters[currentCharacter].Speed*2;
             animator.SetBool("running", true);
         }
-        if (Input.GetKeyUp(KeyCode.LeftShift) || currentStamina==0)
+        if (Input.GetKeyUp(KeyCode.LeftShift) || currentStamina<=0)
         {
             isRunning = false;
-            Debug.Log(characters.Count());
-            Debug.Log(currentCharacter);
             speed = characters[currentCharacter].Speed;
             animator.SetBool("running", false);
 

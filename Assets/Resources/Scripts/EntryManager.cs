@@ -12,7 +12,7 @@ public class EntryManager : MonoBehaviour
 
     void Start()
     {
-        window = confirmationMessage.GetComponent<UIDocument>().rootVisualElement;
+        window = confirmationMessage.GetComponent<UIDocument>().rootVisualElement.Q("Message");
         if (!GameManager.SaveFileExists())
         {
             GameObject.Find("btnContinue").SetActive(false);
@@ -21,6 +21,7 @@ public class EntryManager : MonoBehaviour
 
     public void NewGame()
     {
+        Debug.Log("fhufhb");
         if (GameManager.SaveFileExists())
         {
             window.style.display = DisplayStyle.Flex;
@@ -28,6 +29,10 @@ public class EntryManager : MonoBehaviour
             List<Button> messageButtons = window.Query<Button>().ToList();
             messageButtons[0].RegisterCallback<ClickEvent>(LoadNewGame);
             messageButtons[1].RegisterCallback<ClickEvent>(CloseMessage);
+        }
+        else
+        {
+            LoadNewGame(null);
         }
     }
     private void LoadNewGame(ClickEvent evt)
@@ -41,6 +46,7 @@ public class EntryManager : MonoBehaviour
     }
     public void LoadGame()
     {
+        Debug.Log(GameManager.GetSavedFloor());
         switch (GameManager.GetSavedFloor())
         {
             case 0:

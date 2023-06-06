@@ -83,7 +83,7 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.DeleteKey("K");
         PlayerPrefs.DeleteKey("I");
     }
-    public void LoadKeys()
+    public static void LoadKeys()
     {
         if (PlayerPrefs.HasKey("K") && PlayerPrefs.HasKey("I"))
         {
@@ -116,9 +116,13 @@ public class GameManager : MonoBehaviour
     }
     public static int GetSavedFloor()
     {
+        LoadKeys();
+
         string filePath = Path.Combine(saveFolderPath, saveFileName);
+      
         if (File.Exists(filePath))
         {
+
             try
             {
                 PlayerData decryptedObj = EncryptionUtility.DecryptFromFile<PlayerData>(filePath);
