@@ -45,14 +45,14 @@ public abstract class AbstractDungeonGenerator : MonoBehaviour
         TileBase[] wallTiles = wallTilemap.GetTilesBlock(wallBounds);
 
         // Lista de posiciones disponibles para colocar el objeto
-        List<Vector3Int> availablePositions = new List<Vector3Int>();
+        List<Vector3Int> availablePositions = new();
 
         // Recorrer todos los tiles del tilemap floor y agregar las posiciones disponibles a la lista
         for (int x = floorBounds.xMin; x < floorBounds.xMax; x++)
         {
             for (int y = floorBounds.yMin; y < floorBounds.yMax; y++)
             {
-                Vector3Int tilePosition = new Vector3Int(x, y, 0);
+                Vector3Int tilePosition = new(x, y, 0);
                 bool isWallTile = wallTilemap.HasTile(tilePosition);
                 bool isFloorTile = floorTilemap.HasTile(tilePosition);
 

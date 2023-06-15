@@ -19,7 +19,7 @@ public class AvatarController : MonoBehaviour
     private GameManager gameManager;
     public List<Character> characters;
     public int currentCharacter = 0;
-    private readonly string[] names = { "Warrior", "Mage", "Minion", "Archer" };
+    private readonly string[] names = { "Minion", "Mage", "Warrior", "Archer" };
     public float currentHP, currentStamina = 1, maxStamina = 1;
 
 
@@ -27,9 +27,7 @@ public class AvatarController : MonoBehaviour
     private void Awake()
     {
         selectCharacter = false;
-    }
-    void Start()
-    {
+    
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         GameObject ui = GameObject.Find("UserInterface");
         var doc = ui.GetComponent<UIDocument>().rootVisualElement;

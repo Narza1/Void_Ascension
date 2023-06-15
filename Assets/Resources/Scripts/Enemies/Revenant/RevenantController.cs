@@ -10,12 +10,11 @@ public class RevenantController : MonoBehaviour
 {
 
     Animator animator;
-    private float startTime;
     private Rigidbody2D rb;
     public bool isAttacking;
     private Character character;
     public CharacterData revenantData;
-    private readonly string[] names = { "Warrior", "Mage", "Minion", "Archer" };
+    private readonly string[] names = { "Minion", "Mage", "Warrior", "Archer" };
     private float maxHP, currentHP, speed;
     private bool damaged, isAlive = true, ready, inRange;
     private GameObject player;
@@ -28,7 +27,6 @@ public class RevenantController : MonoBehaviour
         GameObject childObject = transform.Find("KayKit Animated Character").gameObject;
         animator = childObject.GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        startTime = Time.time;
         LoadCharacter();
         player = GameObject.Find("Player");
         SetEquip(revenantData.weaponGUID);

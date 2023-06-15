@@ -96,15 +96,14 @@ public class StartScene : MonoBehaviour
             }
             else
             {
-                if (character.GetType() == typeof(WarriorCharacter))
-                    selectCharacterButtons[2].RegisterCallback<ClickEvent>(LoadStats);
-
-                
                 if (character.GetType() == typeof(MinionCharacter))
-                    selectCharacterButtons[0].RegisterCallback<ClickEvent>(LoadStats2);
+                    selectCharacterButtons[0].RegisterCallback<ClickEvent>(LoadStats);
 
                 if (character.GetType() == typeof(MageCharacter))
                     selectCharacterButtons[1].RegisterCallback<ClickEvent>(LoadStats1);
+
+                if (character.GetType() == typeof(WarriorCharacter))
+                    selectCharacterButtons[2].RegisterCallback<ClickEvent>(LoadStats2);
 
                 if (character.GetType() == typeof(ArcherCharacter))              
                     selectCharacterButtons[3].RegisterCallback<ClickEvent>(LoadStats3);
