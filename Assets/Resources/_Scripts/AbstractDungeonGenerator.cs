@@ -72,7 +72,12 @@ public abstract class AbstractDungeonGenerator : MonoBehaviour
         } while (!CheckAdjacentTilesEmpty(randomPosition));
 
         GameObject.Find("Stairs").transform.position = randomPosition;
-        randomPosition = availablePositions[UnityEngine.Random.Range(0, availablePositions.Count)];
+        do
+        {
+
+            randomIndex = UnityEngine.Random.Range(0, availablePositions.Count);
+            randomPosition = availablePositions[randomIndex];
+        } while (!CheckAdjacentTilesEmpty(randomPosition));
         GameObject.Find("Player").transform.position = randomPosition;
         int[] a = new int[] { 10, 20, 30 };
         availablePositions.Remove(randomPosition);
@@ -88,21 +93,38 @@ public abstract class AbstractDungeonGenerator : MonoBehaviour
             GameObject.Find("DownStairs").transform.position = randomPosition;
 
             var boss = (floor / 10) - 1;
-            randomIndex = UnityEngine.Random.Range(0, availablePositions.Count);
-            randomPosition = availablePositions[randomIndex];
+            do
+            {
+
+                randomIndex = UnityEngine.Random.Range(0, availablePositions.Count);
+                randomPosition = availablePositions[randomIndex];
+            } while (!CheckAdjacentTilesEmpty(randomPosition));
             Instantiate(objectPrefab[boss], randomPosition, Quaternion.identity);
 
 
         }
         else
         {
-            
+            do
+            {
+
+                randomIndex = UnityEngine.Random.Range(0, availablePositions.Count);
+                randomPosition = availablePositions[randomIndex];
+            } while (!CheckAdjacentTilesEmpty(randomPosition));
+
+            GameObject.Find("Revenant").transform.position = randomPosition;
+
+
             int prefab = (int)Math.Floor(floor / 10f);
 
             for (int i = 0; i < CalculateNumMonsters(); i++)
             {
-                randomIndex = UnityEngine.Random.Range(0, availablePositions.Count);
-                randomPosition = availablePositions[randomIndex];
+                do
+                {
+                    randomIndex = UnityEngine.Random.Range(0, availablePositions.Count);
+                    randomPosition = availablePositions[randomIndex];
+                } while (!CheckAdjacentTilesEmpty(randomPosition));
+                
                 Instantiate(objectPrefab[prefab], randomPosition, Quaternion.identity);
             }
         }
