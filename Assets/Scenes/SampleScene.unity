@@ -1157,6 +1157,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48e1a0ab45d204f498bf08ee8e777fc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  caster: {fileID: 0}
 --- !u!60 &795326626
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -1510,6 +1511,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48e1a0ab45d204f498bf08ee8e777fc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  caster: {fileID: 0}
 --- !u!60 &870046189
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -1789,6 +1791,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48e1a0ab45d204f498bf08ee8e777fc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  caster: {fileID: 0}
 --- !u!60 &1076342931
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -2038,6 +2041,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e44b8607d8c1cd043b26552461a4582d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isAttacking: 0
   revenantData:
     characterType: 0
     lv: 0
@@ -2423,6 +2427,11 @@ Transform:
   m_Father: {fileID: 1256317673}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1390599299 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6416765585860507332, guid: b35f25f1ddc7e8b42b6e8d92f0bcb204, type: 3}
+  m_PrefabInstance: {fileID: 6416765586825957855}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1441489759
 GameObject:
   m_ObjectHideFlags: 0
@@ -25535,6 +25544,18 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6416765587231143316, guid: b35f25f1ddc7e8b42b6e8d92f0bcb204, type: 3}
+      propertyPath: caster
+      value: 
+      objectReference: {fileID: 1390599299}
+    - target: {fileID: 6416765587632485255, guid: b35f25f1ddc7e8b42b6e8d92f0bcb204, type: 3}
+      propertyPath: caster
+      value: 
+      objectReference: {fileID: 1390599299}
+    - target: {fileID: 6416765587807994468, guid: b35f25f1ddc7e8b42b6e8d92f0bcb204, type: 3}
+      propertyPath: caster
+      value: 
+      objectReference: {fileID: 1390599299}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b35f25f1ddc7e8b42b6e8d92f0bcb204, type: 3}
 --- !u!4 &6416765586825957856 stripped

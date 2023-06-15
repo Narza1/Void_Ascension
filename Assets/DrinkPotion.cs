@@ -10,6 +10,7 @@ public class DrinkPotion : StateMachineBehaviour
     {
         player = GameObject.Find("Player").GetComponent<AvatarController>();
         player.RecoverHealth();
+        Debug.Log("drink");
         animator.SetInteger("attack", -1);
     }
 

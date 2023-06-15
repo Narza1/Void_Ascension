@@ -25,31 +25,39 @@ public class StartScene : MonoBehaviour
     }
     void Start()
     {
-        
+        StartCoroutine(Window());
+       
+    }
+
+    private IEnumerator Window()
+    {
+       
+        yield return new WaitForEndOfFrame();
         selectCharacter = GameObject.Find("SelectCharacter").GetComponent<UIDocument>().rootVisualElement;
         confirmationMessage = GameObject.Find("ConfirmationMessage").GetComponent<UIDocument>().rootVisualElement.Q("Message");
         confirmationMessage.style.display = DisplayStyle.None;
         gameManager = GetComponent<GameManager>();
         ReadyUI();
+        //Debug.Log(gameManager.playerData.characters[0].isDead);
+        //Debug.Log(gameManager.playerData.characters[1].isDead);
+        //Debug.Log(gameManager.playerData.characters[2].isDead);
+        //Debug.Log(gameManager.playerData.characters[3].isDead);
         player = GameObject.Find("Player").GetComponent<AvatarController>();
-        if (player.currentCharacter >= 0 && GameManager.SaveFileExists())
+        if (!gameManager.playerData.characters[gameManager.playerData.currentCharacter].isDead && GameManager.SaveFileExists())
+        { 
             if (!player.characters[player.currentCharacter].isDead)
             {
                 ost.Play();
                 selectCharacter.style.display = DisplayStyle.None;
                 AvatarController.selectCharacter = false;
-
-
             }
+        }
     }
+
 
     private void ReadyUI()
     {
         List<Button> selectCharacterButtons = selectCharacter.Query<Button>().ToList();
-        selectCharacterButtons[0].RegisterCallback<ClickEvent>(LoadStats2);
-        selectCharacterButtons[1].RegisterCallback<ClickEvent>(LoadStats1);
-        selectCharacterButtons[2].RegisterCallback<ClickEvent>(LoadStats);
-        selectCharacterButtons[3].RegisterCallback<ClickEvent>(LoadStats3);
         gameManager = GetComponent<GameManager>();
         int deadCount = 0;
         foreach (var character in gameManager.playerData.characters)
@@ -60,23 +68,47 @@ public class StartScene : MonoBehaviour
                 if (character.GetType() == typeof(WarriorCharacter))
                 {
                     ChangeDisplay("Warrior");
-                    selectCharacterButtons[0].clickable = null;
+                    selectCharacterButtons[2].style.backgroundColor = Color.black;
+                    selectCharacterButtons[2].RegisterCallback<ClickEvent>(NoEvent);
                 }
                 if (character.GetType() == typeof(MinionCharacter))
                 {
                     ChangeDisplay("Minion");
-                    selectCharacterButtons[1].clickable = null;
+                    selectCharacterButtons[0].style.backgroundColor = Color.black;
+                    selectCharacterButtons[0].RegisterCallback<ClickEvent>(NoEvent);
+
                 }
                 if (character.GetType() == typeof(MageCharacter))
                 {
+                    selectCharacterButtons[1].style.backgroundColor = Color.black;
+
                     ChangeDisplay("Mage");
-                    selectCharacterButtons[2].clickable = null;
+                    selectCharacterButtons[1].RegisterCallback<ClickEvent>(NoEvent);
                 }
                 if (character.GetType() == typeof(ArcherCharacter))
                 {
+                    selectCharacterButtons[3].style.backgroundColor = Color.black;
+
                     ChangeDisplay("Archer");
-                    selectCharacterButtons[3].clickable = null;
+                    selectCharacterButtons[3].RegisterCallback<ClickEvent>(NoEvent);
+
                 }
+            }
+            else
+            {
+                if (character.GetType() == typeof(WarriorCharacter))
+                    selectCharacterButtons[2].RegisterCallback<ClickEvent>(LoadStats);
+
+                
+                if (character.GetType() == typeof(MinionCharacter))
+                    selectCharacterButtons[0].RegisterCallback<ClickEvent>(LoadStats2);
+
+                if (character.GetType() == typeof(MageCharacter))
+                    selectCharacterButtons[1].RegisterCallback<ClickEvent>(LoadStats1);
+
+                if (character.GetType() == typeof(ArcherCharacter))              
+                    selectCharacterButtons[3].RegisterCallback<ClickEvent>(LoadStats3);
+                
             }
         }  
         
@@ -90,7 +122,7 @@ public class StartScene : MonoBehaviour
         messageButtons[0].RegisterCallback<ClickEvent>(EnterTower);
         messageButtons[1].RegisterCallback<ClickEvent>(CloseMessageEvent);
     }
-
+    private void NoEvent(ClickEvent evt) { }
     private void CloseMessageEvent(ClickEvent evt)
     {
         CloseMessage();
@@ -136,7 +168,6 @@ public class StartScene : MonoBehaviour
     private void ChangeDisplay(string name)
     {
         var character = GameObject.Find(name);
-        Debug.Log(character);
 
         List<GameObject> equipmentList = Resources.FindObjectsOfTypeAll<GameObject>().ToList();
 

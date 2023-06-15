@@ -12,18 +12,18 @@ public class RevenantController : MonoBehaviour
     Animator animator;
     private float startTime;
     private Rigidbody2D rb;
-    public static bool isAttacking;
+    public bool isAttacking;
     private Character character;
     public CharacterData revenantData;
     private readonly string[] names = { "Warrior", "Mage", "Minion", "Archer" };
-    private float maxHP, currentHP,speed;
+    private float maxHP, currentHP, speed;
     private bool damaged, isAlive = true, ready, inRange;
     private GameObject player;
 
 
     public void StartChar(CharacterData revenantData)
     {
-        this.revenantData= revenantData;
+        this.revenantData = revenantData;
         DatabaseTest databaseTest = GameObject.Find("GameManager").GetComponent<DatabaseTest>();
         GameObject childObject = transform.Find("KayKit Animated Character").gameObject;
         animator = childObject.GetComponentInChildren<Animator>();
@@ -34,8 +34,6 @@ public class RevenantController : MonoBehaviour
         SetEquip(revenantData.weaponGUID);
         SetEquip(revenantData.accessoryGUID);
         ready = true;
-        
-
     }
 
 
@@ -78,9 +76,7 @@ public class RevenantController : MonoBehaviour
             {
                 // Hacer algo con cada objeto secundario
                 if (childObject.CompareTag(names[index]))
-                {
                     childObject.SetActive(true);
-                }
             }
         }
     }
@@ -93,13 +89,11 @@ public class RevenantController : MonoBehaviour
 
             if (!isAttacking)
             {
-                if(distanceToPlayer < 20) { 
-                Attack();
-                    if(distanceToPlayer > 2)
-                    {
+                if (distanceToPlayer < 20)
+                {
+                    Attack();
+                    if (distanceToPlayer > 2)
                         MoveToPlayer();
-
-                    }
                 }
                 //Run();
                 //DashPattern();
@@ -126,7 +120,7 @@ public class RevenantController : MonoBehaviour
         if (!guid.Equals(""))
         {
             ItemDetails slotItem = GameController.GetItemByGuid(guid);
-            if(slotItem == null) { return; }
+            if (slotItem == null) { return; }
             switch (slotItem.objectType)
             {
                 case ObjectType.Equipment:
@@ -167,36 +161,25 @@ public class RevenantController : MonoBehaviour
                     List<GameObject> accesoryList = Resources.FindObjectsOfTypeAll<GameObject>().ToList();
                     if (slotItem.Name.Contains("Shield"))
                     {
-
                         foreach (var item in accesoryList)
                         {
-
                             if (item.name == slotItem.Icon.name && item.transform.IsChildOf(gameObject.transform))
                             {
-
                                 item.SetActive(!item.activeSelf);
                                 break;
                             }
                         }
                     }
                     else
-                    {
-                        
                         animator.SetInteger("ammo", 99999999);
-                    }
                     break;
 
                 case ObjectType.Consumable:
 
                     if (slotItem.GetType() == typeof(Consumable))
-                    {
                         animator.SetBool("consumable", true);
-                    }
                     else
-                    {
                         animator.SetBool("consumable", false);
-
-                    }
                     break;
 
             }
@@ -205,10 +188,7 @@ public class RevenantController : MonoBehaviour
     private void DashPattern()
     {
         if (Input.GetKeyDown(KeyCode.Space) && !isDashing)
-        {
-
             StartCoroutine(Dash());
-        }
     }
 
     private readonly float dashSpeed = 8f;
@@ -226,88 +206,42 @@ public class RevenantController : MonoBehaviour
 
     }
 
-
-    //private void Run()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.LeftShift))
-    //    {
-    //        //speed = 6;
-    //        animator.SetBool("running", true);
-    //    }
-    //    if (Input.GetKeyUp(KeyCode.LeftShift))
-    //    {
-    //        //speed = 3;
-    //        animator.SetBool("running", false);
-
-    //    }
-    //}
-
     private void Attack()
     {
-        int value = 0;
+        int value;
         if (inRange)
-        {
             value = Random.Range(0, 100);
-
-        }
         else
-        {
             value = Random.Range(70, 100);
 
-        }
         if (value < 50)
-        {
             animator.SetInteger("attack", 1);
-        }
 
-        if (value >= 50 && value <=90)
-        {
+        if (value >= 50 && value <= 90)
             animator.SetInteger("attack", 2);
 
-        }
-
         if (value > 90)
-        {
             animator.SetInteger("attack", 0);
-        }
-        
-
     }
 
     public void TookDamae(float damage, bool isMagic)
     {
         if (!damaged && isAlive)
-        {
-            
             StartCoroutine(TookDamage(damage, isMagic));
-        }
     }
     public IEnumerator TookDamage(float damage, bool isMagic)
     {
         damaged = true;
         if (isMagic)
-        {
             currentHP -= Math.Max(damage - character.MagDef, 1);
-
-        }
         else
-        {
             currentHP -= Math.Max(damage - character.Def, 1);
 
-        }
-
         if (currentHP <= 0)
-        {
             StartCoroutine(Death());
-        }
         else
-        {
-
             yield return new WaitForSeconds(0.5f);
 
-
-
-        }
         damaged = false;
         yield return 0;
 
@@ -315,11 +249,9 @@ public class RevenantController : MonoBehaviour
 
     private IEnumerator Death()
     {
-
         isAlive = false;
         transform.Find("KayKit Animated Character").GetComponent<Rotation>().enabled = false;
         animator.SetTrigger("Death");
         yield return 1;
-
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Attack : MonoBehaviour
 {
-
+    public GameObject caster;
     AvatarController player;
 
     // Update is called once per frame
@@ -21,7 +21,8 @@ public class Attack : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (AvatarController.isAttacking )//añadir alguna condicion mas rollo que el tag no sea revenant
+        Debug.Log(caster.name);
+        if (true )//añadir alguna condicion mas rollo que el tag no sea revenant
         {
 
             //idea de hacer return

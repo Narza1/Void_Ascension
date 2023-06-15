@@ -27,7 +27,7 @@ public class ThrowItem : StateMachineBehaviour
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        AvatarController.isAttacking = true;
+        
         // Start is called before the first frame update
         // startingPoint = revenant.transform.Find("point").gameObject;
 
@@ -37,7 +37,7 @@ public class ThrowItem : StateMachineBehaviour
         if (aux.name == "Player")
         {
             avatar = aux.GetComponent<AvatarController>();
-            AvatarController.isAttacking = true;
+            avatar.isAttacking = true;
 
         }
 
@@ -114,6 +114,13 @@ public class ThrowItem : StateMachineBehaviour
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        AvatarController.isAttacking = false;
+        if (avatar != null)
+        {
+            avatar.isAttacking = false;
+        }
+        else
+        {
+
+        }
     }
 }

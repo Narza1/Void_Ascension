@@ -12,7 +12,8 @@ public class AvatarController : MonoBehaviour
     private float horizontal, vertical, startTime;
     private Rigidbody2D rb;
     public float speed = 3;
-    public static bool set1 = true, isAttacking, selectCharacter;
+    public bool isAttacking, isDead;
+    public static bool set1 = true, selectCharacter;
     public InventoryUIController inventory;
     private VisualElement m_Root, staminaBar, staminaBarScreen, hpBar, hpBarScreen;
     private GameManager gameManager;
@@ -22,7 +23,7 @@ public class AvatarController : MonoBehaviour
     public float currentHP, currentStamina = 1, maxStamina = 1;
 
 
-    private bool damaged, isRunning = false, isDead;
+    private bool damaged, isRunning = false;
     private void Awake()
     {
         selectCharacter = false;
@@ -54,7 +55,7 @@ public class AvatarController : MonoBehaviour
 
         rb = GetComponent<Rigidbody2D>();
         startTime = Time.time;
-        AvatarController.isAttacking = false;
+        isAttacking = false;
 
     }
 
@@ -278,6 +279,8 @@ public class AvatarController : MonoBehaviour
                 case ObjectType.Consumable:
 
                     var index = set1 ? 2 : 5;
+                        Debug.Log(index);
+
                     if (inventory.SetSlots[index].Equals(inventorySlot))
                     {
                         Debug.Log("yupi");
@@ -333,8 +336,7 @@ public class AvatarController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //if (m_Root.style.display == DisplayStyle.None)
-        //{
+        
         if (!isDashing && !isDead && !selectCharacter)
         {
             horizontal = Input.GetAxisRaw("Horizontal");
@@ -344,7 +346,7 @@ public class AvatarController : MonoBehaviour
 
         }
 
-        //}
+        
     }
 
     private void Attack()
@@ -374,11 +376,16 @@ public class AvatarController : MonoBehaviour
     public void RecoverHealth()
 
     {
+        Debug.Log("start");
         var currentCharacter1 = characters[currentCharacter];
         var index = set1 ? 2 : 5;
-        currentHP = Math.Min(currentHP + ((Consumable)GameController.GetItemByGuid(inventory.SetSlots[index].ItemGuid)).recoveryValue, currentCharacter1.Hp * currentCharacter1.Level);
-        hpBar.style.width = hpBarScreen.style.width = Length.Percent(currentHP / (currentCharacter1.Hp * currentCharacter1.Level) * 100);
+        var recoveryItem = inventory.SetSlots[index];
 
+        currentHP = Math.Min(currentHP + ((Consumable)GameController.GetItemByGuid(recoveryItem.ItemGuid)).recoveryValue, currentCharacter1.Hp * currentCharacter1.Level);
+        hpBar.style.width = hpBarScreen.style.width = Length.Percent(currentHP / (currentCharacter1.Hp * currentCharacter1.Level) * 100);
+        recoveryItem.UseItem();
+        if (recoveryItem.ItemGuid == "")
+            animator.SetBool("consumable", false);
     }
     public void TookDamae(float damage, bool isMagic)
     {

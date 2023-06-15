@@ -68,7 +68,10 @@ public class GameManager : MonoBehaviour
             UpdateUI();
             if (playerData.currentFloor != 0)
                 GetComponent<DatabaseTest>().LoadRandomCharacterInFloor(playerData.currentFloor);
-
+            Debug.Log(playerData.characters[0].isDead);
+            Debug.Log(playerData.characters[1].isDead);
+            Debug.Log(playerData.characters[2].isDead);
+            Debug.Log(playerData.characters[3].isDead);
         }
     }
 
@@ -100,9 +103,7 @@ public class GameManager : MonoBehaviour
     {
         string filePath = Path.Combine(saveFolderPath, saveFileName);
         if (File.Exists(filePath))
-        {
             return true;
-        }
         return false;
     }
 
@@ -168,25 +169,16 @@ public class GameManager : MonoBehaviour
     {
         string filePath = Path.Combine(saveFolderPath, saveFileName);
         playerData.currentCharacter = player.currentCharacter;
-        playerData.characters = player.characters;
+        playerData.characters[playerData.currentCharacter] = player.characters[playerData.currentCharacter];
         var playerInventory = player.inventory;
 
         Debug.Log("Voy a empezar a guardar datos");
         if (playerData.InventoryItems.Count != 0)
-        {
             playerData.InventoryItems.Clear();
-
-
-        }
         foreach (var item in player.inventory.InventoryItems)
         {
             if (item.ItemGuid != "")
-            {
                 playerData.InventoryItems.Add(new InventoryItem(item.ItemGuid, item.quantity));
-
-            }
-
-
         }
         if (playerData.SetItems.Count != 0)
             playerData.SetItems.Clear();
@@ -215,16 +207,10 @@ public class GameManager : MonoBehaviour
         var aux = AvatarController.set1 ? 0 : 2;
 
 
-        Debug.Log(currentCharacter);
-        Debug.Log(playerData.deaths);
-        Debug.Log(playerData.characters[currentCharacter].Level);
-        Debug.Log(playerData.currentFloor);
-        Debug.Log(playerData.currentMoney);
-        Debug.Log(currentSet[aux].guid);
-        Debug.Log(currentSet[aux + 1].guid);
-        Debug.Log(currentSet[aux + 2].guid);
-        Debug.Log(playerData.RandomDrop());
-        GetComponent<DatabaseTest>().SaveCharacterData(playerData.deaths, currentCharacter, playerData.characters[currentCharacter].Level, playerData.currentFloor, playerData.currentMoney, currentSet[aux].guid, currentSet[aux + 1].guid, currentSet[aux + 2].guid, playerData.RandomDrop());
+        var floor = playerData.currentFloor;
+        if (floor == 10 || floor == 20 || floor == 30)
+            floor--;
+        GetComponent<DatabaseTest>().SaveCharacterData(playerData.deaths, currentCharacter, playerData.characters[currentCharacter].Level, floor, playerData.currentMoney, currentSet[aux].guid, currentSet[aux + 1].guid, currentSet[aux + 2].guid, playerData.RandomDrop());
         playerData.Death();
         SaveFile();
     }
@@ -261,6 +247,7 @@ public class PlayerData
     public void Death()
     {
         currentFloor = currentMoney = 0;
+        characters[currentCharacter].isDead=true;
         deaths++;
     }
 
@@ -271,16 +258,12 @@ public class PlayerData
         foreach (var inventoryItem in InventoryItems)
         {
             if (inventoryItem.guid != "")
-            {
                 inventoryOcuppied.Add(inventoryItem);
-            }
 
         }
         var size = inventoryOcuppied.Count();
         if (size == 0)
-        {
             return new DropItem("", 0);
-        }
 
         InventoryItem item = inventoryOcuppied[Random.Range(0, size - 1)];
         DropItem drop = new DropItem(item.guid, item.quantity);
