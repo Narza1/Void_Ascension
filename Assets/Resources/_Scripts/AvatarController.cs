@@ -140,7 +140,7 @@ public class AvatarController : MonoBehaviour
         if (!isDead && !selectCharacter)
         {
 
-            if (m_Root.style.display == DisplayStyle.None && !isAttacking)
+            if (m_Root.style.display == DisplayStyle.None)
             {
                 if (currentStamina != 0)
                 {

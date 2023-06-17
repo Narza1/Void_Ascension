@@ -49,11 +49,8 @@ public class MinionCharacter : Character
 {
     public MinionCharacter()
     {
-        //Hp = 13;
-        Hp = 99;
-        //Speed = 4;
-        Speed = 10;
-        Atk = 99;
+        Hp = 13;
+        Speed = 4;
     }
 }
 

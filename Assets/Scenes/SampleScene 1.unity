@@ -1276,6 +1276,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48e1a0ab45d204f498bf08ee8e777fc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  caster: {fileID: 0}
 --- !u!60 &795326626
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -1629,6 +1630,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48e1a0ab45d204f498bf08ee8e777fc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  caster: {fileID: 0}
 --- !u!60 &870046189
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -1823,6 +1825,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48e1a0ab45d204f498bf08ee8e777fc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  caster: {fileID: 0}
 --- !u!60 &1076342931
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -2072,6 +2075,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e44b8607d8c1cd043b26552461a4582d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isAttacking: 0
   revenantData:
     characterType: 0
     lv: 0
@@ -7215,6 +7219,10 @@ PrefabInstance:
     - target: {fileID: 1321071086710898830, guid: 906c26dc5b565194188fcd9f6b002fc7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1321071086710898831, guid: 906c26dc5b565194188fcd9f6b002fc7, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 906c26dc5b565194188fcd9f6b002fc7, type: 3}

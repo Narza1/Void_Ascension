@@ -37,11 +37,12 @@ public class Stairs : MonoBehaviour
         gameManager.playerData.currentFloor++;
         gameManager.SaveFile();
         int[] a = new int[] { 10, 20, 30 };
-
+        Debug.Log("piso num"+gameManager.playerData.currentFloor);
         if (a.Contains(gameManager.playerData.currentFloor))
-            SceneManager.LoadScene("BossScene");
+            SceneManager.LoadScene("SampleScene1");
         if(gameManager.playerData.currentFloor == 31)
-        SceneManager.LoadScene("IntroScene");
+            SceneManager.LoadScene("IntroScene");
+
         SceneManager.LoadScene("SampleScene");
     }
     private void GoBack(ClickEvent evt)

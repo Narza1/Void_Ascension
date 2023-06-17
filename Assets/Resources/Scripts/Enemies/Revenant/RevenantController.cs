@@ -248,7 +248,7 @@ public class RevenantController : MonoBehaviour
     private IEnumerator Death()
     {
         isAlive = false;
-        transform.Find("KayKit Animated Character").GetComponent<Rotation>().enabled = false;
+        transform.Find("KayKit Animated Character").GetComponent<EnemyRotation>().enabled = false;
         animator.SetTrigger("Death");
         yield return 1;
     }

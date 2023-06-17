@@ -67,12 +67,21 @@ public class GameManager : MonoBehaviour
             player.LoadCharacters();
             UpdateUI();
             if (playerData.currentFloor != 0)
+            {
+                foreach (var character in playerData.characters)
+                {
+                    if (character.isDead)
+                    {
+
+                       // GameObject.Find("Revenant").GetComponent<RevenantController>().StartChar(new CharacterData(character., character.Level, character.floor, character.money, character.weaponGUID, character.accessoryGUID, character.consumableGUID, character.drop));
+
+                    }
+                }
                 GetComponent<DatabaseTest>().LoadRandomCharacterInFloor(playerData.currentFloor);
-            Debug.Log(playerData.characters[0].isDead);
-            Debug.Log(playerData.characters[1].isDead);
-            Debug.Log(playerData.characters[2].isDead);
-            Debug.Log(playerData.characters[3].isDead);
+
+            }
         }
+        //playerData.currentFloor = 20;
     }
 
     private void UpdateUI()

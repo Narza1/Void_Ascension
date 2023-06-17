@@ -21,7 +21,7 @@ public class Attack : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        Debug.Log(caster.name);
+       
         if (true )//añadir alguna condicion mas rollo que el tag no sea revenant
         {
 
