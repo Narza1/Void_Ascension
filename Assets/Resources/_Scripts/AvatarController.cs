@@ -27,7 +27,7 @@ public class AvatarController : MonoBehaviour
     private void Awake()
     {
         selectCharacter = false;
-    
+
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         GameObject ui = GameObject.Find("UserInterface");
         var doc = ui.GetComponent<UIDocument>().rootVisualElement;
@@ -276,14 +276,23 @@ public class AvatarController : MonoBehaviour
 
                 case ObjectType.Consumable:
 
-                    var index = set1 ? 2 : 5;
-                        Debug.Log(index);
-
-                    if (inventory.SetSlots[index].Equals(inventorySlot))
+                    try
                     {
-                        Debug.Log("yupi");
-                        animator.SetBool("consumable", GameController.GetItemByGuid(inventory.SetSlots[index].ItemGuid).GetType().Equals(typeof(Consumable)));
+                        if (((Consumable)GameController.GetItemByGuid(inventorySlot.ItemGuid)).recoveryValue != 0)
+                        {
+                            Debug.Log("yupi");
+                            animator.SetBool("consumable", true);
+                        }
                     }
+                    catch (InvalidCastException)
+
+                    {
+                        animator.SetBool("consumable", false);
+
+                    }
+
+
+
                     break;
 
             }
@@ -334,7 +343,7 @@ public class AvatarController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        
+
         if (!isDashing && !isDead && !selectCharacter)
         {
             horizontal = Input.GetAxisRaw("Horizontal");
@@ -344,7 +353,7 @@ public class AvatarController : MonoBehaviour
 
         }
 
-        
+
     }
 
     private void Attack()

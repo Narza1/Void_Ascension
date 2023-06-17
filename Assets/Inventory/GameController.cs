@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 [Serializable]
 public class ItemDetails
@@ -97,6 +98,12 @@ public class GameController : MonoBehaviour
             for (int i = 0; f.Length > i; i++)
                 f[i] = 1;
             OnInventoryChanged.Invoke(m_PlayerInventory.Select(x => x.GUID).ToArray(), f, InventoryChangeType.Pickup);
+
+            //string[]  s = { "8B0EF21A - F2D9 - 4E6F - 8B79 - 031CA9E202BA"};
+            //f = new int[s.Length];
+            //for (int i = 0; s.Length > i; i++)
+            //    f[i] = 1;
+            //OnInventoryChanged.Invoke(s.Select(x => x).ToArray(), f, InventoryChangeType.Pickup);
         }
         //Add the ItemDatabase to the players inventory and let the UI know that some items have been picked up
 

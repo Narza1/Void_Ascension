@@ -19,7 +19,7 @@ public class MagicAttack : MonoBehaviour
            collider.gameObject.GetComponent<EnemyStats>().TookDamae(10, true);
             Destroy(gameObject);
         }
-        else if (collider.gameObject.name == "Wall")
+        else if (collider.gameObject.name == "Walls")
         {
             Destroy(gameObject);
         }
