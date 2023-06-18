@@ -155,6 +155,8 @@ public class StartScene : MonoBehaviour
         player.currentCharacter = value;
         player.ChangeCharacter(value);
         player.ChangeStats(value);
+        player.isDead=false;
+        AvatarController.selectCharacter = false;
         selectCharacter.style.display = DisplayStyle.None;
 
 

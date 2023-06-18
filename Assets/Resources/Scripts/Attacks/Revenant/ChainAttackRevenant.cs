@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackChainAnimation : StateMachineBehaviour
+public class ChainAttackRevenant : StateMachineBehaviour
 {
+  
     private int attack;
     [SerializeField]
     private bool chainAttack;
@@ -11,8 +12,8 @@ public class AttackChainAnimation : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
 
-        
-        
+
+
         attack = animator.GetInteger("attack");
         animator.SetInteger("attack", -1);
         AttackSelector(attack);
@@ -21,26 +22,25 @@ public class AttackChainAnimation : StateMachineBehaviour
 
     private void AttackSelector(int state)
     {
-        GameObject startingPoint = GameObject.Find("pointP");
-
-        GameObject prefab = Resources.Load<GameObject>("Prefabs/BlueFlamethrower");
+        var startingPoint = GameObject.Find("pointR");
+        GameObject prefab = Resources.Load<GameObject>("Prefabs/BlueFlamethrowerRevenant");
         switch (state)
         {
 
             case 2:
                 //GameObject prefab = Resources.Load<GameObject>("Prefabs/FireBall");
-                
+
                 Destroy(Shoot(startingPoint, prefab), 1);
 
                 break;
             case 1:
                 //GameObject prefab = Resources.Load<GameObject>("Prefabs/FireBall");
-                prefab = Resources.Load<GameObject>("Prefabs/FireBall");
+                prefab = Resources.Load<GameObject>("Prefabs/FireBallRevenant");
                 Destroy(Shoot(startingPoint, prefab), 5);
                 break;
 
         }
-        
+
     }
 
     private GameObject Shoot(GameObject wand, GameObject prefab)
@@ -81,7 +81,7 @@ public class AttackChainAnimation : StateMachineBehaviour
             {
                 // Realizar la tarea aquí
 
-                
+
                 AttackSelector(attack);
 
                 // Reiniciar el tiempo transcurrido

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -32,6 +33,7 @@ public class RevenantController : MonoBehaviour
         SetEquip(revenantData.weaponGUID);
         SetEquip(revenantData.accessoryGUID);
         ready = true;
+
     }
 
 
@@ -218,7 +220,7 @@ public class RevenantController : MonoBehaviour
         if (value >= 50 && value <= 90)
             animator.SetInteger("attack", 2);
 
-        if (value > 90)
+        if (value > 90 && revenantData.consumableGUID!="")
             animator.SetInteger("attack", 0);
     }
 
@@ -250,6 +252,13 @@ public class RevenantController : MonoBehaviour
         isAlive = false;
         transform.Find("KayKit Animated Character").GetComponent<EnemyRotation>().enabled = false;
         animator.SetTrigger("Death");
-        yield return 1;
+        string path = $"revenant/data{revenantData.characterType}.rv";
+        if (File.Exists(path))
+        {
+            File.Delete(path);
+            GameObject.Find("Player").GetComponent<AvatarController>().characters[revenantData.characterType].isDead = false;
+        }
+        yield return new WaitForSeconds(2f);
+        Destroy(gameObject);
     }
 }

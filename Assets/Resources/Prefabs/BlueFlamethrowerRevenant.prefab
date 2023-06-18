@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 3458603873026655409}
   - component: {fileID: 2755393671848349707}
   - component: {fileID: 8549382366743231838}
-  - component: {fileID: 3835897602740846240}
   - component: {fileID: 8544329833212881334}
   - component: {fileID: 5239792876728646966}
+  - component: {fileID: -3362671007617688192}
   m_Layer: 0
-  m_Name: BlueFlamethrower
+  m_Name: BlueFlamethrowerRevenant
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2042068208, guid: 203ab85135ae6d345851b43d0a9401af, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.34117648, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -108,18 +108,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &3835897602740846240
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1818092655352347565}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 480a64eff55a5d34195f1d13be83a4d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!50 &8544329833212881334
 Rigidbody2D:
   serializedVersion: 4
@@ -154,6 +142,18 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.15}
-  m_Size: {x: 0.03, y: 0.0001}
+  m_Offset: {x: 0.03, y: 0.16}
+  m_Size: {x: 0.06, y: 0.0001}
   m_Direction: 0
+--- !u!114 &-3362671007617688192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1818092655352347565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e68bd1e19f1491646989984323ab83bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

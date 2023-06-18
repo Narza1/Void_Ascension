@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
@@ -68,22 +69,43 @@ public class GameManager : MonoBehaviour
             UpdateUI();
             if (playerData.currentFloor != 0)
             {
-                foreach (var character in playerData.characters)
+                bool found = false;
+                for (int i = 0; i < playerData.characters.Count; i++)
                 {
-                    if (character.isDead)
+                    if (playerData.characters[i].isDead)
                     {
+                        found = true;
 
-                       // GameObject.Find("Revenant").GetComponent<RevenantController>().StartChar(new CharacterData(character., character.Level, character.floor, character.money, character.weaponGUID, character.accessoryGUID, character.consumableGUID, character.drop));
-
+                        GameObject.Find("Revenant").GetComponent<RevenantController>().StartChar(LoadRevenantData($"revenant/data{i}.rv"));
+                        break;
                     }
                 }
-                GetComponent<DatabaseTest>().LoadRandomCharacterInFloor(playerData.currentFloor);
+                if(!found)
+                    GetComponent<DatabaseTest>().LoadRandomCharacterInFloor(playerData.currentFloor);
 
             }
         }
         //playerData.currentFloor = 20;
     }
+    public CharacterData LoadRevenantData(string route)
+    {
+        if (File.Exists(route))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream fileStream = File.OpenRead(route);
 
+            // Deserializa los datos del archivo y crea una instancia de la clase
+            CharacterData data = (CharacterData)formatter.Deserialize(fileStream);
+
+            fileStream.Close();
+
+            return data;
+        }
+        else
+        {
+            return null;
+        }
+    }
     private void UpdateUI()
     {
         var character = playerData.characters[playerData.currentCharacter];
@@ -219,7 +241,27 @@ public class GameManager : MonoBehaviour
         var floor = playerData.currentFloor;
         if (floor == 10 || floor == 20 || floor == 30)
             floor--;
-        GetComponent<DatabaseTest>().SaveCharacterData(playerData.deaths, currentCharacter, playerData.characters[currentCharacter].Level, floor, playerData.currentMoney, currentSet[aux].guid, currentSet[aux + 1].guid, currentSet[aux + 2].guid, playerData.RandomDrop());
+        CharacterData characterData = new CharacterData();
+        characterData.characterType = currentCharacter;
+        characterData.lv = playerData.characters[currentCharacter].Level;
+        characterData.floor = floor;
+        characterData.money = playerData.currentMoney;
+        characterData.weaponGUID = currentSet[aux].guid;
+        characterData.accessoryGUID = currentSet[aux + 1].guid;
+        characterData.consumableGUID = currentSet[aux + 2].guid;
+        characterData.drop = playerData.RandomDrop();
+        BinaryFormatter formatter = new BinaryFormatter();
+        string directory = "revenant";
+        if (!Directory.Exists(directory))
+            Directory.CreateDirectory(directory);
+        FileStream fileStream = File.Create($"{directory}/data{currentCharacter}.rv");
+
+        // Serializa la clase y guarda los datos en el archivo
+        formatter.Serialize(fileStream, characterData);
+
+        fileStream.Close();
+
+        GetComponent<DatabaseTest>().SaveCharacterData(playerData.deaths,characterData);
         playerData.Death();
         SaveFile();
     }

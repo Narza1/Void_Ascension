@@ -25,18 +25,8 @@ public class DatabaseTest : MonoBehaviour
 
         }));
     }
-    public void SaveCharacterData(int deaths,int characterType, int level, int floor, int money, string weaponGUID, string accessoryGUID, string consumableGUID, DropItem drop)
-    {
-       
-        CharacterData characterData = new CharacterData();
-        characterData.characterType = characterType;
-        characterData.lv = level;
-        characterData.floor = floor;
-        characterData.money = money;
-        characterData.weaponGUID = weaponGUID;
-        characterData.accessoryGUID = accessoryGUID;
-        characterData.consumableGUID = consumableGUID;
-        characterData.drop = drop;
+    public void SaveCharacterData(int deaths,CharacterData characterData)
+    {     
 
         string json = JsonUtility.ToJson(characterData);
         try { 

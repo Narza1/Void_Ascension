@@ -917,6 +917,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &2934673831186351746
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2948287866291640256}
+  m_Layer: 3
+  m_Name: pointP
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2948287866291640256
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2934673831186351746}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.099, y: 0.425, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3192563569294802576}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3330273548089645404
 GameObject:
   m_ObjectHideFlags: 0
@@ -1309,6 +1340,7 @@ Transform:
   - {fileID: 6416765587725365366}
   - {fileID: 6416765587030447742}
   - {fileID: 6416765587437215911}
+  - {fileID: 2948287866291640256}
   m_Father: {fileID: 1951807714207482132}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2099,17 +2131,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
+  isAttacking: 0
+  isDead: 0
   inventory: {fileID: 0}
-  playerData:
-    currentFloor: 0
-    maxFloor: 0
-    currentMoney: 0
-    totalMoney: 0
-    deaths: 0
-    currentCharacter: 0
-    InventoryItems: []
-    SetItems: []
-    characters: []
+  characters: []
+  currentCharacter: 0
+  currentHP: 0
+  currentStamina: 1
+  maxStamina: 1
 --- !u!1 &6416765586396864578
 GameObject:
   m_ObjectHideFlags: 0
@@ -3565,6 +3594,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48e1a0ab45d204f498bf08ee8e777fc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  caster: {fileID: 0}
 --- !u!4 &6811227354220004084 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 70c352fb08a568041b6492c0c239eacb, type: 3}
@@ -4490,6 +4520,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48e1a0ab45d204f498bf08ee8e777fc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  caster: {fileID: 0}
 --- !u!4 &6811227352778336034 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 07d5c5cfa27fb564bb93289637038071, type: 3}
@@ -4607,6 +4638,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48e1a0ab45d204f498bf08ee8e777fc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  caster: {fileID: 0}
 --- !u!4 &6811227352735219972 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c16d7935c2603964b85f030b20d31153, type: 3}
