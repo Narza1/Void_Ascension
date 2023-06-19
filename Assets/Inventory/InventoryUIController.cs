@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using UnityEditor.PackageManager.UI;
-using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -335,10 +333,11 @@ public class InventoryUIController : MonoBehaviour
 
             
             var itemDetails = GameController.GetItemByGuid(slot.ItemGuid);
+            textField.label= itemDetails.Name;
             if (itemDetails.Name.Contains("Arrow") || itemDetails.objectType == ObjectType.Consumable)
-                textField.value = $"<u><i>{itemDetails.Name}</i></u>\n{itemDetails.Description}\nQuantity: {slot.quantity}";
+                textField.value = $"{itemDetails.Description}\nQuantity: {slot.quantity}";
             else
-                textField.value = $"{itemDetails.Name}\n{itemDetails.Description}\nDurability: {slot.durability}/100";
+                textField.value = $"{itemDetails.Description}\nDurability: {slot.durability}/100";
 
         }
         // Aquí puedes realizar las acciones que desees cuando el cursor entre en el elemento

@@ -1,8 +1,10 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
@@ -16,7 +18,7 @@ public class AvatarController : MonoBehaviour
     public bool isAttacking, isDead;
     public static bool set1 = true, selectCharacter;
     public InventoryUIController inventory;
-    private VisualElement m_Root, staminaBar, staminaBarScreen, hpBar, hpBarScreen;
+    private VisualElement m_Root,menu, staminaBar, staminaBarScreen, hpBar, hpBarScreen;
     private GameManager gameManager;
     public List<Character> characters;
     public int currentCharacter = 0;
@@ -31,6 +33,7 @@ public class AvatarController : MonoBehaviour
 
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         GameObject ui = GameObject.Find("UserInterface");
+        menu = GameObject.Find("Menu").GetComponent<UIDocument>().rootVisualElement.Q("root");
         var doc = ui.GetComponent<UIDocument>().rootVisualElement;
         m_Root = doc.Q("Container");
 
@@ -155,6 +158,7 @@ public class AvatarController : MonoBehaviour
                 ChangeSetPattern();
             }
             Inventory();
+            Menu();
         }
 
     }
@@ -165,13 +169,26 @@ public class AvatarController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.I))
         {
-            if (m_Root.style.display == DisplayStyle.None)
+            if (m_Root.style.display == DisplayStyle.None)           
+                m_Root.style.display = DisplayStyle.Flex;          
+            else 
+                m_Root.style.display = DisplayStyle.None;           
+        }
+    }
+    
+    private void Menu()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            m_Root.style.display = DisplayStyle.None;
+
+            if (menu.style.display == DisplayStyle.None)
             {
-                m_Root.style.display = DisplayStyle.Flex;
+                menu.style.display = DisplayStyle.Flex;
             }
             else
             {
-                m_Root.style.display = DisplayStyle.None;
+                menu.style.display = DisplayStyle.None;
             }
 
         }

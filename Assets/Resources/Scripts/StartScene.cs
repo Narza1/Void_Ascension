@@ -38,10 +38,6 @@ public class StartScene : MonoBehaviour
         confirmationMessage.style.display = DisplayStyle.None;
         gameManager = GetComponent<GameManager>();
         ReadyUI();
-        //Debug.Log(gameManager.playerData.characters[0].isDead);
-        //Debug.Log(gameManager.playerData.characters[1].isDead);
-        //Debug.Log(gameManager.playerData.characters[2].isDead);
-        //Debug.Log(gameManager.playerData.characters[3].isDead);
         player = GameObject.Find("Player").GetComponent<AvatarController>();
         if (!gameManager.playerData.characters[gameManager.playerData.currentCharacter].isDead && GameManager.SaveFileExists())
         { 

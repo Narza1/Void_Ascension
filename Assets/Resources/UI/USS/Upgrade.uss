@@ -1,6 +1,7 @@
 TextInput {
     background-color: rgb(38, 38, 38);
     border-color: rgb(255, 197, 0);
+    border-width: 0;
     width: 100%;
     -unity-background-image-tint-color: rgb(221, 37, 37);
     padding: 7px;
