@@ -58,6 +58,8 @@ public class DatabaseTest : MonoBehaviour
             {
                 matchingCharacters.Add(childSnapshot);
             }
+            Debug.Log(matchingCharacters.Count);
+            Debug.Log(targetFloor + "piso");
 
             if (matchingCharacters.Count > 0)
             {
@@ -68,7 +70,6 @@ public class DatabaseTest : MonoBehaviour
                 yield break;
             }
         }
-
         Debug.Log("No character data found with the specified floor.");
     }
 

@@ -14,13 +14,14 @@ public class MagicAttack : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.gameObject.CompareTag("Monster"))
-        {
-           collider.gameObject.GetComponent<EnemyStats>().TookDamae(10, true);
-        }
+            collider.gameObject.GetComponent<EnemyStats>().TookDamae(10, true);
+
+        else if (collider.gameObject.CompareTag("Revenant"))
+            collider.gameObject.GetComponent<RevenantController>().TookDamae(10, true);
+
         else if (collider.gameObject.name == "Walls")
-        {
             Destroy(gameObject);
-        }
+
     }
 }
 

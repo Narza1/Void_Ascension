@@ -13,7 +13,7 @@ public class RevenantController : MonoBehaviour
     Animator animator;
     private Rigidbody2D rb;
     public bool isAttacking;
-    private Character character;
+    public Character character;
     public CharacterData revenantData;
     private readonly string[] names = { "Minion", "Mage", "Warrior", "Archer" };
     private float maxHP, currentHP, speed;

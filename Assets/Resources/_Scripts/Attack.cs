@@ -4,14 +4,8 @@ using UnityEngine;
 
 public class Attack : MonoBehaviour
 {
-    public GameObject caster;
     AvatarController player;
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
     private void OnEnable()
     {
         if (player == null)
@@ -21,17 +15,17 @@ public class Attack : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collider)
     {
-       
-        if (true )//añadir alguna condicion mas rollo que el tag no sea revenant
-        {
 
-            //idea de hacer return
+        if (player.isAttacking)
+        {
             if (collider.gameObject.CompareTag("Monster"))
             {
+                player.DurabilityHit(50);
                 collider.gameObject.GetComponent<EnemyStats>().TookDamae(player.characters[player.currentCharacter].Atk, false);
             }
             else if (collider.gameObject.CompareTag("Revenant"))
             {
+                player.DurabilityHit(3);
                 collider.gameObject.GetComponent<RevenantController>().TookDamae(player.characters[player.currentCharacter].Atk, false);
             }
 

@@ -256,11 +256,13 @@ public class InventoryUIController : MonoBehaviour
             closestSlot.HoldItem(GameController.GetItemByGuid(m_OriginalSlot.ItemGuid));
             m_OriginalSlot.HoldItem(GameController.GetItemByGuid(temporarySlot.ItemGuid));
             changeQuantity(m_OriginalSlot, closestSlot);
+            changeDurability(m_OriginalSlot, closestSlot);
         }
         else
         {
             closestSlot.HoldItem(GameController.GetItemByGuid(m_OriginalSlot.ItemGuid));
             changeQuantity(m_OriginalSlot, closestSlot);
+            changeDurability(m_OriginalSlot, closestSlot);
 
             //Clear the original slot
             m_OriginalSlot.DropItem();
@@ -285,6 +287,7 @@ public class InventoryUIController : MonoBehaviour
                 closestSlot.HoldItem(GameController.GetItemByGuid(m_OriginalSlot.ItemGuid));
                 m_OriginalSlot.HoldItem(GameController.GetItemByGuid(temporarySlot.ItemGuid));
                 changeQuantity(m_OriginalSlot, closestSlot);
+                changeDurability(m_OriginalSlot, closestSlot);
             }
             else
             {
@@ -298,6 +301,7 @@ public class InventoryUIController : MonoBehaviour
         {
             closestSlot.HoldItem(GameController.GetItemByGuid(m_OriginalSlot.ItemGuid));
             changeQuantity(m_OriginalSlot, closestSlot);
+            changeDurability(m_OriginalSlot, closestSlot);
 
             //Clear the original slot
             m_OriginalSlot.DropItem();
@@ -305,6 +309,13 @@ public class InventoryUIController : MonoBehaviour
     }
 
     private void changeQuantity(InventorySlot original, InventorySlot newSlot)
+    {
+        var aux = newSlot.quantity;
+        newSlot.quantity = original.quantity;
+        original.quantity = aux;
+    }
+    
+    private void changeDurability(InventorySlot original, InventorySlot newSlot)
     {
         var aux = newSlot.quantity;
         newSlot.quantity = original.quantity;

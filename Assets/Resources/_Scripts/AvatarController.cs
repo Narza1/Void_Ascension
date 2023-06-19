@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
@@ -137,6 +138,8 @@ public class AvatarController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        
         if (!isDead && !selectCharacter)
         {
 
@@ -213,6 +216,7 @@ public class AvatarController : MonoBehaviour
     public void SetEquip(InventorySlot inventorySlot)
     {
         string guid = inventorySlot.ItemGuid;
+
         if (!guid.Equals(""))
         {
             ItemDetails slotItem = GameController.GetItemByGuid(guid);
@@ -298,6 +302,21 @@ public class AvatarController : MonoBehaviour
             }
         }
     }
+
+    public void DurabilityHit(float hit) {
+        var index = set1 ? 0 : 3;
+        var slot = inventory.SetSlots[index];
+        slot.durability -= hit;
+        Debug.Log(slot.durability + "dfikjonfsdikfdsjipfsdip´jfsepoi");
+        if (slot.durability <= 0)
+        {
+            SetEquip(slot);
+            animator.SetInteger("weaponType", 1);
+            slot.DropItem();
+        }
+
+    }
+
     private void DashPattern()
     {
         if (Input.GetKeyDown(KeyCode.Space) && !isDashing)
@@ -406,29 +425,17 @@ public class AvatarController : MonoBehaviour
         var character = characters[currentCharacter];
         damaged = true;
         if (isMagic)
-        {
-            currentHP -= Math.Max(damage - character.MagDef, 1);
-
-        }
-        else
-        {
+            currentHP -= Math.Max(damage - character.MagDef, 1);      
+        else      
             currentHP -= Math.Max(damage - character.Def, 1);
-
-        }
+        
         hpBar.style.width = hpBarScreen.style.width = Length.Percent((currentHP / (character.Hp * character.Level)) * 100);
 
         if (currentHP <= 0)
-        {
             StartCoroutine(Death());
-        }
         else
-        {
-
             yield return new WaitForSeconds(0.5f);
 
-
-
-        }
         damaged = false;
         yield return 0;
 

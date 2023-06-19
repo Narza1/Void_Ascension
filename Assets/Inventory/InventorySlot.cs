@@ -11,6 +11,7 @@ public class InventorySlot : VisualElement
     public Image Icon;
     public string ItemGuid = "";
     public int quantity;
+    public float durability = 100;
 
     public InventorySlot()
     {
@@ -32,6 +33,10 @@ public class InventorySlot : VisualElement
     {
         ItemGuid = "";
         Icon.image = null;
+        quantity = 0;
+        durability = 0;
+
+
     }
 
     private void OnPointerDown(PointerDownEvent evt)
@@ -56,10 +61,10 @@ public class InventorySlot : VisualElement
             quantity--;
             if (quantity == 0)
             {
-                Icon.image = null;
-                ItemGuid = "";
+                DropItem();
             }
         }
     }
+
 }
 

@@ -36,12 +36,14 @@ public class EnemyAI : MonoBehaviour
 
         //Debug.Log(distanceToPlayer);
 
+
         if (distanceToPlayer <= attackRange)
         {
             offset = animationColliderFix.offset;
 
             animator.SetBool("isMoving", false);
             AttackPlayer();
+
             Vector3 direction = player.transform.position - transform.position;
 
             // Normalizar la dirección para obtener un vector de dirección unitario
@@ -56,7 +58,7 @@ public class EnemyAI : MonoBehaviour
         }
         else
         {
-            offset = 0;
+           cd.offset = Vector2.zero;
             animator.SetBool("isMoving", true);
 
             MoveToPlayer();
@@ -91,7 +93,6 @@ public class EnemyAI : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player") && animationColliderFix.isAttacking)
         {
-            Debug.Log("Hit cabron");
             player.GetComponent<AvatarController>().TookDamae(gameObject.GetComponent<EnemyStats>().Atk, false);
         }
     }

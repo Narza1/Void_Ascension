@@ -7,9 +7,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 9138203969404462192, guid: 705c7dbe487ac844692df9775924b4ab, type: 3}
+      propertyPath: attackRange
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9138203969404462192, guid: 705c7dbe487ac844692df9775924b4ab, type: 3}
+      propertyPath: movementSpeed
+      value: 4.5
+      objectReference: {fileID: 0}
     - target: {fileID: 9138203969404462193, guid: 705c7dbe487ac844692df9775924b4ab, type: 3}
       propertyPath: m_Name
-      value: MushroomMonster (3)
+      value: BlueMushroomMonster
       objectReference: {fileID: 0}
     - target: {fileID: 9138203969404462198, guid: 705c7dbe487ac844692df9775924b4ab, type: 3}
       propertyPath: m_RootOrder

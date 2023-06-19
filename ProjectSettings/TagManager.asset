@@ -16,6 +16,7 @@ TagManager:
   - Archer
   - Revenant
   - Stairs
+  - Hand
   layers:
   - Default
   - TransparentFX

@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class RevenantMagicAttack : MonoBehaviour
 {
-    RevenantController player;
+    RevenantController revenant;
     void Start()
     {
-        player = GameObject.Find("Revenant").GetComponent<RevenantController>();
+        revenant = GameObject.Find("Revenant").GetComponent<RevenantController>();
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.gameObject.CompareTag("Player"))
         {
-            collider.gameObject.GetComponent<AvatarController>().TookDamae(10, true);
+            collider.gameObject.GetComponent<AvatarController>().TookDamae(revenant.character.Atk, true);
         }
         else if (collider.gameObject.name == "Walls")
         {

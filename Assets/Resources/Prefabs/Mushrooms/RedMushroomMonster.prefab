@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa01e6a0ef92f9146a6b95f98ae35106, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRange: 4
+  attackRange: 1.2
   movementSpeed: 3
   offset: 0
   animationColliderFix: {fileID: 0}
@@ -111,6 +111,7 @@ MonoBehaviour:
   - A431BCDF-8E20-4B9D-AC64-98E76A0F3C25
   - E6AD398F-9654-46A6-BCA7-25C809D046D8
   quantities: 010000000100000005000000
+  isBoss: 0
   coins: 200
   experience: 400
 --- !u!1 &9138203969497110291
@@ -384,19 +385,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &9138203971374228299
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9138203970518477971}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b65bf1ea1a480f44ab00be070f1ff30, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  angleCorrection: 90
 --- !u!114 &9138203971374228296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -411,6 +399,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   offset: 0
   isAttacking: 0
+--- !u!114 &9138203971374228299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9138203970518477971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b65bf1ea1a480f44ab00be070f1ff30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  angleCorrection: 90
 --- !u!4 &9138203970518839475 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400008, guid: 10a1e47d0d282414481a0b2a67c79333, type: 3}

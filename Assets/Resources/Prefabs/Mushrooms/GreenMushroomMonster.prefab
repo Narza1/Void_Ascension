@@ -163,8 +163,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa01e6a0ef92f9146a6b95f98ae35106, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRange: 4
-  movementSpeed: 3
+  attackRange: 1.2
+  movementSpeed: 4
   offset: 0
   animationColliderFix: {fileID: 0}
 --- !u!50 &2715392679217533258
@@ -226,6 +226,7 @@ MonoBehaviour:
   - A431BCDF-8E20-4B9D-AC64-98E76A0F3C25
   - E6AD398F-9654-46A6-BCA7-25C809D046D8
   quantities: 010000000100000005000000
+  isBoss: 0
   coins: 200
   experience: 400
 --- !u!1 &2715392679401360025
