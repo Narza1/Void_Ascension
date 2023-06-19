@@ -36,7 +36,7 @@ public class StoryTeller : MonoBehaviour
                 yield return new WaitForSeconds(0.02f);
 
             }
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(4f);
 
         }
         SpriteRenderer image;
@@ -55,7 +55,7 @@ public class StoryTeller : MonoBehaviour
                 yield return new WaitForSeconds(0.02f);
 
             }
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(4f);
             images[i].SetActive(false);
 
         }
@@ -73,10 +73,16 @@ public class StoryTeller : MonoBehaviour
                 yield return new WaitForSeconds(0.02f);
 
             }
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(4f);
 
         }
 
+        SceneManager.LoadScene("NewGameScene");
+
+    }
+
+    public void Skip()
+    {
         SceneManager.LoadScene("NewGameScene");
 
     }

@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
     {
         if (SaveFileExists())
         {
-            GetComponent<GameController>().RecoverInventory(playerData.InventoryItems.Select(x => x.guid).ToArray(), playerData.InventoryItems.Select(x => x.quantity).ToArray());
+            GetComponent<GameController>().RecoverInventory(playerData.InventoryItems.Select(x => x.guid).ToArray(), playerData.InventoryItems.Select(x => x.quantity).ToArray(), playerData.InventoryItems.Select(x => x.durability).ToArray());
 
 
 
@@ -209,7 +209,7 @@ public class GameManager : MonoBehaviour
         foreach (var item in player.inventory.InventoryItems)
         {
             if (item.ItemGuid != "")
-                playerData.InventoryItems.Add(new InventoryItem(item.ItemGuid, item.quantity));
+                playerData.InventoryItems.Add(new InventoryItem(item.ItemGuid, item.quantity, item.durability));
         }
         if (playerData.SetItems.Count != 0)
             playerData.SetItems.Clear();
@@ -217,9 +217,8 @@ public class GameManager : MonoBehaviour
 
 
         foreach (var item in player.inventory.SetSlots)
-        {
-            playerData.SetItems.Add(new InventoryItem(item.ItemGuid, item.quantity));
-        }
+            playerData.SetItems.Add(new InventoryItem(item.ItemGuid, item.quantity, item.durability));
+        
 
         // Crea la carpeta si no existe
         if (!Directory.Exists(saveFolderPath))
@@ -334,11 +333,13 @@ public class PlayerData
     {
         public string guid;
         public int quantity;
+        public float durability;
 
-        public InventoryItem(string guid, int quantity)
+        public InventoryItem(string guid, int quantity, float durability)
         {
             this.guid = guid;
             this.quantity = quantity;
+            this.durability = durability;
         }
     }
 }

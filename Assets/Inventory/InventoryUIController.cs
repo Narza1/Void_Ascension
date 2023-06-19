@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
+using UnityEditor.PackageManager.UI;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -12,8 +15,7 @@ public class InventoryUIController : MonoBehaviour
     private static bool m_IsDragging;
     private static InventorySlot m_OriginalSlot;
     private AvatarController play;
-    private VisualElement m_Root;
-    private VisualElement m_SlotContainer, setContainer, setContainer2;
+    private VisualElement m_Root, data, m_SlotContainer, setContainer, setContainer2;
     public List<InventorySlot> SetSlots = new List<InventorySlot>();
 
     private GameObject player;
@@ -25,6 +27,10 @@ public class InventoryUIController : MonoBehaviour
         player = GameObject.Find("Player");
         play = player.GetComponent<AvatarController>();
         m_Root = GetComponent<UIDocument>().rootVisualElement;
+        data = m_Root.Q("Text");
+        data.style.display = DisplayStyle.None;
+
+
         m_GhostIcon = m_Root.Query<VisualElement>("GhostIcon");
         m_SlotContainer = m_Root.Query("SlotContainer");
         setContainer = m_Root.Query<VisualElement>("Set1");
@@ -38,6 +44,9 @@ public class InventoryUIController : MonoBehaviour
                 InventorySlot item = new InventorySlot();
                 InventoryItems.Add(item);
                 m_SlotContainer.Add(item);
+
+                item.RegisterCallback<MouseEnterEvent>(OnMouseEnter);
+                item.RegisterCallback<MouseLeaveEvent>(OnMouseLeave);
             }
 
         for (int i = 0; i < 3; i++)
@@ -45,6 +54,9 @@ public class InventoryUIController : MonoBehaviour
             InventorySlot item = new InventorySlot();
             setContainer.Add(item);
             SetSlots.Add(item);
+
+            item.RegisterCallback<MouseEnterEvent>(OnMouseEnter);
+            item.RegisterCallback<MouseLeaveEvent>(OnMouseLeave);
         }
 
         for (int i = 0; i < 3; i++)
@@ -52,13 +64,16 @@ public class InventoryUIController : MonoBehaviour
             InventorySlot item = new InventorySlot();
             setContainer2.Add(item);
             SetSlots.Add(item);
+
+            item.RegisterCallback<MouseEnterEvent>(OnMouseEnter);
+            item.RegisterCallback<MouseLeaveEvent>(OnMouseLeave);
         }
         GameController.OnInventoryChanged += GameController_OnInventoryChanged;
 
         m_GhostIcon.RegisterCallback<PointerMoveEvent>(OnPointerMove);
         m_GhostIcon.RegisterCallback<PointerUpEvent>(OnPointerUp);
     }
-    public void GameController_OnInventoryChanged(string[] itemGuid, int[] quantity, InventoryChangeType change)
+    public void GameController_OnInventoryChanged(string[] itemGuid, int[] quantity, float[] durability, InventoryChangeType change)
     {
 
         //Loop through each item and if it has been picked up, add it to the next empty slot
@@ -67,7 +82,7 @@ public class InventoryUIController : MonoBehaviour
             ItemDetails newItem = GameController.GetItemByGuid(itemGuid[i]);
             if (change == InventoryChangeType.Pickup)
             {
-                var stack = InventoryItems.FirstOrDefault(x => x.ItemGuid.Equals(newItem));
+                var stack = InventoryItems.FirstOrDefault(x => x.ItemGuid.Equals(itemGuid[i]));
                 if ((newItem.Name.Contains("Arrow") || newItem.objectType == ObjectType.Consumable) && stack != null)
                 {
                     stack.quantity += quantity[i];
@@ -308,17 +323,45 @@ public class InventoryUIController : MonoBehaviour
         }
     }
 
+    private void OnMouseEnter(MouseEnterEvent evt)
+    {
+        var slot = evt.target as InventorySlot;
+
+        if (slot.ItemGuid != "")
+        {
+            TextField textField = data.Q<TextField>("Text");          
+
+            data.style.display = DisplayStyle.Flex;
+
+            
+            var itemDetails = GameController.GetItemByGuid(slot.ItemGuid);
+            if (itemDetails.Name.Contains("Arrow") || itemDetails.objectType == ObjectType.Consumable)
+                textField.value = $"<u><i>{itemDetails.Name}</i></u>\n{itemDetails.Description}\nQuantity: {slot.quantity}";
+            else
+                textField.value = $"{itemDetails.Name}\n{itemDetails.Description}\nDurability: {slot.durability}/100";
+
+        }
+        // Aquí puedes realizar las acciones que desees cuando el cursor entre en el elemento
+    }
+
+    private void OnMouseLeave(MouseLeaveEvent evt)
+    {
+        data.style.display = DisplayStyle.None;
+
+        Debug.Log("Mouse left!");
+    }
+
     private void changeQuantity(InventorySlot original, InventorySlot newSlot)
     {
         var aux = newSlot.quantity;
         newSlot.quantity = original.quantity;
         original.quantity = aux;
     }
-    
+
     private void changeDurability(InventorySlot original, InventorySlot newSlot)
     {
-        var aux = newSlot.quantity;
-        newSlot.quantity = original.quantity;
-        original.quantity = aux;
+        var aux = newSlot.durability;
+        newSlot.durability = original.durability;
+        original.durability = aux;
     }
 }

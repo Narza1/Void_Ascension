@@ -20,7 +20,7 @@ public class Attack : MonoBehaviour
         {
             if (collider.gameObject.CompareTag("Monster"))
             {
-                player.DurabilityHit(50);
+                player.DurabilityHit(3);
                 collider.gameObject.GetComponent<EnemyStats>().TookDamae(player.characters[player.currentCharacter].Atk, false);
             }
             else if (collider.gameObject.CompareTag("Revenant"))

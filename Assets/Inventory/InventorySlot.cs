@@ -13,6 +13,7 @@ public class InventorySlot : VisualElement
     public int quantity;
     public float durability = 100;
 
+
     public InventorySlot()
     {
         //Create a new Image element and add it to the root
@@ -65,6 +66,44 @@ public class InventorySlot : VisualElement
             }
         }
     }
+    private void OnMouseEnter()
+    {
+        
+        // Realiza las acciones deseadas cuando el ratón entra en el objeto
+        Debug.Log("Mouse entered");
+    }
 
+    private void OnMouseExit()
+    {
+        // Realiza las acciones deseadas cuando el ratón sale del objeto
+        Debug.Log("Mouse exited");
+    }
+    private void Start()
+    {
+        // Obtener una referencia al VisualElement al que deseas agregar el evento de "hover"
+        
+
+        // Suscribirse al evento MouseEnterEvent
+        this.RegisterCallback<MouseEnterEvent>(OnMouseEnter);
+
+        // Suscribirse al evento MouseLeaveEvent
+        this.RegisterCallback<MouseLeaveEvent>(OnMouseLeave);
+    }
+
+    private void OnMouseEnter(MouseEnterEvent evt)
+    {
+        // El cursor del ratón ha entrado en el elemento
+        Debug.Log("Mouse entered!");
+
+        // Aquí puedes realizar las acciones que desees cuando el cursor entre en el elemento
+    }
+
+    private void OnMouseLeave(MouseLeaveEvent evt)
+    {
+        // El cursor del ratón ha salido del elemento
+        Debug.Log("Mouse left!");
+
+        // Aquí puedes realizar las acciones que desees cuando el cursor salga del elemento
+    }
 }
 

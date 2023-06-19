@@ -107,14 +107,16 @@ public class EnemyStats : MonoBehaviour
         animator.SetTrigger("death");
         string[] dropGUID = new string[3];
         int[] dropQuantity = new int[3];
+        float[] dropDurability = new float[3];
         for (int i = 0; i < 3; i++)
         {
             var index = GenerateDrop();
             dropGUID[i] = itemGuid[index];
             dropQuantity[i] = quantities[index];
+            dropDurability[i] = 100;
         }
 
-        GameController.Drop(dropGUID, dropQuantity);
+        GameController.Drop(dropGUID, dropQuantity, dropDurability);
         gameManager.DropCoinsExp(coins, experience);
         yield return new WaitForSeconds(2);
         Destroy(gameObject);

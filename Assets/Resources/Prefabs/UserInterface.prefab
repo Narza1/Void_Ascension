@@ -50,7 +50,7 @@ MonoBehaviour:
   m_PanelSettings: {fileID: 11400000, guid: d791f398723f90a4a8961eef600c6457, type: 2}
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 6a47545c817e349458fc45f3acdec734, type: 3}
-  m_SortingOrder: 0
+  m_SortingOrder: 1
 --- !u!114 &1321071086710898816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,6 +63,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c216214fe295f74bbae8c85586d98ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InventoryItems: []
+  SetSlots: []
 --- !u!114 &1321071086710898829
 MonoBehaviour:
   m_ObjectHideFlags: 0
