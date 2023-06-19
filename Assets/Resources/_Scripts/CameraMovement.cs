@@ -13,7 +13,7 @@ public class CameraMovement : MonoBehaviour
     private void FixedUpdate()
     {
         //var pos = transform.position.y;
-        //pos+= 0.01f;
+        //pos += 0.06f;
         //transform.position = new(transform.position.x, pos, transform.position.z);
         transform.position = new Vector3(player.transform.position.x, player.transform.position.y, this.transform.position.z);
     }
